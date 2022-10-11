@@ -40,7 +40,7 @@ extension UIView {
     }
     
     func addDropShadow(offset: CGSize = CGSize(width: 0, height: 3),
-                       color: UIColor = .exchangeGray ?? .gray,
+                       color: UIColor = Colors.exchangeGray.color,
                        radius: CGFloat = 1,
                        opacity: Float = 1) {
         layer.masksToBounds = false

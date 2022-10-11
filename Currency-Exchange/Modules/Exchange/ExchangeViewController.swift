@@ -7,23 +7,28 @@
 
 import UIKit
 
+private typealias Localized = Localization.ExchangeScreen
+
 final class ExchangeViewController: UIViewController {
     
     // MARK: UIElements
     private lazy var headerPlaceholder: UIView = {
         let headerPlaceholder = UIView()
         headerPlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        headerPlaceholder.backgroundColor = .exchangeBlue
+        headerPlaceholder.backgroundColor = Colors.exchangeBlue.color
+        headerPlaceholder.cornerRadius = .placeholderCornerRadius
+        headerPlaceholder.addDropShadow()
         view.addSubview(headerPlaceholder)
         return headerPlaceholder
     }()
     
     private lazy var headerLabel: UILabel = {
         let headerLabel = UILabel()
-        headerLabel.text =  "Currency Convertor"  
+        headerLabel.text = Localized.title
         headerLabel.textColor = .white
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.numberOfLines = 1
+        headerPlaceholder.addSubview(headerLabel)
         return headerLabel
     }()
     
@@ -52,20 +57,15 @@ extension ExchangeViewController {
     // MARK: Private
     private func layoutUIElements() {
         layoutHeaderPlaceholder()
+        layoutHeaderLabel()
     }
     
     private func setupUIElements() {
         setupBackgroundView()
-        setupHeaderPlaceholder()
     }
     
     private func setupBackgroundView() {
         view.backgroundColor = .white
-    }
-    
-    private func setupHeaderPlaceholder() {
-        headerPlaceholder.cornerRadius = .placeholderCornerRadius
-        headerPlaceholder.addDropShadow()
     }
     
     private func layoutHeaderPlaceholder() {
@@ -79,10 +79,9 @@ extension ExchangeViewController {
     
     private func layoutHeaderLabel() {
         NSLayoutConstraint.activate([
-            headerPlaceholder.topAnchor.constraint(equalTo: view.topAnchor),
-            headerPlaceholder.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerPlaceholder.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerPlaceholder.heightAnchor.constraint(equalToConstant: headerPlaceholderHeight)
+            headerLabel.centerXAnchor.constraint(equalTo: headerPlaceholder.centerXAnchor),
+            headerLabel.centerYAnchor.constraint(equalTo: headerPlaceholder.centerYAnchor,
+                                                 constant: .safeAreaInsetTop.halfDevide)
         ])
     }
 }

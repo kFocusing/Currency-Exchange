@@ -17,4 +17,14 @@ extension CGFloat {
         return UIScreen.main.bounds.height
     }
     
+    static var safeAreaInsetTop: CGFloat {
+        return UIApplication.shared.windows.first{$0.isKeyWindow }?.safeAreaInsets.top ?? 0
+    }
+    
+    var halfDevide: CGFloat {
+        get {
+            return self / 2
+        }
+    }
+    
 }

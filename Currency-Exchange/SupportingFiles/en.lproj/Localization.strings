@@ -1,0 +1,10 @@
+/* 
+  Localization.strings
+  Currency-Exchange
+
+  Created by Danylo Klymov on 11.10.2022.
+  
+*/
+
+// MARK: - Exchange Screen -
+"exchangeScreen.title" = "Currency Convertor";
