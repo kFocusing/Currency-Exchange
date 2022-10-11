@@ -56,15 +56,79 @@
 		C7FFAFD228F58901002464CD /* Currency-Exchange */ = {
 			isa = PBXGroup;
 			children = (
-				C7FFAFD328F58901002464CD /* AppDelegate.swift */,
-				C7FFAFD528F58901002464CD /* SceneDelegate.swift */,
-				C7FFAFD728F58901002464CD /* ViewController.swift */,
-				C7FFAFD928F58901002464CD /* Main.storyboard */,
-				C7FFAFDC28F58902002464CD /* Assets.xcassets */,
-				C7FFAFDE28F58902002464CD /* LaunchScreen.storyboard */,
-				C7FFAFE128F58902002464CD /* Info.plist */,
+				C7FFAFE728F589E3002464CD /* App&SceneDelegate */,
+				C7FFAFE928F58EC2002464CD /* Modules */,
+				C7FFAFEE28F58EFB002464CD /* SupportingFiles */,
 			);
 			path = "Currency-Exchange";
+			sourceTree = "<group>";
+		};
+		C7FFAFE728F589E3002464CD /* App&SceneDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFD328F58901002464CD /* AppDelegate.swift */,
+				C7FFAFD528F58901002464CD /* SceneDelegate.swift */,
+			);
+			path = "App&SceneDelegate";
+			sourceTree = "<group>";
+		};
+		C7FFAFE828F58EB4002464CD /* ExchangeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFEC28F58ED6002464CD /* Model */,
+				C7FFAFEB28F58ED3002464CD /* View */,
+				C7FFAFEA28F58ECF002464CD /* Presenter */,
+			);
+			path = ExchangeScreen;
+			sourceTree = "<group>";
+		};
+		C7FFAFE928F58EC2002464CD /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFE828F58EB4002464CD /* ExchangeScreen */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		C7FFAFEA28F58ECF002464CD /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		C7FFAFEB28F58ED3002464CD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFD728F58901002464CD /* ViewController.swift */,
+				C7FFAFED28F58EDF002464CD /* Storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C7FFAFEC28F58ED6002464CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C7FFAFED28F58EDF002464CD /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFD928F58901002464CD /* Main.storyboard */,
+				C7FFAFDE28F58902002464CD /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		C7FFAFEE28F58EFB002464CD /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFDC28F58902002464CD /* Assets.xcassets */,
+				C7FFAFE128F58902002464CD /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,12 +353,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SMZH48C953;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Currency-Exchange/Info.plist";
+				INFOPLIST_FILE = "Currency-Exchange/SupportingFiles/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,9 +367,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Danylo-Klymov.Currency-Exchange";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -317,12 +385,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SMZH48C953;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Currency-Exchange/Info.plist";
+				INFOPLIST_FILE = "Currency-Exchange/SupportingFiles/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -330,9 +399,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Danylo-Klymov.Currency-Exchange";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
