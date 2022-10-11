@@ -54,4 +54,8 @@ extension UIView {
         layer.backgroundColor = backgroundCGColor
     }
 
+    func makeCornersRounded() {
+        layer.cornerRadius = self.bounds.width / 2
+    }
+    
 }

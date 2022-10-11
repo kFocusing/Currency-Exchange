@@ -7,4 +7,14 @@
 */
 
 // MARK: - Exchange Screen -
-"exchangeScreen.title" = "Currency Convertor";
+"exchangeScreen.headerTitle" = "Currency Convertor";
+"exchangeScreen.buttonTitle" = "SUBMIT";
+"exchangeScreen.balanceSectionTitle" = "MY BALANCES";
+"exchangeScreen.currencyExchangeSectionTitle" = "CURRENCY EXCHANGE";
+
+"exchangeScreen.sellCellTitle" = "Sell";
+"exchangeScreen.receiveCellTitle" = "Receive";
+
+"exchangeScreen.usd" = "USD";
+"exchangeScreen.eur" = "EUR";
+"exchangeScreen.jpy" = "JPY";

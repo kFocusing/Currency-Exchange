@@ -24,23 +24,40 @@ final class ExchangeViewController: UIViewController {
     
     private lazy var headerLabel: UILabel = {
         let headerLabel = UILabel()
-        headerLabel.text = Localized.title
-        headerLabel.textColor = .white
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.numberOfLines = 1
+        headerLabel.text = Localized.headerTitle
+        headerLabel.textColor = .white
+                headerLabel.numberOfLines = 1
         headerPlaceholder.addSubview(headerLabel)
         return headerLabel
+    }()
+    
+    private lazy var submitButton: UIButton = {
+        let submitButton = UIButton()
+        submitButton.translatesAutoresizingMaskIntoConstraints = false
+        submitButton.backgroundColor = Colors.exchangeBlue.color
+        submitButton.setTitle(Localized.buttonTitle,
+                              for: .normal)
+        submitButton.setTitleColor(Colors.exchangeBlue.color,
+                                   for: .normal)
+        submitButton.cornerRadius = buttonHeight.halfDevide
+        submitButton.addDropShadow(offset: CGSize(width: 3,
+                                                  height: 3))
+        view.addSubview(submitButton)
+        return submitButton
     }()
     
     // MARK: Properties
     var presenter: ExchangeViewPresenterProtocol!
     private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
-
+    private let buttonSideInset: CGFloat = 45
+    private let buttonHeight: CGFloat = 60
+    
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUIElements()
-        setupUIElements()
+        setupElements()
     }
     
 }
@@ -58,14 +75,21 @@ extension ExchangeViewController {
     private func layoutUIElements() {
         layoutHeaderPlaceholder()
         layoutHeaderLabel()
+        layoutSubmitButton()
     }
     
-    private func setupUIElements() {
+    private func setupElements() {
         setupBackgroundView()
+        setupNotificationCenter()
     }
     
     private func setupBackgroundView() {
         view.backgroundColor = .white
+    }
+    
+    private func setupNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillMove), name:UIResponder.keyboardWillHideNotification, object: self.view.window)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillMove), name:UIResponder.keyboardWillShowNotification, object: self.view.window)
     }
     
     private func layoutHeaderPlaceholder() {
@@ -84,4 +108,20 @@ extension ExchangeViewController {
                                                  constant: .safeAreaInsetTop.halfDevide)
         ])
     }
+    
+    private func layoutSubmitButton() {
+        NSLayoutConstraint.activate([
+            submitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                  constant: buttonSideInset),
+            submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                   constant: -buttonSideInset),
+            submitButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            submitButton.heightAnchor.constraint(equalToConstant: buttonHeight)
+        ])
+    }
+    
+    @objc private func keyboardWillMove(sender: NSNotification) {
+        // TODO: Move button when let's get into the method
+    }
+    
 }
