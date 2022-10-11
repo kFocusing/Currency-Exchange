@@ -8,16 +8,20 @@
 import UIKit
 
 protocol RouterMain {
+    
     var navigationController: UINavigationController? { get set }
     var assamblyBuilder: AssamblyBuilderProtocol? { get set }
+    
 }
 
 protocol RouterProtocol: RouterMain {
+    
     func initialViewContoller()
     func popToRoot()
+    
 }
 
-class Router: RouterProtocol {
+final class Router: RouterProtocol {
     
     var assamblyBuilder: AssamblyBuilderProtocol?
     var navigationController: UINavigationController?
@@ -27,7 +31,6 @@ class Router: RouterProtocol {
         self.navigationController = navigationController
         self.assamblyBuilder = assamblyBuilder
     }
-    
     
     func initialViewContoller() {
         if let navigationController = navigationController {

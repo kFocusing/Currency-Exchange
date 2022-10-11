@@ -12,8 +12,10 @@ protocol ExchangeViewProtocol: AnyObject {
 }
 
 protocol ExchangeViewPresenterProtocol: AnyObject {
+    
     init(view: ExchangeViewProtocol,
          router: RouterProtocol)
+    
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
