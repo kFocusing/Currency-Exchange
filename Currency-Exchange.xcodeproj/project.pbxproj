@@ -9,21 +9,27 @@
 /* Begin PBXBuildFile section */
 		C7FFAFD428F58901002464CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD328F58901002464CD /* AppDelegate.swift */; };
 		C7FFAFD628F58901002464CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD528F58901002464CD /* SceneDelegate.swift */; };
-		C7FFAFD828F58901002464CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD728F58901002464CD /* ViewController.swift */; };
+		C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD728F58901002464CD /* ExchangeViewController.swift */; };
 		C7FFAFDB28F58901002464CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7FFAFD928F58901002464CD /* Main.storyboard */; };
 		C7FFAFDD28F58902002464CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7FFAFDC28F58902002464CD /* Assets.xcassets */; };
 		C7FFAFE028F58902002464CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7FFAFDE28F58902002464CD /* LaunchScreen.storyboard */; };
+		C7FFAFF128F590ED002464CD /* AssemblyModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFF028F590ED002464CD /* AssemblyModelBuilder.swift */; };
+		C7FFAFF428F59109002464CD /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFF328F59109002464CD /* Router.swift */; };
+		C7FFAFF628F591C6002464CD /* ExchangePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFF528F591C6002464CD /* ExchangePresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C7FFAFD028F58901002464CD /* Currency-Exchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency-Exchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7FFAFD328F58901002464CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7FFAFD528F58901002464CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C7FFAFD728F58901002464CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C7FFAFD728F58901002464CD /* ExchangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeViewController.swift; sourceTree = "<group>"; };
 		C7FFAFDA28F58901002464CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C7FFAFDC28F58902002464CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7FFAFDF28F58902002464CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C7FFAFE128F58902002464CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7FFAFF028F590ED002464CD /* AssemblyModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyModelBuilder.swift; sourceTree = "<group>"; };
+		C7FFAFF328F59109002464CD /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		C7FFAFF528F591C6002464CD /* ExchangePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangePresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,8 @@
 		C7FFAFD228F58901002464CD /* Currency-Exchange */ = {
 			isa = PBXGroup;
 			children = (
+				C7FFAFF228F590FA002464CD /* Router */,
+				C7FFAFEF28F590E1002464CD /* AssemblyModelBuilder */,
 				C7FFAFE728F589E3002464CD /* App&SceneDelegate */,
 				C7FFAFE928F58EC2002464CD /* Modules */,
 				C7FFAFEE28F58EFB002464CD /* SupportingFiles */,
@@ -72,20 +80,20 @@
 			path = "App&SceneDelegate";
 			sourceTree = "<group>";
 		};
-		C7FFAFE828F58EB4002464CD /* ExchangeScreen */ = {
+		C7FFAFE828F58EB4002464CD /* Exchange */ = {
 			isa = PBXGroup;
 			children = (
 				C7FFAFEC28F58ED6002464CD /* Model */,
 				C7FFAFEB28F58ED3002464CD /* View */,
 				C7FFAFEA28F58ECF002464CD /* Presenter */,
 			);
-			path = ExchangeScreen;
+			path = Exchange;
 			sourceTree = "<group>";
 		};
 		C7FFAFE928F58EC2002464CD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				C7FFAFE828F58EB4002464CD /* ExchangeScreen */,
+				C7FFAFE828F58EB4002464CD /* Exchange */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -93,6 +101,7 @@
 		C7FFAFEA28F58ECF002464CD /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				C7FFAFF528F591C6002464CD /* ExchangePresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -100,7 +109,7 @@
 		C7FFAFEB28F58ED3002464CD /* View */ = {
 			isa = PBXGroup;
 			children = (
-				C7FFAFD728F58901002464CD /* ViewController.swift */,
+				C7FFAFD728F58901002464CD /* ExchangeViewController.swift */,
 				C7FFAFED28F58EDF002464CD /* Storyboard */,
 			);
 			path = View;
@@ -129,6 +138,22 @@
 				C7FFAFE128F58902002464CD /* Info.plist */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		C7FFAFEF28F590E1002464CD /* AssemblyModelBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFF028F590ED002464CD /* AssemblyModelBuilder.swift */,
+			);
+			path = AssemblyModelBuilder;
+			sourceTree = "<group>";
+		};
+		C7FFAFF228F590FA002464CD /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				C7FFAFF328F59109002464CD /* Router.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,7 +227,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7FFAFD828F58901002464CD /* ViewController.swift in Sources */,
+				C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */,
+				C7FFAFF628F591C6002464CD /* ExchangePresenter.swift in Sources */,
+				C7FFAFF128F590ED002464CD /* AssemblyModelBuilder.swift in Sources */,
+				C7FFAFF428F59109002464CD /* Router.swift in Sources */,
 				C7FFAFD428F58901002464CD /* AppDelegate.swift in Sources */,
 				C7FFAFD628F58901002464CD /* SceneDelegate.swift in Sources */,
 			);
