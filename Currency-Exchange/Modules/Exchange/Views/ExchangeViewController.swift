@@ -100,7 +100,6 @@ extension ExchangeViewController: ExchangeViewProtocol {
             //
             ////                self?.hideLoadingState()
             //            }
-            //
         }
     }
     
@@ -219,6 +218,8 @@ private extension ExchangeViewController {
         )
 
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets.leading = 16
+        section.contentInsets.trailing = 16
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
 
