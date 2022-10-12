@@ -100,6 +100,7 @@ extension ExchangeViewController: ExchangeViewProtocol {
             //
             ////                self?.hideLoadingState()
             //            }
+            //
         }
     }
     
