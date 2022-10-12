@@ -22,8 +22,6 @@
 		C76D06E128F5995F0051D2C1 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06E028F5995F0051D2C1 /* UIViewExtension.swift */; };
 		C76D06E328F5A59C0051D2C1 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = C76D06E228F5A59C0051D2C1 /* swiftgen.yml */; };
 		C76D06E628F5A60F0051D2C1 /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = C76D06E828F5A60F0051D2C1 /* Localization.strings */; };
-		C76D06ED28F5A6E40051D2C1 /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06EB28F5A6E40051D2C1 /* Strings+Generated.swift */; };
-		C76D06EE28F5A6E40051D2C1 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06EC28F5A6E40051D2C1 /* XCAssets+Generated.swift */; };
 		C76D06F028F5A71A0051D2C1 /* Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06EF28F5A71A0051D2C1 /* Typealias.swift */; };
 		C76D06F328F5ECEB0051D2C1 /* CellReusableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */; };
 		C76D06F628F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06F428F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift */; };
@@ -64,8 +62,6 @@
 		C76D06E028F5995F0051D2C1 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		C76D06E228F5A59C0051D2C1 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		C76D06E728F5A60F0051D2C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
-		C76D06EB28F5A6E40051D2C1 /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
-		C76D06EC28F5A6E40051D2C1 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		C76D06EF28F5A71A0051D2C1 /* Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealias.swift; sourceTree = "<group>"; };
 		C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellReusableExtension.swift; sourceTree = "<group>"; };
 		C76D06F428F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAmountCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -166,15 +162,6 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		C76D06EA28F5A6850051D2C1 /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				C76D06EB28F5A6E40051D2C1 /* Strings+Generated.swift */,
-				C76D06EC28F5A6E40051D2C1 /* XCAssets+Generated.swift */,
-			);
-			path = Generated;
-			sourceTree = "<group>";
-		};
 		C76D06F128F5ECAE0051D2C1 /* CurrencyAmountCollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +205,13 @@
 				C780F38828F6D23000E8DEF3 /* EndPoint.swift */,
 			);
 			path = NetworkService;
+			sourceTree = "<group>";
+		};
+		C780F38C28F7593E00E8DEF3 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		C7FFAFC728F58901002464CD = {
@@ -327,7 +321,7 @@
 		C7FFAFEE28F58EFB002464CD /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				C76D06EA28F5A6850051D2C1 /* Generated */,
+				C780F38C28F7593E00E8DEF3 /* Generated */,
 				C7FFAFDC28F58902002464CD /* Assets.xcassets */,
 				C76D06D628F597850051D2C1 /* Colors.xcassets */,
 				C7FFAFE128F58902002464CD /* Info.plist */,
@@ -496,7 +490,6 @@
 				C76D06E128F5995F0051D2C1 /* UIViewExtension.swift in Sources */,
 				C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */,
 				C76D06DF28F599290051D2C1 /* CGFloatExtension.swift in Sources */,
-				C76D06EE28F5A6E40051D2C1 /* XCAssets+Generated.swift in Sources */,
 				C73F91A628F6B2C90000485B /* SectionHeaderView.swift in Sources */,
 				C73F919F28F6A6FD0000485B /* AmountCurrency.swift in Sources */,
 				C76D06F628F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift in Sources */,
@@ -520,7 +513,6 @@
 				C73F91A228F6AECD0000485B /* ExchangeDataSource.swift in Sources */,
 				C76D06F028F5A71A0051D2C1 /* Typealias.swift in Sources */,
 				C780F38928F6D23000E8DEF3 /* EndPoint.swift in Sources */,
-				C76D06ED28F5A6E40051D2C1 /* Strings+Generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
