@@ -55,7 +55,26 @@ extension UIView {
     }
 
     func makeCornersRounded() {
-        layer.cornerRadius = self.bounds.width / 2
+        layer.cornerRadius = self.bounds.width.halfDevide
+    }
+    
+    func translateAnimate(with duration: TimeInterval = 0.65,
+                          delay: TimeInterval = .zero,
+                          usingSpringWithDamping dampingRatio: CGFloat = 1,
+                          initialSpringVelocity velocity: CGFloat = 1,
+                          options: UIView.AnimationOptions = [.curveEaseIn],
+                          translateByX: CGFloat = 0,
+                          translateByY: CGFloat = 0,
+                          completion: BoolBlock? = nil) {
+        UIView.animate(withDuration: duration,
+                       delay: delay,
+                       usingSpringWithDamping: dampingRatio,
+                       initialSpringVelocity: velocity,
+                       options: options,
+                       animations: {
+            self.transform = self.transform.translatedBy(x: translateByX, y: translateByY)
+        },
+                       completion: completion)
     }
     
 }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+typealias BoolBlock = (Bool) -> Void
+
 // MARK: - SwiftGen -
 typealias Localization = L10n
 typealias ImageAssets = Asset.Assets

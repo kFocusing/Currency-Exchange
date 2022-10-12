@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		74877524DD463334C093F33C /* Pods_Currency_Exchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AFD001C84841F92BFF2C805 /* Pods_Currency_Exchange.framework */; };
+		C73F919928F5FD910000485B /* ImageEnumProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F919828F5FD910000485B /* ImageEnumProtocol.swift */; };
+		C73F919B28F5FF900000485B /* CurrencyEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F919A28F5FF900000485B /* CurrencyEnum.swift */; };
 		C76D06D728F597850051D2C1 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C76D06D628F597850051D2C1 /* Colors.xcassets */; };
 		C76D06DD28F598F90051D2C1 /* GlobalMetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06DC28F598F90051D2C1 /* GlobalMetters.swift */; };
 		C76D06DF28F599290051D2C1 /* CGFloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06DE28F599290051D2C1 /* CGFloatExtension.swift */; };
@@ -17,6 +19,15 @@
 		C76D06ED28F5A6E40051D2C1 /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06EB28F5A6E40051D2C1 /* Strings+Generated.swift */; };
 		C76D06EE28F5A6E40051D2C1 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06EC28F5A6E40051D2C1 /* XCAssets+Generated.swift */; };
 		C76D06F028F5A71A0051D2C1 /* Typealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06EF28F5A71A0051D2C1 /* Typealias.swift */; };
+		C76D06F328F5ECEB0051D2C1 /* CellReusableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */; };
+		C76D06F628F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06F428F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift */; };
+		C76D06F728F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76D06F528F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.xib */; };
+		C76D06FA28F5EE140051D2C1 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D06F928F5EE140051D2C1 /* BaseCollectionViewCell.swift */; };
+		C76D070328F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D070128F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.swift */; };
+		C76D070428F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76D070228F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.xib */; };
+		C76D070628F5F7FF0051D2C1 /* DealTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D070528F5F7FF0051D2C1 /* DealTypeEnum.swift */; };
+		C76D070928F5F9200051D2C1 /* BaseEnumProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D070828F5F9200051D2C1 /* BaseEnumProtocol.swift */; };
+		C76D070B28F5F93D0051D2C1 /* TitleEnumProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D070A28F5F93D0051D2C1 /* TitleEnumProtocol.swift */; };
 		C7FFAFD428F58901002464CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD328F58901002464CD /* AppDelegate.swift */; };
 		C7FFAFD628F58901002464CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD528F58901002464CD /* SceneDelegate.swift */; };
 		C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD728F58901002464CD /* ExchangeViewController.swift */; };
@@ -31,6 +42,8 @@
 /* Begin PBXFileReference section */
 		5AFD001C84841F92BFF2C805 /* Pods_Currency_Exchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Currency_Exchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAD36AEC98CA379C0937785F /* Pods-Currency-Exchange.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Currency-Exchange.release.xcconfig"; path = "Target Support Files/Pods-Currency-Exchange/Pods-Currency-Exchange.release.xcconfig"; sourceTree = "<group>"; };
+		C73F919828F5FD910000485B /* ImageEnumProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEnumProtocol.swift; sourceTree = "<group>"; };
+		C73F919A28F5FF900000485B /* CurrencyEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEnum.swift; sourceTree = "<group>"; };
 		C76D06D628F597850051D2C1 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C76D06DC28F598F90051D2C1 /* GlobalMetters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalMetters.swift; sourceTree = "<group>"; };
 		C76D06DE28F599290051D2C1 /* CGFloatExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatExtension.swift; sourceTree = "<group>"; };
@@ -40,6 +53,15 @@
 		C76D06EB28F5A6E40051D2C1 /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
 		C76D06EC28F5A6E40051D2C1 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		C76D06EF28F5A71A0051D2C1 /* Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealias.swift; sourceTree = "<group>"; };
+		C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellReusableExtension.swift; sourceTree = "<group>"; };
+		C76D06F428F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyAmountCollectionViewCell.swift; sourceTree = "<group>"; };
+		C76D06F528F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyAmountCollectionViewCell.xib; sourceTree = "<group>"; };
+		C76D06F928F5EE140051D2C1 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		C76D070128F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExchangeCollectionViewCell.swift; sourceTree = "<group>"; };
+		C76D070228F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyExchangeCollectionViewCell.xib; sourceTree = "<group>"; };
+		C76D070528F5F7FF0051D2C1 /* DealTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealTypeEnum.swift; sourceTree = "<group>"; };
+		C76D070828F5F9200051D2C1 /* BaseEnumProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseEnumProtocol.swift; sourceTree = "<group>"; };
+		C76D070A28F5F93D0051D2C1 /* TitleEnumProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleEnumProtocol.swift; sourceTree = "<group>"; };
 		C7FFAFD028F58901002464CD /* Currency-Exchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency-Exchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7FFAFD328F58901002464CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7FFAFD528F58901002464CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +110,7 @@
 			children = (
 				C76D06DE28F599290051D2C1 /* CGFloatExtension.swift */,
 				C76D06E028F5995F0051D2C1 /* UIViewExtension.swift */,
+				C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -108,6 +131,42 @@
 				C76D06EC28F5A6E40051D2C1 /* XCAssets+Generated.swift */,
 			);
 			path = Generated;
+			sourceTree = "<group>";
+		};
+		C76D06F128F5ECAE0051D2C1 /* CurrencyAmountCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				C76D06F428F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift */,
+				C76D06F528F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.xib */,
+			);
+			path = CurrencyAmountCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		C76D06F828F5EE030051D2C1 /* BaseElements */ = {
+			isa = PBXGroup;
+			children = (
+				C76D06F928F5EE140051D2C1 /* BaseCollectionViewCell.swift */,
+			);
+			path = BaseElements;
+			sourceTree = "<group>";
+		};
+		C76D070028F5F2510051D2C1 /* CurrencyExchangeCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				C76D070128F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.swift */,
+				C76D070228F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.xib */,
+			);
+			path = CurrencyExchangeCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		C76D070728F5F9100051D2C1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C76D070828F5F9200051D2C1 /* BaseEnumProtocol.swift */,
+				C76D070A28F5F93D0051D2C1 /* TitleEnumProtocol.swift */,
+				C73F919828F5FD910000485B /* ImageEnumProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		C7FFAFC728F58901002464CD = {
@@ -132,12 +191,14 @@
 		C7FFAFD228F58901002464CD /* Currency-Exchange */ = {
 			isa = PBXGroup;
 			children = (
-				C76D06DB28F598DC0051D2C1 /* Constants */,
-				C7FFAFF228F590FA002464CD /* Router */,
-				C7FFAFEF28F590E1002464CD /* AssemblyModelBuilder */,
+				C76D070728F5F9100051D2C1 /* Protocols */,
 				C7FFAFE728F589E3002464CD /* App&SceneDelegate */,
+				C7FFAFEF28F590E1002464CD /* AssemblyModelBuilder */,
+				C76D06F828F5EE030051D2C1 /* BaseElements */,
+				C76D06DB28F598DC0051D2C1 /* Constants */,
 				C76D06D828F598060051D2C1 /* Extensions */,
 				C7FFAFE928F58EC2002464CD /* Modules */,
+				C7FFAFF228F590FA002464CD /* Router */,
 				C7FFAFEE28F58EFB002464CD /* SupportingFiles */,
 			);
 			path = "Currency-Exchange";
@@ -182,6 +243,8 @@
 		C7FFAFEB28F58ED3002464CD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C76D070028F5F2510051D2C1 /* CurrencyExchangeCollectionViewCell */,
+				C76D06F128F5ECAE0051D2C1 /* CurrencyAmountCollectionViewCell */,
 				C7FFAFED28F58EDF002464CD /* Storyboard */,
 			);
 			path = View;
@@ -190,6 +253,8 @@
 		C7FFAFEC28F58ED6002464CD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C76D070528F5F7FF0051D2C1 /* DealTypeEnum.swift */,
+				C73F919A28F5FF900000485B /* CurrencyEnum.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -295,8 +360,10 @@
 				C76D06E628F5A60F0051D2C1 /* Localization.strings in Resources */,
 				C76D06E328F5A59C0051D2C1 /* swiftgen.yml in Resources */,
 				C76D06D728F597850051D2C1 /* Colors.xcassets in Resources */,
+				C76D070428F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.xib in Resources */,
 				C7FFAFDD28F58902002464CD /* Assets.xcassets in Resources */,
 				C7FFAFDB28F58901002464CD /* Main.storyboard in Resources */,
+				C76D06F728F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,10 +422,19 @@
 				C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */,
 				C76D06DF28F599290051D2C1 /* CGFloatExtension.swift in Sources */,
 				C76D06EE28F5A6E40051D2C1 /* XCAssets+Generated.swift in Sources */,
+				C76D06F628F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.swift in Sources */,
+				C76D06FA28F5EE140051D2C1 /* BaseCollectionViewCell.swift in Sources */,
+				C76D06F328F5ECEB0051D2C1 /* CellReusableExtension.swift in Sources */,
 				C7FFAFF628F591C6002464CD /* ExchangePresenter.swift in Sources */,
+				C76D070328F5F3400051D2C1 /* CurrencyExchangeCollectionViewCell.swift in Sources */,
 				C7FFAFF128F590ED002464CD /* AssemblyModelBuilder.swift in Sources */,
 				C76D06DD28F598F90051D2C1 /* GlobalMetters.swift in Sources */,
+				C76D070928F5F9200051D2C1 /* BaseEnumProtocol.swift in Sources */,
+				C73F919928F5FD910000485B /* ImageEnumProtocol.swift in Sources */,
+				C76D070B28F5F93D0051D2C1 /* TitleEnumProtocol.swift in Sources */,
 				C7FFAFF428F59109002464CD /* Router.swift in Sources */,
+				C76D070628F5F7FF0051D2C1 /* DealTypeEnum.swift in Sources */,
+				C73F919B28F5FF900000485B /* CurrencyEnum.swift in Sources */,
 				C7FFAFD428F58901002464CD /* AppDelegate.swift in Sources */,
 				C7FFAFD628F58901002464CD /* SceneDelegate.swift in Sources */,
 				C76D06F028F5A71A0051D2C1 /* Typealias.swift in Sources */,
@@ -446,7 +522,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -500,7 +576,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -527,7 +603,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -561,7 +637,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

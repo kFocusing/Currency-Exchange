@@ -27,7 +27,7 @@ final class ExchangeViewController: UIViewController {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.text = Localized.headerTitle
         headerLabel.textColor = .white
-                headerLabel.numberOfLines = 1
+        headerLabel.numberOfLines = 1
         headerPlaceholder.addSubview(headerLabel)
         return headerLabel
     }()
@@ -38,20 +38,33 @@ final class ExchangeViewController: UIViewController {
         submitButton.backgroundColor = Colors.exchangeBlue.color
         submitButton.setTitle(Localized.buttonTitle,
                               for: .normal)
-        submitButton.setTitleColor(Colors.exchangeBlue.color,
+        submitButton.setTitleColor(.white,
                                    for: .normal)
-        submitButton.cornerRadius = buttonHeight.halfDevide
+        submitButton.cornerRadius = submitButtonHeight.halfDevide
         submitButton.addDropShadow(offset: CGSize(width: 3,
                                                   height: 3))
         view.addSubview(submitButton)
         return submitButton
     }()
     
+    private lazy var converterCollectionView: UICollectionView = {
+        let layout = UICollectionViewLayout()
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        CurrencyExchangeCollectionViewCell.registerXIB(in: collectionView)
+        CurrencyAmountCollectionViewCell.registerXIB(in: collectionView)
+        view.addSubview(collectionView)
+        return collectionView
+    }()
+
     // MARK: Properties
     var presenter: ExchangeViewPresenterProtocol!
     private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
-    private let buttonSideInset: CGFloat = 45
-    private let buttonHeight: CGFloat = 60
+    private let submitButtonSideInset: CGFloat = 45
+    private let submitButtonHeight: CGFloat = 60
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -59,7 +72,6 @@ final class ExchangeViewController: UIViewController {
         layoutUIElements()
         setupElements()
     }
-    
 }
 
 // MARK: - Extensions -
@@ -68,31 +80,50 @@ extension ExchangeViewController: ExchangeViewProtocol {
     
 }
 
-// MARK: Private
-extension ExchangeViewController {
+// MARK: UICollectionViewDataSource
+extension ExchangeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.section == 0 {
+            let cell = CurrencyAmountCollectionViewCell.dequeueCellWithType(in: collectionView,
+                                                                            indexPath: indexPath)
+            cell.configure(with: presenter.getCurrency(at: indexPath.item))
+            return cell
+        } else if indexPath.section == 1 {
+            let cell = CurrencyExchangeCollectionViewCell.dequeueCellWithType(in: collectionView,
+                                                                              indexPath: indexPath)
+            cell.configure(with: presenter.getDealType(at: indexPath.item),
+                           and: "1000")
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+}
+
+private extension ExchangeViewController {
     
     // MARK: Private
-    private func layoutUIElements() {
+    func layoutUIElements() {
         layoutHeaderPlaceholder()
         layoutHeaderLabel()
+        layoutConverterCollectionView()
         layoutSubmitButton()
     }
     
-    private func setupElements() {
+    func setupElements() {
         setupBackgroundView()
-        setupNotificationCenter()
     }
     
-    private func setupBackgroundView() {
+    func setupBackgroundView() {
         view.backgroundColor = .white
     }
     
-    private func setupNotificationCenter() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillMove), name:UIResponder.keyboardWillHideNotification, object: self.view.window)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillMove), name:UIResponder.keyboardWillShowNotification, object: self.view.window)
-    }
-    
-    private func layoutHeaderPlaceholder() {
+    func layoutHeaderPlaceholder() {
         NSLayoutConstraint.activate([
             headerPlaceholder.topAnchor.constraint(equalTo: view.topAnchor),
             headerPlaceholder.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -101,7 +132,7 @@ extension ExchangeViewController {
         ])
     }
     
-    private func layoutHeaderLabel() {
+    func layoutHeaderLabel() {
         NSLayoutConstraint.activate([
             headerLabel.centerXAnchor.constraint(equalTo: headerPlaceholder.centerXAnchor),
             headerLabel.centerYAnchor.constraint(equalTo: headerPlaceholder.centerYAnchor,
@@ -109,19 +140,101 @@ extension ExchangeViewController {
         ])
     }
     
-    private func layoutSubmitButton() {
+    func layoutSubmitButton() {
         NSLayoutConstraint.activate([
             submitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                  constant: buttonSideInset),
+                                                  constant: submitButtonSideInset),
             submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                   constant: -buttonSideInset),
-            submitButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            submitButton.heightAnchor.constraint(equalToConstant: buttonHeight)
+                                                   constant: -submitButtonSideInset),
+            submitButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            submitButton.heightAnchor.constraint(equalToConstant: submitButtonHeight)
         ])
     }
     
-    @objc private func keyboardWillMove(sender: NSNotification) {
-        // TODO: Move button when let's get into the method
+    func layoutConverterCollectionView() {
+        NSLayoutConstraint.activate([
+            converterCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            converterCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            converterCollectionView.topAnchor.constraint(equalTo: headerPlaceholder.bottomAnchor,
+                                                         constant: 30),
+            converterCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+
+    func createCurrencyBalanceSectionLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
+                                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            guard let self else { return nil }
+            
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(30)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: groupSize,
+                subitem: item,
+                count: 1
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            let header = self.composeSectionHeader()
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
+        
+        return layout
+    }
+    
+    func createCurrencyExchangeSectionLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
+                                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            guard let self else { return nil }
+            
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            
+            let group = NSCollectionLayoutGroup.vertical(
+                layoutSize: groupSize,
+                subitem: item,
+                count: 1
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            let header = self.composeSectionHeader()
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
+        
+        return layout
+    }
+    
+    func composeSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: .absolute(72))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top)
+        return header
     }
     
 }

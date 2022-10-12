@@ -7,14 +7,16 @@
 */
 
 // MARK: - Exchange Screen -
-"exchangeScreen.headerTitle" = "Currency Convertor";
+"exchangeScreen.headerTitle" = "Currency Converter";
 "exchangeScreen.buttonTitle" = "SUBMIT";
 "exchangeScreen.balanceSectionTitle" = "MY BALANCES";
 "exchangeScreen.currencyExchangeSectionTitle" = "CURRENCY EXCHANGE";
 
-"exchangeScreen.sellCellTitle" = "Sell";
-"exchangeScreen.receiveCellTitle" = "Receive";
+// MARK: Currency Exchange Section
+"exchangeScreen.currencyExchange.sell" = "Sell";
+"exchangeScreen.currencyExchange.receive" = "Receive";
 
-"exchangeScreen.usd" = "USD";
-"exchangeScreen.eur" = "EUR";
-"exchangeScreen.jpy" = "JPY";
+// MARK: Currency
+"exchangeScreen.currency.usd" = "USD";
+"exchangeScreen.currency.eur" = "EUR";
+"exchangeScreen.currency.jpy" = "JPY";
