@@ -62,6 +62,7 @@ extension SceneDelegate {
         window?.overrideUserInterfaceStyle = .dark
         
         let navigationController = UINavigationController()
+        navigationController.navigationBar.isHidden = true
         let assemblyBuilder = AssamblyModelBuilder()
         let router = Router(navigationController: navigationController,
                             assamblyBuilder: assemblyBuilder)

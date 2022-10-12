@@ -60,11 +60,17 @@ final class ExchangeViewController: UIViewController {
                                               collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.scrollsToTop = false
+        collectionView.contentSize = view.bounds.size
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.contentInset.top = 16
-        collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
+        collectionView.isScrollEnabled = false
+        collectionView.alwaysBounceVertical = false
+        collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil),
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: SectionHeaderView.reuseIdentifier)
         CurrencyExchangeCollectionViewCell.registerXIB(in: collectionView)
         CurrencyAmountCollectionViewCell.registerXIB(in: collectionView)
         view.addSubview(collectionView)
@@ -227,22 +233,22 @@ private extension ExchangeViewController {
             heightDimension: .absolute(currencyExchangeSectionItemHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
+        
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0)
         )
-
+        
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
             subitems: [item]
         )
-
+        
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets.leading = defaultInset
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
-
+        
         return section
     }
     
