@@ -22,8 +22,7 @@ final class ExchangeViewController: UIViewController {
     private lazy var headerPlaceholder: UIView = {
         let headerPlaceholder = UIView()
         headerPlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        headerPlaceholder.backgroundColor = Colors.exchangeBlue.color
-        headerPlaceholder.cornerRadius = .placeholderCornerRadius
+        headerPlaceholder.backgroundColor = .clear
         headerPlaceholder.addDropShadow()
         view.addSubview(headerPlaceholder)
         return headerPlaceholder
@@ -42,12 +41,12 @@ final class ExchangeViewController: UIViewController {
     private lazy var submitButton: UIButton = {
         let submitButton = UIButton()
         submitButton.translatesAutoresizingMaskIntoConstraints = false
-        submitButton.backgroundColor = Colors.exchangeBlue.color
+        submitButton.backgroundColor = .clear
         submitButton.setTitle(Localized.buttonTitle,
                               for: .normal)
         submitButton.setTitleColor(.white,
                                    for: .normal)
-        submitButton.cornerRadius = submitButtonHeight.halfDevide
+        submitButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         submitButton.addDropShadow(offset: CGSize(width: 3,
                                                   height: 3))
         view.addSubview(submitButton)
@@ -87,6 +86,11 @@ final class ExchangeViewController: UIViewController {
         layoutUIElements()
         setupBackgroundView()
         presenter.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupGradients()
     }
 }
 
@@ -133,6 +137,16 @@ private extension ExchangeViewController {
     
     func setupBackgroundView() {
         view.backgroundColor = .white
+    }
+    
+    func setupGradients() {
+        let headerPlaceholderGradient = CAGradientLayer.gradientLayer(in: headerPlaceholder.bounds)
+        headerPlaceholderGradient.cornerRadius = .placeholderCornerRadius
+        headerPlaceholder.layer.insertSublayer(headerPlaceholderGradient, at: 0)
+        
+        let submitButtonGradient = CAGradientLayer.gradientLayer(in: submitButton.bounds)
+        submitButtonGradient.cornerRadius = submitButton.bounds.height.halfDevide
+        submitButton.layer.insertSublayer(submitButtonGradient, at: 0)
     }
     
     func layoutHeaderPlaceholder() {

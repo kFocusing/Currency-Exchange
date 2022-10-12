@@ -7,7 +7,7 @@
 */
 
 // MARK: - Exchange Screen -
-"exchangeScreen.headerTitle" = "Currency Converter";
+"exchangeScreen.headerTitle" = "Currency converter";
 "exchangeScreen.buttonTitle" = "SUBMIT";
 "exchangeScreen.balanceSectionTitle" = "MY BALANCES";
 "exchangeScreen.currencyExchangeSectionTitle" = "CURRENCY EXCHANGE";
