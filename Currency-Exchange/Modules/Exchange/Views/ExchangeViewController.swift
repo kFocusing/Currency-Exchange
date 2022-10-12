@@ -23,6 +23,7 @@ final class ExchangeViewController: UIViewController {
         let headerPlaceholder = UIView()
         headerPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         headerPlaceholder.backgroundColor = .clear
+        headerPlaceholder.clipsToBounds = true
         headerPlaceholder.addDropShadow()
         view.addSubview(headerPlaceholder)
         return headerPlaceholder
@@ -73,11 +74,15 @@ final class ExchangeViewController: UIViewController {
     // MARK: Properties
     var presenter: ExchangeViewPresenterProtocol!
     private var dataSource: ExchangeDataSource!
-    
-    private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
-    private let submitButtonSideInset: CGFloat = 45
-    private let submitButtonHeight: CGFloat = 60
     private let defaultInset: CGFloat = 16
+    private let submitButtonHeight: CGFloat = 50
+    private let submitButtonSideInset: CGFloat = 35
+    private let submitButtonBottomInset: CGFloat = 20
+    private let collectionHeaderSectionHight: CGFloat = 40
+    private let currencyBalanceSectionGroupHeight: CGFloat = 60
+    private let currencyExchangeSectionItemHeight: CGFloat = 80
+    private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
+    private let currencyBalanceSectionItemWidth: CGFloat = .screenWidth / 3
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -141,6 +146,8 @@ private extension ExchangeViewController {
     
     func setupGradients() {
         let headerPlaceholderGradient = CAGradientLayer.gradientLayer(in: headerPlaceholder.bounds)
+        headerPlaceholderGradient.maskedCorners = [.layerMaxXMaxYCorner,
+                                                   .layerMinXMaxYCorner]
         headerPlaceholderGradient.cornerRadius = .placeholderCornerRadius
         headerPlaceholder.layer.insertSublayer(headerPlaceholderGradient, at: 0)
         
@@ -173,7 +180,7 @@ private extension ExchangeViewController {
             submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                    constant: -submitButtonSideInset),
             submitButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor,
-                                                 constant: -10),
+                                                 constant: -submitButtonBottomInset),
             submitButton.heightAnchor.constraint(equalToConstant: submitButtonHeight)
         ])
     }
@@ -189,14 +196,14 @@ private extension ExchangeViewController {
     
     func createCurrencyBalanceSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(.screenWidth / 3),
+            widthDimension: .absolute(currencyBalanceSectionItemWidth),
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(60)
+            heightDimension: .absolute(currencyBalanceSectionGroupHeight)
         )
         
         let group = NSCollectionLayoutGroup.horizontal(
@@ -206,8 +213,8 @@ private extension ExchangeViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets.leading = 16
-        section.contentInsets.trailing = 16
+        section.contentInsets.leading = defaultInset
+        section.contentInsets.trailing = defaultInset
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
         
@@ -217,7 +224,7 @@ private extension ExchangeViewController {
     func createCurrencyExchangeSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(80)
+            heightDimension: .absolute(currencyExchangeSectionItemHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
@@ -232,7 +239,7 @@ private extension ExchangeViewController {
         )
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets.leading = 16
+        section.contentInsets.leading = defaultInset
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
 
@@ -241,7 +248,7 @@ private extension ExchangeViewController {
     
     func composeSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .absolute(40))
+                                                heightDimension: .absolute(collectionHeaderSectionHight))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,

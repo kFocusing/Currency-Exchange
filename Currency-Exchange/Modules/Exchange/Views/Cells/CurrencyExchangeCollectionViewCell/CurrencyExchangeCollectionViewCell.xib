@@ -42,7 +42,7 @@
                     </constraints>
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" keyboardAppearance="light"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A5N-Tn-Rfs">
                     <rect key="frame" x="71" y="79" width="319" height="1"/>
