@@ -158,7 +158,8 @@ private extension ExchangeViewController {
                                                   constant: submitButtonSideInset),
             submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                    constant: -submitButtonSideInset),
-            submitButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            submitButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor,
+                                                 constant: -10),
             submitButton.heightAnchor.constraint(equalToConstant: submitButtonHeight)
         ])
     }

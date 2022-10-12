@@ -101,10 +101,12 @@ private extension ExchangePresenter {
         }
     }
     
-    func getCurrencyExchange() {
-        let endpoint = EndPoint.convertCurrency(fromAmount: 123.3,
-                                                fromCurrency: "USD",
-                                                toCurrency: "EUR")
+    func getCurrencyExchange(fromAmount: Double = 100,
+                             fromCurrency: String = CurrencyEnum.euro.title,
+                             toCurrency: String = CurrencyEnum.americanDollar.title) {
+        let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount,
+                                                fromCurrency: fromCurrency,
+                                                toCurrency: toCurrency)
         networkService.request(endPoint: endpoint,
                                expecting: AmountCurrency.self) { [weak self] result in
             switch result {
