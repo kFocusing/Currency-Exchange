@@ -7,14 +7,7 @@
 
 import UIKit
 
-protocol TitleEnumProtocol: CaseIterable {
-    static var allTitles: [String] { get }
+protocol TitleEnumProtocol {
     var title: String { get }
-}
-
-extension TitleEnumProtocol {
-    static var allTitles: [String] {
-        allCases.map { return $0.title }
-    }
 }
 

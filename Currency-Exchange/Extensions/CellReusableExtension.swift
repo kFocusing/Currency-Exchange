@@ -7,9 +7,17 @@
 
 import UIKit
 
-protocol CollectionCellRegistable: UICollectionViewCell { }
+protocol Reusable { }
 
-protocol CollectionCellDequeueReusable: UICollectionViewCell { }
+extension Reusable {
+    static var reuseIdentifier: String {
+        String(describing: Self.self)
+    }
+}
+
+protocol CollectionCellRegistable: UICollectionViewCell, Reusable { }
+
+protocol CollectionCellDequeueReusable: UICollectionViewCell, Reusable { }
 
 extension CollectionCellRegistable {
     static func register(in collectionView: UICollectionView) {

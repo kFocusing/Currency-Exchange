@@ -8,17 +8,17 @@
 import UIKit
 
 protocol AssamblyBuilderProtocol {
-    
     func createExchangeModule(router: RouterProtocol) -> UIViewController
-    
 }
 
 final class AssamblyModelBuilder: AssamblyBuilderProtocol {
     
     func createExchangeModule(router: RouterProtocol) -> UIViewController {
         let view = ExchangeViewController()
+        let networkService = NetworkService()
         let presenter = ExchangePresenter(view: view,
-                                      router: router)
+                                          networkService: networkService,
+                                          router: router)
         view.presenter = presenter
         return view
     }

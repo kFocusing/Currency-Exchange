@@ -18,20 +18,14 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     // MARK: Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        setupCurrencyDealTypeImageView()
+        currencyDealTypeImageView.makeCornersRounded()
     }
 
     // MARK: Internal
-    func configure(with dealType: DealTypeEnum,
-                   and amount: String) {
-        amountLabel.text = amount
-        dealTypeLabel.text = dealType.title
-        currencyDealTypeImageView.image = dealType.icon
-    }
-}
-
-private extension CurrencyExchangeCollectionViewCell {
-    func setupCurrencyDealTypeImageView() {
-        currencyDealTypeImageView.makeCornersRounded()
+    func configure(with exchangeModel: ExchangeModel) {
+        amountLabel.text = exchangeModel.amountCurrency.amount
+        dealTypeLabel.text = exchangeModel.dealType.title
+        currencyDealTypeImageView.image = exchangeModel.dealType.icon
+        currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
     }
 }

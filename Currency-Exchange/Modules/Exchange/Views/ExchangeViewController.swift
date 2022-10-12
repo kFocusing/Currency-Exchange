@@ -9,6 +9,13 @@ import UIKit
 
 private typealias Localized = Localization.ExchangeScreen
 
+protocol ExchangeViewProtocol: AnyObject {
+    func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
+                       animated: Bool)
+    func updateLayout(sections: [CurrencySections])
+    func showErrorAlert(with message: String?)
+}
+
 final class ExchangeViewController: UIViewController {
     
     // MARK: UIElements
@@ -52,57 +59,66 @@ final class ExchangeViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.scrollsToTop = false
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.contentInset.top = 16
+        collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
         CurrencyExchangeCollectionViewCell.registerXIB(in: collectionView)
         CurrencyAmountCollectionViewCell.registerXIB(in: collectionView)
         view.addSubview(collectionView)
         return collectionView
     }()
-
+    
     // MARK: Properties
     var presenter: ExchangeViewPresenterProtocol!
+    private var dataSource: ExchangeDataSource!
+    
     private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
     private let submitButtonSideInset: CGFloat = 45
     private let submitButtonHeight: CGFloat = 60
+    private let defaultInset: CGFloat = 16
     
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupDataSource()
         layoutUIElements()
-        setupElements()
+        setupBackgroundView()
+        presenter.viewDidLoad()
     }
 }
 
 // MARK: - Extensions -
 // MARK: ExchangeViewProtocol
 extension ExchangeViewController: ExchangeViewProtocol {
-    
-}
-
-// MARK: UICollectionViewDataSource
-extension ExchangeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == 0 {
-            let cell = CurrencyAmountCollectionViewCell.dequeueCellWithType(in: collectionView,
-                                                                            indexPath: indexPath)
-            cell.configure(with: presenter.getCurrency(at: indexPath.item))
-            return cell
-        } else if indexPath.section == 1 {
-            let cell = CurrencyExchangeCollectionViewCell.dequeueCellWithType(in: collectionView,
-                                                                              indexPath: indexPath)
-            cell.configure(with: presenter.getDealType(at: indexPath.item),
-                           and: "1000")
-            return cell
+    func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
+                       animated: Bool) {
+        dataSource.apply(snapshot, animatingDifferences: animated) {
+            //            DispatchQueue.main.async { [weak self] in
+            //
+            ////                self?.hideLoadingState()
+            //            }
         }
-        return UICollectionViewCell()
     }
+    
+    func updateLayout(sections: [CurrencySections]) {
+        converterCollectionView.setCollectionViewLayout(createLayout(for: sections),
+                                                        animated: false)
+    }
+    
+    func showErrorAlert(with message: String?) {
+        let alert = UIAlertController(title: message ?? "",
+                                      message: nil,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay",
+                                      style: .cancel,
+                                      handler: nil))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
 
 private extension ExchangeViewController {
@@ -113,10 +129,6 @@ private extension ExchangeViewController {
         layoutHeaderLabel()
         layoutConverterCollectionView()
         layoutSubmitButton()
-    }
-    
-    func setupElements() {
-        setupBackgroundView()
     }
     
     func setupBackgroundView() {
@@ -155,86 +167,108 @@ private extension ExchangeViewController {
         NSLayoutConstraint.activate([
             converterCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             converterCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            converterCollectionView.topAnchor.constraint(equalTo: headerPlaceholder.bottomAnchor,
-                                                         constant: 30),
+            converterCollectionView.topAnchor.constraint(equalTo: headerPlaceholder.bottomAnchor),
             converterCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
-    func createCurrencyBalanceSectionLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
-                                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            
-            guard let self else { return nil }
-            
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(30)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: groupSize,
-                subitem: item,
-                count: 1
-            )
-            
-            let section = NSCollectionLayoutSection(group: group)
-            let header = self.composeSectionHeader()
-            section.boundarySupplementaryItems = [header]
-            
-            return section
-        }
+    
+    func createCurrencyBalanceSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(.screenWidth / 3),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        return layout
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(60)
+        )
+        
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets.leading = 16
+        section.contentInsets.trailing = 16
+        let header = self.composeSectionHeader()
+        section.boundarySupplementaryItems += [header]
+        
+        return section
     }
     
-    func createCurrencyExchangeSectionLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int,
-                                                                        layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            
-            guard let self else { return nil }
-            
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            
-            let group = NSCollectionLayoutGroup.vertical(
-                layoutSize: groupSize,
-                subitem: item,
-                count: 1
-            )
-            
-            let section = NSCollectionLayoutSection(group: group)
-            let header = self.composeSectionHeader()
-            section.boundarySupplementaryItems = [header]
-            
-            return section
-        }
-        
-        return layout
+    func createCurrencyExchangeSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(80)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets.leading = 16
+        section.contentInsets.trailing = 16
+        let header = self.composeSectionHeader()
+        section.boundarySupplementaryItems += [header]
+
+        return section
     }
     
     func composeSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .absolute(72))
+                                                heightDimension: .absolute(40))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top)
         return header
+    }
+    
+    func createLayout(for sections: [CurrencySections]) -> UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex, layoutEnvironment)
+            -> NSCollectionLayoutSection? in
+            guard sections.count > sectionIndex,
+                  let self = self else { return nil }
+            
+            let section = sections[sectionIndex]
+            
+            switch section {
+            case .currencyBalance:
+                return self.createCurrencyBalanceSectionLayout()
+            case .currencyExchange:
+                return self.createCurrencyExchangeSectionLayout()
+            }
+        }
+        return layout
+    }
+    
+    func setupDataSource() {
+        dataSource = ExchangeDataSource(collectionView: converterCollectionView,
+                                        dataSource: presenter.dataSource)
+        
+        dataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in
+            
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                let section = presenter.dataSource[indexPath.section]
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier, for: indexPath) as? SectionHeaderView
+                headerView?.configure(with: section.title)
+                return headerView
+            default:
+                return nil
+            }
+        }
     }
     
 }

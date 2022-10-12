@@ -31,4 +31,13 @@ enum DealTypeEnum: BaseEnumProtocol {
             return UIImage(systemName: "arrow.down")
         }
     }
+    
+    var color: UIColor {
+        switch self {
+        case .sell:
+            return Colors.exchangeGeen.color
+        case .receive:
+            return Colors.exchangeRed.color
+        }
+    }
 }

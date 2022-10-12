@@ -19,7 +19,7 @@ final class CurrencyAmountCollectionViewCell: BaseCollectionViewCell {
     }
     
     // MARK: Internal
-    func configure(with category: CurrencyEnum) {
-        currencyAmountLabel.text = category.title
+    func configure(with category: AmountCurrency) {
+        currencyAmountLabel.text = category.amount + category.currency
     }
 }

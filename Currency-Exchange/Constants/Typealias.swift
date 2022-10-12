@@ -8,6 +8,7 @@
 import UIKit
 
 typealias BoolBlock = (Bool) -> Void
+typealias ReusableCellIdentifier = String
 
 // MARK: - SwiftGen -
 typealias Localization = L10n

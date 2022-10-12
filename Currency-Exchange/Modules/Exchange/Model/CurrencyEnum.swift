@@ -9,18 +9,18 @@ import Foundation
 
 private typealias Localized = Localization.ExchangeScreen.Currency
 
-enum CurrencyEnum: TitleEnumProtocol {
+enum CurrencyEnum: TitleEnumProtocol, CaseIterable {
    
-    case americanDollar
     case euro
+    case americanDollar
     case japaneseYen
     
     var title: String {
         switch self {
-        case .americanDollar:
-            return Localized.usd
         case .euro:
             return Localized.eur
+        case .americanDollar:
+            return Localized.usd
         case .japaneseYen:
             return Localized.jpy
         }
