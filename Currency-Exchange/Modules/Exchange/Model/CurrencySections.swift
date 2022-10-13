@@ -21,6 +21,7 @@ enum CurrencySections: TitleEnumProtocol, Hashable {
             return false
         }
     }
+    
     case currencyBalance([AmountCurrency])
     case currencyExchange([ExchangeModel])
     

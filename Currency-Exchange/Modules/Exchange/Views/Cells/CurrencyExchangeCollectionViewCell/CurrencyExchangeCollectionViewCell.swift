@@ -17,12 +17,13 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     @IBOutlet private weak var exchangeStatus: UILabel!
     @IBOutlet private weak var pickCurrencyChevron: UIImageView!
     
+    // MARK: UIElements
+    private let currencyPicker = UIPickerView()
+    
     // MARK: Properties
     private let pickerViewDataSource: [CurrencyEnum] = [.euro,
                                                         .americanDollar,
                                                         .japaneseYen]
-    private let currencyPicker = UIPickerView()
-    private var pickCurrencyChevronIsDown = true
     
     // MARK: Life Cycle
     override func awakeFromNib() {
@@ -30,8 +31,6 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         currencyDealTypeImageView.makeCornersRounded()
         setupCurrencyPicker()
         setupCurrencyExchangeTextField()
-        pickCurrencyChevron.addGestureRecognizer(UITapGestureRecognizer(target: self,
-                                                                        action: #selector(chevronTapped)))
     }
     
     // MARK: Internal
@@ -39,10 +38,12 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         dealTypeLabel.text = exchangeModel.dealType.title
         currencyDealTypeImageView.image = exchangeModel.dealType.icon
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
+        
         if exchangeModel.dealType == .receive {
             exchangeTextField.text = exchangeModel.amountCurrency.amount
             exchangeTextField.textColor = Colors.exchangeGeen.color
             currencyTextField.text = exchangeModel.amountCurrency.currency
+            
             exchangeStatus.textColor = Colors.exchangeGeen.color
             exchangeTextField.isUserInteractionEnabled = false
         }
@@ -56,6 +57,7 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDelegate {
                     didSelectRow row: Int,
                     inComponent component: Int) {
         currencyTextField.text = pickerViewDataSource[row].title
+        pickCurrencyChevron.image = UIImage(systemName: "chevron.down")
         self.endEditing(true)
     }
 }
@@ -74,6 +76,7 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
+        pickCurrencyChevron.image = UIImage(systemName: "chevron.up")
         return pickerViewDataSource[row].title
     }
 }
@@ -93,8 +96,12 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
         var validatorUserInput = false
         
         let pattern = "(?!0[0-9])\\d*(?!\\\(decimalSeparator))^[0-9]{0,\(limitBeforeSeparator)}((\\\(decimalSeparator))[0-9]{0,\(limitAfterSeparator)})?$"
-        if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
-            validatorUserInput = regex.numberOfMatches(in: newText, options: .reportProgress, range: NSRange(location: 0, length: (newText as NSString).length)) > 0
+        if let regex = try? NSRegularExpression(pattern: pattern,
+                                                options: .caseInsensitive) {
+            validatorUserInput = regex.numberOfMatches(in: newText,
+                                                       options: .reportProgress,
+                                                       range: NSRange(location: 0,
+                                                                      length: (newText as NSString).length)) > 0
         }
         return validatorUserInput
     }
@@ -102,12 +109,6 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
 
 // MARK: Private
 private extension CurrencyExchangeCollectionViewCell {
-    @objc func chevronTapped(_ sender: UITapGestureRecognizer)  {
-        pickCurrencyChevron.image = pickCurrencyChevronIsDown ? UIImage(systemName: "chevron.down")
-                                                              : UIImage(systemName: "chevron.up")
-        pickCurrencyChevronIsDown.toggle()
-    }
-    
     func setupCurrencyPicker() {
         currencyPicker.overrideUserInterfaceStyle = .light
         currencyPicker.backgroundColor = .lightGray

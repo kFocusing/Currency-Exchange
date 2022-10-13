@@ -31,6 +31,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                        currency: $0.title)
     }
     private var currencyExchange: [ExchangeModel] = []
+    private var currentCurrency: CurrencyEnum = .euro
     private var shouldUpdateLayout = true
     
     // MARK: Life Cycle

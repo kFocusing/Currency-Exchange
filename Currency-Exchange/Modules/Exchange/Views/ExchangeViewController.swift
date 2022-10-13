@@ -50,6 +50,9 @@ final class ExchangeViewController: UIViewController {
         submitButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         submitButton.addDropShadow(offset: CGSize(width: 3,
                                                   height: 3))
+        submitButton.addTarget(self,
+                               action: #selector(submitButtonTapped),
+                               for: .touchUpInside)
         view.addSubview(submitButton)
         return submitButton
     }()
@@ -152,9 +155,6 @@ private extension ExchangeViewController {
     
     func setupGradients() {
         let headerPlaceholderGradient = CAGradientLayer.gradientLayer(in: headerPlaceholder.bounds)
-//        headerPlaceholderGradient.maskedCorners = [.layerMaxXMaxYCorner,
-//                                                   .layerMinXMaxYCorner]
-//        headerPlaceholderGradient.cornerRadius = .placeholderCornerRadius
         headerPlaceholder.layer.insertSublayer(headerPlaceholderGradient, at: 0)
         
         let submitButtonGradient = CAGradientLayer.gradientLayer(in: submitButton.bounds)
@@ -298,4 +298,7 @@ private extension ExchangeViewController {
         }
     }
     
+    @objc func submitButtonTapped() {
+        
+    }
 }

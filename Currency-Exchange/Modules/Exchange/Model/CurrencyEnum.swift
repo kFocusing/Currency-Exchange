@@ -11,6 +11,10 @@ private typealias Localized = Localization.ExchangeScreen.Currency
 
 enum CurrencyEnum: TitleEnumProtocol, CaseIterable {
    
+    static func == (lhs: CurrencyEnum, rhs: String) -> Bool {
+        return lhs.title == rhs
+    }
+    
     case euro
     case americanDollar
     case japaneseYen
