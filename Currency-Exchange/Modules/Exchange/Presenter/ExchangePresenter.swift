@@ -39,6 +39,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     private var currencyExchange: [ExchangeModel] = []
     private let commissionFeeMultiplier = 0.0070
     private var exemptionPayingCommission = 5
+    private let defaultAmountForConvert: Double = 100
     private var shouldUpdateLayout = true
     
     // MARK: Life Cycle
@@ -180,8 +181,7 @@ private extension ExchangePresenter {
     }
     
     func composeCurrencyExchange(from amountCurrency: AmountCurrency) {
-        // TODO: move 100 to constant
-        let amountCurrencyFrom = AmountCurrency(amount: currencyExchange.first?.amountCurrency.amount ?? 100,
+        let amountCurrencyFrom = AmountCurrency(amount: currencyExchange.first?.amountCurrency.amount ?? defaultAmountForConvert,
                                                 currency: currencyExchange.first?.amountCurrency.currency ?? CurrencyEnum.euro.title)
         let sellModel = ExchangeModel(from: amountCurrencyFrom,
                                       and: DealTypeEnum.sell)
@@ -197,11 +197,11 @@ private extension ExchangePresenter {
                                 toCurrencyBalance: Int) {
         
         var commissionFee: Double = 0
-        if exemptionPayingCommission <= 0 {
+        if exemptionPayingCommission < 0 {
             commissionFee = calculateСommissionFee(amount: fromCurrencyExchangeAmount)
         }
         
-        currencyBalance[fromCurrencyBalance].amount -= (fromCurrencyExchangeAmount - commissionFee)
+        currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount + commissionFee
         currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
         
         updateDataSource(animated: true)
@@ -233,8 +233,8 @@ private extension ExchangePresenter {
     }
     
     func exemptionPayingCommissionIsActive() -> Bool {
-        if exemptionPayingCommission > 0 {
-            exemptionPayingCommission -= 1
+        exemptionPayingCommission -= 1
+        if exemptionPayingCommission >= 0 {
             return true
         }
         return false
