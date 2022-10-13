@@ -2,7 +2,7 @@
 //  UIViewControllerExtension.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 13.10.2022.
+//  Created on 13.10.2022.
 //
 
 import UIKit

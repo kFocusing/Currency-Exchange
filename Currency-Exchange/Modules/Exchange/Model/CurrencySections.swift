@@ -2,7 +2,7 @@
 //  CurrencySections.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 12.10.2022.
+//  Created on 12.10.2022.
 //
 
 import Foundation
