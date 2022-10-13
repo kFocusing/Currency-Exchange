@@ -7,6 +7,8 @@
 
 import UIKit
 
+private typealias Localized = Localization.ExchangeScreen
+
 protocol ExchangeViewPresenterProtocol: AnyObject {
     init(view: ExchangeViewProtocol,
          networkService: NetworkServiceProtocol,
@@ -16,7 +18,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
     func getCurrencyExchange(fromAmount: Double?,
                              fromCurrency: String?,
                              toCurrency: String?)
-    func convertCurrencyBalanceIfPossible() 
+    func convertCurrencyBalanceIfPossible()
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
@@ -35,6 +37,8 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                        currency: $0.title)
     }
     private var currencyExchange: [ExchangeModel] = []
+    private let commissionFeeMultiplier = 0.0070
+    private var exemptionPayingCommission = 5
     private var shouldUpdateLayout = true
     
     // MARK: Life Cycle
@@ -55,29 +59,40 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     func convertCurrencyBalanceIfPossible() {
         guard let fromCurrencyExchange = currencyExchange.first?.amountCurrency,
               let toCurrencyExchange = currencyExchange.last?.amountCurrency else { return }
-
-
+        
+        
         guard let currencyForSell = currencyBalance.first(where: {
             $0.currency == fromCurrencyExchange.currency}),
-                currencyForSell.amount >= fromCurrencyExchange.amount else {
-            // TODO: Show no balance alert
+              currencyForSell.amount >= fromCurrencyExchange.amount else {
+            view?.configureAlert(with: [(Localized.AlertActions.done,
+                                         UIAlertAction.Style.default,
+                                         { return })],
+                                 alertTitle: Localized.NotEnoughMoneyAlert.title,
+                                 alertMessage: Localized.NotEnoughMoneyAlert.message)
             return
         }
         
+        guard fromCurrencyExchange.currency != toCurrencyExchange.currency else {
+            view?.configureAlert(with: [(Localized.AlertActions.done,
+                                         UIAlertAction.Style.default,
+                                         { return })],
+                                 alertTitle: Localized.SameСurrencies.title,
+                                 alertMessage: Localized.SameСurrencies.message)
+            return
+        }
         
-        
-        if let currencyForReceiveIndex = currencyBalance.firstIndex(where: {
+        guard let currencyForReceiveIndex = currencyBalance.firstIndex(where: {
             $0.currency == toCurrencyExchange.currency}),
            let currencyForSellIndex = currencyBalance.firstIndex(where: {
-              $0.currency == fromCurrencyExchange.currency}) {
-
+               $0.currency == fromCurrencyExchange.currency}) else { return }
+            
+            showInfoAlert(fromCurrencyExchange: fromCurrencyExchange,
+                          toCurrencyExchange: toCurrencyExchange)
+            
             convertCurrencyBalance(fromCurrencyExchangeAmount: fromCurrencyExchange.amount,
                                    toCurrencyExchangeAmount: toCurrencyExchange.amount,
                                    fromCurrencyBalance: currencyForSellIndex,
                                    toCurrencyBalance: currencyForReceiveIndex)
-        } else {
-            // TODO: Add possibility to add new currency
-        }
     }
     
     func getCurrencyExchange(fromAmount: Double? = 100,
@@ -103,7 +118,11 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                     self?.composeCurrencyExchange(from: result)
                 }
             case .failure(let error):
-                self?.view?.showErrorAlert(with: "Failed to exchange currancy: \(error)")
+                self?.view?.configureAlert(with: [(Localized.AlertActions.done,
+                                                   UIAlertAction.Style.default,
+                                                   { return })],
+                                           alertTitle: Localized.ErrorAlert.title,
+                                           alertMessage: Localized.ErrorAlert.message(error))
             }
         }
     }
@@ -177,9 +196,51 @@ private extension ExchangePresenter {
                                 fromCurrencyBalance: Int,
                                 toCurrencyBalance: Int) {
         
-        currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount
+        var commissionFee: Double = 0
+        if exemptionPayingCommission <= 0 {
+            commissionFee = calculateСommissionFee(amount: fromCurrencyExchangeAmount)
+        }
+        
+        currencyBalance[fromCurrencyBalance].amount -= (fromCurrencyExchangeAmount - commissionFee)
         currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
         
         updateDataSource(animated: true)
+    }
+    
+    func showInfoAlert(fromCurrencyExchange: AmountCurrency,
+                       toCurrencyExchange: AmountCurrency) {
+        
+        if exemptionPayingCommissionIsActive() {
+            view?.configureAlert(with: [(Localized.AlertActions.done,
+                                         UIAlertAction.Style.default,
+                                         { return})],
+                                 alertTitle: Localized.CurrencyConvertedAlert.title,
+                                 alertMessage: Localized.CurrencyConvertedAlert.messageWithOutFee(
+                                    "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
+                                    "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
+                                    "\(exemptionPayingCommission)"))
+        } else {
+            view?.configureAlert(with: [(Localized.AlertActions.done,
+                                         UIAlertAction.Style.default,
+                                         { return})],
+                                 alertTitle: Localized.CurrencyConvertedAlert.title,
+                                 alertMessage: Localized.CurrencyConvertedAlert.messageWithFee(
+                                    "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
+                                    "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
+                                    "\(calculateСommissionFee(amount: fromCurrencyExchange.amount))",
+                                    "\(fromCurrencyExchange.currency)"))
+        }
+    }
+    
+    func exemptionPayingCommissionIsActive() -> Bool {
+        if exemptionPayingCommission > 0 {
+            exemptionPayingCommission -= 1
+            return true
+        }
+        return false
+    }
+    
+    func calculateСommissionFee(amount: Double) -> Double {
+        return round(amount * commissionFeeMultiplier * 100) / 100.0
     }
 }

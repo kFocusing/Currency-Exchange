@@ -8,8 +8,6 @@
 import UIKit
 
 extension UIViewController {
-    typealias AlertButtonAction = (String, UIAlertAction.Style, EmptyBlock)
-    
     func showAlert(with actions: [AlertButtonAction],
                    alertTitle: String?,
                    alertMessage: String?,
@@ -28,20 +26,6 @@ extension UIViewController {
             alert.addAction(action)
         }
         
-        showAlertOverAllViewControllers(alert)
-    }
-}
-
-private extension UIViewController {
-    private func showAlertOverAllViewControllers(_ alertController: UIAlertController) {
-        topMostViewController().present(alertController, animated: true, completion: nil)
-    }
-    
-    private func topMostViewController() -> UIViewController {
-        var topViewController: UIViewController? = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController
-        while ((topViewController?.presentedViewController) != nil) {
-            topViewController = topViewController?.presentedViewController
-        }
-        return topViewController!
+        self.present(alert, animated: true, completion: nil)
     }
 }

@@ -69,6 +69,10 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView,
                     didSelectRow row: Int,
                     inComponent component: Int) {
+        currencyPicker.selectRow(row,
+                                 inComponent: 0,
+                                 animated: true)
+        
         currentCurrency = pickerViewDataSource[row]
         currencyTextField.text = currentCurrency.title
         didSelectCurrency?(currentCurrency, cellDealType)

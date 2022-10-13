@@ -13,7 +13,9 @@ protocol ExchangeViewProtocol: AnyObject {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool)
     func updateLayout(sections: [CurrencySections])
-    func showErrorAlert(with message: String?)
+    func configureAlert(with actions: [AlertButtonAction],
+                   alertTitle: String?,
+                   alertMessage: String?)
 }
 
 final class ExchangeViewController: UIViewController {
@@ -111,6 +113,14 @@ final class ExchangeViewController: UIViewController {
 // MARK: - Extensions -
 // MARK: ExchangeViewProtocol
 extension ExchangeViewController: ExchangeViewProtocol {
+    func configureAlert(with actions: [AlertButtonAction],
+                   alertTitle: String?,
+                   alertMessage: String?) {
+        showAlert(with: actions,
+                  alertTitle: alertTitle,
+                  alertMessage: alertMessage)
+    }
+    
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool) {
         dataSource.apply(snapshot, animatingDifferences: animated)
@@ -121,18 +131,6 @@ extension ExchangeViewController: ExchangeViewProtocol {
         converterCollectionView.setCollectionViewLayout(createLayout(for: sections),
                                                         animated: false)
     }
-    
-    func showErrorAlert(with message: String?) {
-        let alert = UIAlertController(title: message ?? "",
-                                      message: nil,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay",
-                                      style: .cancel,
-                                      handler: nil))
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
 }
 
 private extension ExchangeViewController {
@@ -207,7 +205,7 @@ private extension ExchangeViewController {
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(currencyBalanceSectionGroupHeight)
         )
-           
+        
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item]
