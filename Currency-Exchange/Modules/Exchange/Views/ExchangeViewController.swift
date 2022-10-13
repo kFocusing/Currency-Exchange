@@ -152,9 +152,9 @@ private extension ExchangeViewController {
     
     func setupGradients() {
         let headerPlaceholderGradient = CAGradientLayer.gradientLayer(in: headerPlaceholder.bounds)
-        headerPlaceholderGradient.maskedCorners = [.layerMaxXMaxYCorner,
-                                                   .layerMinXMaxYCorner]
-        headerPlaceholderGradient.cornerRadius = .placeholderCornerRadius
+//        headerPlaceholderGradient.maskedCorners = [.layerMaxXMaxYCorner,
+//                                                   .layerMinXMaxYCorner]
+//        headerPlaceholderGradient.cornerRadius = .placeholderCornerRadius
         headerPlaceholder.layer.insertSublayer(headerPlaceholderGradient, at: 0)
         
         let submitButtonGradient = CAGradientLayer.gradientLayer(in: submitButton.bounds)

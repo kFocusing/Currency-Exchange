@@ -35,9 +35,9 @@ enum DealTypeEnum: BaseEnumProtocol {
     var color: UIColor {
         switch self {
         case .sell:
-            return Colors.exchangeGeen.color
-        case .receive:
             return Colors.exchangeRed.color
+        case .receive:
+            return Colors.exchangeGeen.color
         }
     }
 }

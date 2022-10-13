@@ -27,7 +27,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     private let networkService: NetworkServiceProtocol!
     private var currencyBalance: [AmountCurrency] = CurrencyEnum.allCases.compactMap {
         // TODO: Replace to get current balance from api
-        AmountCurrency(amount: $0 == CurrencyEnum.euro ? "1000" : "0",
+        AmountCurrency(amount: $0 == CurrencyEnum.euro ? "1000.00" : "0.00",
                        currency: $0.title)
     }
     private var currencyExchange: [ExchangeModel] = []

@@ -23,3 +23,4 @@ final class CurrencyAmountCollectionViewCell: BaseCollectionViewCell {
         currencyAmountLabel.text = category.amount + " " + category.currency
     }
 }
+

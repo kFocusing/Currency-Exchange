@@ -20,7 +20,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="LWa-Vb-Dao"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" name="ExchangeHeaderGray"/>
                     <nil key="highlightedColor"/>
                 </label>
