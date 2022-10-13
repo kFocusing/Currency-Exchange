@@ -20,7 +20,7 @@ final class CurrencyAmountCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: Internal
     func configure(with category: AmountCurrency) {
-        currencyAmountLabel.text = category.amount + " " + category.currency
+        currencyAmountLabel.text =  "\(category.amount) " + category.currency
     }
 }
 

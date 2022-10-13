@@ -21,6 +21,10 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     private let currencyPicker = UIPickerView()
     
     // MARK: Properties
+    var didSelectCurrency: ((CurrencyEnum, DealTypeEnum) -> Void)?
+    
+    private var cellDealType: DealTypeEnum = .sell
+    private var currentCurrency: CurrencyEnum = .euro
     private let pickerViewDataSource: [CurrencyEnum] = [.euro,
                                                         .americanDollar,
                                                         .japaneseYen]
@@ -38,9 +42,10 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         dealTypeLabel.text = exchangeModel.dealType.title
         currencyDealTypeImageView.image = exchangeModel.dealType.icon
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
+        cellDealType = exchangeModel.dealType
         
         if exchangeModel.dealType == .receive {
-            exchangeTextField.text = exchangeModel.amountCurrency.amount
+            exchangeTextField.text = String(exchangeModel.amountCurrency.amount)
             exchangeTextField.textColor = Colors.exchangeGeen.color
             currencyTextField.text = exchangeModel.amountCurrency.currency
             
@@ -56,7 +61,9 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView,
                     didSelectRow row: Int,
                     inComponent component: Int) {
-        currencyTextField.text = pickerViewDataSource[row].title
+        currentCurrency = pickerViewDataSource[row]
+        currencyTextField.text = currentCurrency.title
+        didSelectCurrency?(currentCurrency, cellDealType)
         pickCurrencyChevron.image = UIImage(systemName: "chevron.down")
         self.endEditing(true)
     }
@@ -103,6 +110,7 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                        range: NSRange(location: 0,
                                                                       length: (newText as NSString).length)) > 0
         }
+        didSelectCurrency?(currentCurrency, cellDealType)
         return validatorUserInput
     }
 }
@@ -111,7 +119,6 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
 private extension CurrencyExchangeCollectionViewCell {
     func setupCurrencyPicker() {
         currencyPicker.overrideUserInterfaceStyle = .light
-        currencyPicker.backgroundColor = .lightGray
         currencyPicker.dataSource = self
         currencyPicker.delegate = self
     }

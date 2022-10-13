@@ -245,14 +245,14 @@
 		C7FFAFD228F58901002464CD /* Currency-Exchange */ = {
 			isa = PBXGroup;
 			children = (
-				C780F38528F6D1D200E8DEF3 /* NetworkService */,
-				C76D070728F5F9100051D2C1 /* Protocols */,
 				C7FFAFE728F589E3002464CD /* App&SceneDelegate */,
 				C7FFAFEF28F590E1002464CD /* AssemblyModelBuilder */,
 				C76D06F828F5EE030051D2C1 /* BaseElements */,
 				C76D06DB28F598DC0051D2C1 /* Constants */,
 				C76D06D828F598060051D2C1 /* Extensions */,
 				C7FFAFE928F58EC2002464CD /* Modules */,
+				C780F38528F6D1D200E8DEF3 /* NetworkService */,
+				C76D070728F5F9100051D2C1 /* Protocols */,
 				C7FFAFF228F590FA002464CD /* Router */,
 				C7FFAFEE28F58EFB002464CD /* SupportingFiles */,
 			);

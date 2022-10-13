@@ -8,5 +8,16 @@
 import Foundation
 
 struct AmountCurrency: Codable, Hashable {
-    let amount, currency: String
+    let amount: Double
+    let currency: String
+}
+
+extension AmountCurrency {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let amountString = try container.decode(String.self, forKey: .amount)
+        amount = Double(amountString) ?? 0
+        currency = try container.decode(String.self, forKey: .currency)
+    }
 }

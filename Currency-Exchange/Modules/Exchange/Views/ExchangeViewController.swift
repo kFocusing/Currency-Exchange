@@ -282,7 +282,18 @@ private extension ExchangeViewController {
     
     func setupDataSource() {
         dataSource = ExchangeDataSource(collectionView: converterCollectionView,
-                                        dataSource: presenter.dataSource)
+                                        dataSource: presenter.dataSource,
+                                        didSelectCurrency: { [weak self] currency, dealType in
+            if dealType == .sell {
+                self?.presenter.getCurrencyExchange(fromAmount: nil,
+                                                    fromCurrency: currency.title,
+                                                    toCurrency: nil)
+            } else {
+                self?.presenter.getCurrencyExchange(fromAmount: nil,
+                                                    fromCurrency: nil,
+                                                    toCurrency: currency.title)
+            }
+        })
         
         dataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in
             

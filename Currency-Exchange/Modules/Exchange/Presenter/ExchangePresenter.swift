@@ -13,6 +13,9 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
          router: RouterProtocol)
     var dataSource: [CurrencySections] { get }
     func viewDidLoad()
+    func getCurrencyExchange(fromAmount: Double?,
+                             fromCurrency: String?,
+                             toCurrency: String?)
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
@@ -27,7 +30,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     private let networkService: NetworkServiceProtocol!
     private var currencyBalance: [AmountCurrency] = CurrencyEnum.allCases.compactMap {
         // TODO: Replace to get current balance from api
-        AmountCurrency(amount: $0 == CurrencyEnum.euro ? "1000.00" : "0.00",
+        AmountCurrency(amount: $0 == CurrencyEnum.euro ? 1000.00 : 0.00,
                        currency: $0.title)
     }
     private var currencyExchange: [ExchangeModel] = []
@@ -49,6 +52,29 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         updateDataSource()
     }
     
+//    func convertCurrency
+    
+    func getCurrencyExchange(fromAmount: Double? = 100,
+                             fromCurrency: String? = CurrencyEnum.euro.title,
+                             toCurrency: String? = CurrencyEnum.americanDollar.title) {
+        guard let amountFromCurrencyExchange = currencyExchange.first?.amountCurrency.amount ?? fromAmount,
+              let currencyFromCurrencyExchange = currencyExchange.first?.amountCurrency.currency ?? fromCurrency,
+              let toCurrencyExchange = currencyExchange.last?.amountCurrency.currency ?? toCurrency else { return }
+        let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount ?? amountFromCurrencyExchange,
+                                                fromCurrency: fromCurrency ?? currencyFromCurrencyExchange,
+                                                toCurrency: toCurrencyExchange)
+        networkService.request(endPoint: endpoint,
+                               expecting: AmountCurrency.self) { [weak self] result in
+            switch result {
+            case .success(let result):
+                if let result = result {
+                    self?.composeCurrencyExchange(from: result)
+                }
+            case .failure(let error):
+                self?.view?.showErrorAlert(with: "Failed to exchange currancy: \(error)")
+            }
+        }
+    }
 }
 
 
@@ -99,25 +125,6 @@ private extension ExchangePresenter {
         DispatchQueue.global().async { [unowned self] in
             view?.setDataSource(snapshot: composeSnapshot(),
                                 animated: animated)
-        }
-    }
-    
-    func getCurrencyExchange(fromAmount: Double = 100,
-                             fromCurrency: String = CurrencyEnum.euro.title,
-                             toCurrency: String = CurrencyEnum.americanDollar.title) {
-        let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount,
-                                                fromCurrency: fromCurrency,
-                                                toCurrency: toCurrency)
-        networkService.request(endPoint: endpoint,
-                               expecting: AmountCurrency.self) { [weak self] result in
-            switch result {
-            case .success(let result):
-                if let result = result {
-                    self?.composeCurrencyExchange(from: result)
-                }
-            case .failure(let error):
-                self?.view?.showErrorAlert(with: "Failed to exchange currancy: \(error)")
-            }
         }
     }
     

@@ -9,13 +9,13 @@ import Foundation
 
 private typealias Localized = Localization.ExchangeScreen.Currency
 
-enum CurrencyEnum: TitleEnumProtocol, CaseIterable {
+enum CurrencyEnum: Int, TitleEnumProtocol, CaseIterable {
    
     static func == (lhs: CurrencyEnum, rhs: String) -> Bool {
         return lhs.title == rhs
     }
     
-    case euro
+    case euro = 0
     case americanDollar
     case japaneseYen
     

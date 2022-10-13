@@ -9,11 +9,13 @@ import UIKit
 
 final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySections, AnyHashable> {
     
+    // MARK:
     let dataSource: [CurrencySections]
     
     init(
         collectionView: UICollectionView,
-        dataSource: [CurrencySections]
+        dataSource: [CurrencySections],
+        didSelectCurrency: @escaping ((CurrencyEnum, DealTypeEnum) -> Void)
     ) {
         self.dataSource = dataSource
         
@@ -28,6 +30,9 @@ final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySecti
                 let cell = CurrencyExchangeCollectionViewCell.dequeueCellWithType(in: collectionView,
                                                                                   indexPath: indexPath)
                 cell.configure(with: item)
+                cell.didSelectCurrency = { currency, dealType in
+                    didSelectCurrency(currency, dealType)
+                }
                 return cell
             } else {
                 fatalError("Unknown cell type")
