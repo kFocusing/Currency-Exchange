@@ -89,7 +89,7 @@ final class ExchangeViewController: UIViewController {
     private let submitButtonBottomInset: CGFloat = 20
     private let collectionHeaderSectionHight: CGFloat = 40
     private let currencyBalanceSectionGroupHeight: CGFloat = 60
-    private let currencyExchangeSectionItemHeight: CGFloat = 80
+    private let currencyExchangeSectionItemHeight: CGFloat = 70
     private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
     private let currencyBalanceSectionItemWidth: CGFloat = .screenWidth / 3
     
@@ -113,12 +113,8 @@ final class ExchangeViewController: UIViewController {
 extension ExchangeViewController: ExchangeViewProtocol {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool) {
-        dataSource.apply(snapshot, animatingDifferences: animated) {
-            //            DispatchQueue.main.async { [weak self] in
-            //
-            ////                self?.hideLoadingState()
-            //            }
-        }
+        dataSource.apply(snapshot, animatingDifferences: animated)
+        
     }
     
     func updateLayout(sections: [CurrencySections]) {
@@ -202,7 +198,7 @@ private extension ExchangeViewController {
     
     func createCurrencyBalanceSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(currencyBalanceSectionItemWidth),
+            widthDimension: .estimated(1),
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -211,11 +207,12 @@ private extension ExchangeViewController {
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(currencyBalanceSectionGroupHeight)
         )
-        
+           
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item]
         )
+        group.interItemSpacing = .fixed(40)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous

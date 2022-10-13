@@ -35,7 +35,6 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                        currency: $0.title)
     }
     private var currencyExchange: [ExchangeModel] = []
-    private var currentCurrency: CurrencyEnum = .euro
     private var shouldUpdateLayout = true
     
     // MARK: Life Cycle
@@ -56,22 +55,26 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     func convertCurrencyBalanceIfPossible() {
         guard let fromCurrencyExchange = currencyExchange.first?.amountCurrency,
               let toCurrencyExchange = currencyExchange.last?.amountCurrency else { return }
-              
-        
-        guard var currencyForSell = currencyBalance.first(where: {
+
+
+        guard let currencyForSell = currencyBalance.first(where: {
             $0.currency == fromCurrencyExchange.currency}),
                 currencyForSell.amount >= fromCurrencyExchange.amount else {
             // TODO: Show no balance alert
             return
         }
         
-        if var currencyForReceive = currencyBalance.first(where: {
-            $0.currency == toCurrencyExchange.currency}) {
-            
-            convertCurrencyBalance(fromCurrencyExchange: fromCurrencyExchange,
-                                   toCurrencyExchange: toCurrencyExchange,
-                                   fromCurrencyBalance: &currencyForSell,
-                                   toCurrencyBalance: &currencyForReceive)
+        
+        
+        if let currencyForReceiveIndex = currencyBalance.firstIndex(where: {
+            $0.currency == toCurrencyExchange.currency}),
+           let currencyForSellIndex = currencyBalance.firstIndex(where: {
+              $0.currency == fromCurrencyExchange.currency}) {
+
+            convertCurrencyBalance(fromCurrencyExchangeAmount: fromCurrencyExchange.amount,
+                                   toCurrencyExchangeAmount: toCurrencyExchange.amount,
+                                   fromCurrencyBalance: currencyForSellIndex,
+                                   toCurrencyBalance: currencyForReceiveIndex)
         } else {
             // TODO: Add possibility to add new currency
         }
@@ -169,11 +172,14 @@ private extension ExchangePresenter {
         updateDataSource(animated: true)
     }
     
-    func convertCurrencyBalance(fromCurrencyExchange: AmountCurrency,
-                                toCurrencyExchange: AmountCurrency,
-                                fromCurrencyBalance: inout AmountCurrency,
-                                toCurrencyBalance: inout AmountCurrency) {
-        fromCurrencyBalance = fromCurrencyExchange
-        toCurrencyBalance = toCurrencyExchange
+    func convertCurrencyBalance(fromCurrencyExchangeAmount: Double,
+                                toCurrencyExchangeAmount: Double,
+                                fromCurrencyBalance: Int,
+                                toCurrencyBalance: Int) {
+        
+        currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount
+        currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
+        
+        updateDataSource(animated: true)
     }
 }

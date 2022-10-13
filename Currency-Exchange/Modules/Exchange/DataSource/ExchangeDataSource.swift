@@ -41,7 +41,6 @@ final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySecti
             } else {
                 fatalError("Unknown cell type")
             }
-            
         }
     }
     

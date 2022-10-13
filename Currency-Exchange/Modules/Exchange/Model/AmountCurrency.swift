@@ -8,6 +8,13 @@
 import Foundation
 
 struct AmountCurrency: Codable, Hashable {
+    
+    let uuid = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uuid)
+    }
+    
     var amount: Double
     var currency: String
 }
