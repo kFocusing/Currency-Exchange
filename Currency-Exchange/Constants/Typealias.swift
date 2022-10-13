@@ -7,6 +7,7 @@
 
 import UIKit
 
+typealias EmptyBlock = () -> ()?
 typealias BoolBlock = (Bool) -> Void
 typealias ReusableCellIdentifier = String
 

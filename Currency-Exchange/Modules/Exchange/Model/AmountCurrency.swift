@@ -8,8 +8,8 @@
 import Foundation
 
 struct AmountCurrency: Codable, Hashable {
-    let amount: Double
-    let currency: String
+    var amount: Double
+    var currency: String
 }
 
 extension AmountCurrency {

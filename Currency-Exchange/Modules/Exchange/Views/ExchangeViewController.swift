@@ -293,6 +293,10 @@ private extension ExchangeViewController {
                                                     fromCurrency: nil,
                                                     toCurrency: currency.title)
             }
+        }, didEnterAmount: { [weak self] amount in
+            self?.presenter.getCurrencyExchange(fromAmount: amount,
+                                                fromCurrency: nil,
+                                                toCurrency: nil)
         })
         
         dataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in
@@ -310,6 +314,6 @@ private extension ExchangeViewController {
     }
     
     @objc func submitButtonTapped() {
-        
+        presenter.convertCurrencyBalanceIfPossible()
     }
 }

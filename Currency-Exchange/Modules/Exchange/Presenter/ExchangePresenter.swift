@@ -16,6 +16,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
     func getCurrencyExchange(fromAmount: Double?,
                              fromCurrency: String?,
                              toCurrency: String?)
+    func convertCurrencyBalanceIfPossible() 
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
@@ -52,14 +53,42 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         updateDataSource()
     }
     
-//    func convertCurrency
+    func convertCurrencyBalanceIfPossible() {
+        guard let fromCurrencyExchange = currencyExchange.first?.amountCurrency,
+              let toCurrencyExchange = currencyExchange.last?.amountCurrency else { return }
+              
+        
+        guard var currencyForSell = currencyBalance.first(where: {
+            $0.currency == fromCurrencyExchange.currency}),
+                currencyForSell.amount >= fromCurrencyExchange.amount else {
+            // TODO: Show no balance alert
+            return
+        }
+        
+        if var currencyForReceive = currencyBalance.first(where: {
+            $0.currency == toCurrencyExchange.currency}) {
+            
+            convertCurrencyBalance(fromCurrencyExchange: fromCurrencyExchange,
+                                   toCurrencyExchange: toCurrencyExchange,
+                                   fromCurrencyBalance: &currencyForSell,
+                                   toCurrencyBalance: &currencyForReceive)
+        } else {
+            // TODO: Add possibility to add new currency
+        }
+    }
     
     func getCurrencyExchange(fromAmount: Double? = 100,
                              fromCurrency: String? = CurrencyEnum.euro.title,
                              toCurrency: String? = CurrencyEnum.americanDollar.title) {
-        guard let amountFromCurrencyExchange = currencyExchange.first?.amountCurrency.amount ?? fromAmount,
-              let currencyFromCurrencyExchange = currencyExchange.first?.amountCurrency.currency ?? fromCurrency,
-              let toCurrencyExchange = currencyExchange.last?.amountCurrency.currency ?? toCurrency else { return }
+        guard let amountFromCurrencyExchange = fromAmount ?? currencyExchange.first?.amountCurrency.amount,
+              let currencyFromCurrencyExchange = fromCurrency ?? currencyExchange.first?.amountCurrency.currency ,
+              let toCurrencyExchange =  toCurrency ?? currencyExchange.last?.amountCurrency.currency else { return }
+        
+        if !currencyExchange.isEmpty {
+            currencyExchange[0].amountCurrency.amount = amountFromCurrencyExchange
+            currencyExchange[0].amountCurrency.currency = currencyFromCurrencyExchange
+        }
+        
         let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount ?? amountFromCurrencyExchange,
                                                 fromCurrency: fromCurrency ?? currencyFromCurrencyExchange,
                                                 toCurrency: toCurrencyExchange)
@@ -129,11 +158,22 @@ private extension ExchangePresenter {
     }
     
     func composeCurrencyExchange(from amountCurrency: AmountCurrency) {
-        let sellModel = ExchangeModel(from: amountCurrency,
+        // TODO: move 100 to constant
+        let amountCurrencyFrom = AmountCurrency(amount: currencyExchange.first?.amountCurrency.amount ?? 100,
+                                                currency: currencyExchange.first?.amountCurrency.currency ?? CurrencyEnum.euro.title)
+        let sellModel = ExchangeModel(from: amountCurrencyFrom,
                                       and: DealTypeEnum.sell)
         let receiveModel = ExchangeModel(from: amountCurrency,
                                          and: DealTypeEnum.receive)
         currencyExchange = [sellModel, receiveModel]
         updateDataSource(animated: true)
+    }
+    
+    func convertCurrencyBalance(fromCurrencyExchange: AmountCurrency,
+                                toCurrencyExchange: AmountCurrency,
+                                fromCurrencyBalance: inout AmountCurrency,
+                                toCurrencyBalance: inout AmountCurrency) {
+        fromCurrencyBalance = fromCurrencyExchange
+        toCurrencyBalance = toCurrencyExchange
     }
 }

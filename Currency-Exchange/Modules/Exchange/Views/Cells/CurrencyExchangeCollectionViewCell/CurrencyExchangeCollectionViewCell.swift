@@ -22,6 +22,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: Properties
     var didSelectCurrency: ((CurrencyEnum, DealTypeEnum) -> Void)?
+    var didEnterAmount: ((Double) -> Void)?
     
     private var cellDealType: DealTypeEnum = .sell
     private var currentCurrency: CurrencyEnum = .euro
@@ -37,19 +38,26 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         setupCurrencyExchangeTextField()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        exchangeTextField.textColor = .black
+        exchangeStatus.isHidden = true
+        exchangeTextField.isUserInteractionEnabled = true
+    }
+    
     // MARK: Internal
     func configure(with exchangeModel: ExchangeModel) {
+        cellDealType = exchangeModel.dealType
         dealTypeLabel.text = exchangeModel.dealType.title
         currencyDealTypeImageView.image = exchangeModel.dealType.icon
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
-        cellDealType = exchangeModel.dealType
+        exchangeTextField.text = String(exchangeModel.amountCurrency.amount)
+        currencyTextField.text = exchangeModel.amountCurrency.currency
+
         
         if exchangeModel.dealType == .receive {
-            exchangeTextField.text = String(exchangeModel.amountCurrency.amount)
             exchangeTextField.textColor = Colors.exchangeGeen.color
-            currencyTextField.text = exchangeModel.amountCurrency.currency
-            
-            exchangeStatus.textColor = Colors.exchangeGeen.color
+            exchangeStatus.isHidden = false
             exchangeTextField.isUserInteractionEnabled = false
         }
     }
@@ -109,8 +117,8 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                        options: .reportProgress,
                                                        range: NSRange(location: 0,
                                                                       length: (newText as NSString).length)) > 0
+            
         }
-        didSelectCurrency?(currentCurrency, cellDealType)
         return validatorUserInput
     }
 }
@@ -121,10 +129,20 @@ private extension CurrencyExchangeCollectionViewCell {
         currencyPicker.overrideUserInterfaceStyle = .light
         currencyPicker.dataSource = self
         currencyPicker.delegate = self
+        currencyTextField.inputView = currencyPicker
     }
     
     func setupCurrencyExchangeTextField() {
         exchangeTextField.delegate = self
-        currencyTextField.inputView = currencyPicker
+        exchangeTextField.addTarget(self,
+                                    action: #selector(textFieldDidChange),
+                                    for: .editingChanged)
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text,
+           let amount = Double(text) {
+            didEnterAmount?(amount)
+        }
     }
 }
