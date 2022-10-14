@@ -22,7 +22,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: Properties
     var didSelectCurrency: ((CurrencyEnum, DealTypeEnum) -> Void)?
-    var didEnterAmount: ((Double) -> Void)?
+    var didEnterAmount: ((Double, Bool) -> Void)?
     
     private var cellDealType: DealTypeEnum = .sell
     private var currentCurrency: CurrencyEnum = .euro
@@ -102,26 +102,26 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDataSource {
 
 // MARK: UITextFieldDelegate
 extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-
-        guard string.count != 0 else { return true }
-
-        let userEnteredString = textField.text ?? ""
-        var newString = (userEnteredString as NSString).replacingCharacters(in: range, with: string) as NSString
-        newString = newString.replacingOccurrences(of: ".", with: "") as NSString
-
-        let centAmount : NSInteger = newString.integerValue
-        let amount = (Double(centAmount) / 100.0)
-
-        if newString.length < 8 {
-            let str = String(format: "%0.2f", arguments: [amount])
-            textField.text = str
-            didChangeAmountTextField(with: str)
-        }
-        return false
-    }
+//    func textField(_ textField: UITextField,
+//                   shouldChangeCharactersIn range: NSRange,
+//                   replacementString string: String) -> Bool {
+//
+//        guard string.count != 0 else { return true }
+//
+//        let userEnteredString = textField.text ?? ""
+//        var newString = (userEnteredString as NSString).replacingCharacters(in: range, with: string) as NSString
+//        newString = newString.replacingOccurrences(of: ".", with: "") as NSString
+//
+//        let centAmount : NSInteger = newString.integerValue
+//        let amount = (Double(centAmount) / 100.0)
+//
+//        if newString.length < 8 {
+//            let str = String(format: "%0.2f", arguments: [amount])
+//            textField.text = str
+//            didChangeAmountTextField(with: str)
+//        }
+//        return false
+//    }
 }
 
 // MARK: Private
@@ -135,11 +135,45 @@ private extension CurrencyExchangeCollectionViewCell {
     
     func setupCurrencyExchangeTextField() {
         amountTextField.delegate = self
+        addDoneButtonOnKeyboard()
     }
     
-    func didChangeAmountTextField(with text: String) {
+    func didChangeAmountTextField(with text: String,
+                                  withDelay: Bool = true) {
+        amountTextField.text = String(format: "%0.2f",
+                                      arguments: [text])
         if let amount = Double(text) {
-            didEnterAmount?(amount)
+            didEnterAmount?(amount, withDelay)
         }
+    }
+    
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0,
+                                                                  y: 0,
+                                                                  width: UIScreen.main.bounds.width,
+                                                                  height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                        target: nil,
+                                        action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done",
+                                                    style: .done,
+                                                    target: self,
+                                                    action: #selector(doneButtonAction))
+        
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        amountTextField.inputAccessoryView = doneToolbar
+    }
+    
+    @objc func doneButtonAction() {
+        if let text = amountTextField.text,
+           let amount = Double(text) {
+            didEnterAmount?(amount, false)
+        }
+        self.resignFirstResponder()
     }
 }

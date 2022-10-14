@@ -16,7 +16,7 @@ final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySecti
         collectionView: UICollectionView,
         dataSource: [CurrencySections],
         didSelectCurrency: @escaping ((CurrencyEnum, DealTypeEnum) -> Void),
-        didEnterAmount: @escaping ((Double) -> Void)
+        didEnterAmount: @escaping ((Double, Bool) -> Void)
     ) {
         self.dataSource = dataSource
         
@@ -34,8 +34,8 @@ final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySecti
                 cell.didSelectCurrency = { currency, dealType in
                     didSelectCurrency(currency, dealType)
                 }
-                cell.didEnterAmount = { amount in
-                    didEnterAmount(amount)
+                cell.didEnterAmount = { amount, neededDelay in
+                    didEnterAmount(amount, neededDelay)
                 }
                 return cell
             } else {
