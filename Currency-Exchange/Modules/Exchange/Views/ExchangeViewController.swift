@@ -2,7 +2,7 @@
 //  ExchangeViewController.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 11.10.2022.
+//  Created on 11.10.2022.
 //
 
 import UIKit
@@ -13,7 +13,10 @@ protocol ExchangeViewProtocol: AnyObject {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool)
     func updateLayout(sections: [CurrencySections])
-    func showErrorAlert(with message: String?)
+    func configureAlert(with actions: [AlertButtonAction],
+                        alertTitle: String?,
+                        alertMessage: String?)
+    func internetConnectionLost(completion: @escaping EmptyBlock)
 }
 
 final class ExchangeViewController: UIViewController {
@@ -22,8 +25,8 @@ final class ExchangeViewController: UIViewController {
     private lazy var headerPlaceholder: UIView = {
         let headerPlaceholder = UIView()
         headerPlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        headerPlaceholder.backgroundColor = Colors.exchangeBlue.color
-        headerPlaceholder.cornerRadius = .placeholderCornerRadius
+        headerPlaceholder.backgroundColor = .clear
+        headerPlaceholder.clipsToBounds = true
         headerPlaceholder.addDropShadow()
         view.addSubview(headerPlaceholder)
         return headerPlaceholder
@@ -42,14 +45,17 @@ final class ExchangeViewController: UIViewController {
     private lazy var submitButton: UIButton = {
         let submitButton = UIButton()
         submitButton.translatesAutoresizingMaskIntoConstraints = false
-        submitButton.backgroundColor = Colors.exchangeBlue.color
+        submitButton.backgroundColor = .clear
         submitButton.setTitle(Localized.buttonTitle,
                               for: .normal)
         submitButton.setTitleColor(.white,
                                    for: .normal)
-        submitButton.cornerRadius = submitButtonHeight.halfDevide
+        submitButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         submitButton.addDropShadow(offset: CGSize(width: 3,
                                                   height: 3))
+        submitButton.addTarget(self,
+                               action: #selector(submitButtonTapped),
+                               for: .touchUpInside)
         view.addSubview(submitButton)
         return submitButton
     }()
@@ -60,11 +66,17 @@ final class ExchangeViewController: UIViewController {
                                               collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.scrollsToTop = false
+        collectionView.contentSize = view.bounds.size
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.contentInset.top = 16
-        collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
+        collectionView.isScrollEnabled = false
+        collectionView.alwaysBounceVertical = false
+        collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil),
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: SectionHeaderView.reuseIdentifier)
         CurrencyExchangeCollectionViewCell.registerXIB(in: collectionView)
         CurrencyAmountCollectionViewCell.registerXIB(in: collectionView)
         view.addSubview(collectionView)
@@ -74,11 +86,15 @@ final class ExchangeViewController: UIViewController {
     // MARK: Properties
     var presenter: ExchangeViewPresenterProtocol!
     private var dataSource: ExchangeDataSource!
-    
-    private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
-    private let submitButtonSideInset: CGFloat = 45
-    private let submitButtonHeight: CGFloat = 60
     private let defaultInset: CGFloat = 16
+    private let submitButtonHeight: CGFloat = 50
+    private let submitButtonSideInset: CGFloat = 35
+    private let submitButtonBottomInset: CGFloat = 20
+    private let collectionHeaderSectionHight: CGFloat = 40
+    private let currencyBalanceSectionGroupHeight: CGFloat = 60
+    private let currencyExchangeSectionItemHeight: CGFloat = 70
+    private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
+    private let currencyBalanceSectionItemWidth: CGFloat = .screenWidth / 3
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -88,19 +104,28 @@ final class ExchangeViewController: UIViewController {
         setupBackgroundView()
         presenter.viewDidLoad()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupGradients()
+    }
 }
 
 // MARK: - Extensions -
 // MARK: ExchangeViewProtocol
 extension ExchangeViewController: ExchangeViewProtocol {
+    func configureAlert(with actions: [AlertButtonAction],
+                        alertTitle: String?,
+                        alertMessage: String?) {
+        showAlert(with: actions,
+                  alertTitle: alertTitle,
+                  alertMessage: alertMessage)
+    }
+    
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool) {
-        dataSource.apply(snapshot, animatingDifferences: animated) {
-            //            DispatchQueue.main.async { [weak self] in
-            //
-            ////                self?.hideLoadingState()
-            //            }
-        }
+        dataSource.apply(snapshot, animatingDifferences: animated)
+        
     }
     
     func updateLayout(sections: [CurrencySections]) {
@@ -108,17 +133,15 @@ extension ExchangeViewController: ExchangeViewProtocol {
                                                         animated: false)
     }
     
-    func showErrorAlert(with message: String?) {
-        let alert = UIAlertController(title: message ?? "",
-                                      message: nil,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay",
-                                      style: .cancel,
-                                      handler: nil))
-        
-        present(alert, animated: true, completion: nil)
+    func internetConnectionLost(completion: @escaping EmptyBlock){
+        converterCollectionView.isHidden = true
+        submitButton.isHidden = true
+        configureAlert(with: [(Localized.AlertActions.done,
+                               UIAlertAction.Style.default,
+                               completion)],
+                       alertTitle: Localized.InternetError.title,
+                       alertMessage: Localized.InternetError.message)
     }
-    
 }
 
 private extension ExchangeViewController {
@@ -133,6 +156,15 @@ private extension ExchangeViewController {
     
     func setupBackgroundView() {
         view.backgroundColor = .white
+    }
+    
+    func setupGradients() {
+        let headerPlaceholderGradient = CAGradientLayer.gradientLayer(in: headerPlaceholder.bounds)
+        headerPlaceholder.layer.insertSublayer(headerPlaceholderGradient, at: 0)
+        
+        let submitButtonGradient = CAGradientLayer.gradientLayer(in: submitButton.bounds)
+        submitButtonGradient.cornerRadius = submitButton.bounds.height.halfDevide
+        submitButton.layer.insertSublayer(submitButtonGradient, at: 0)
     }
     
     func layoutHeaderPlaceholder() {
@@ -159,7 +191,7 @@ private extension ExchangeViewController {
             submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                    constant: -submitButtonSideInset),
             submitButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor,
-                                                 constant: -10),
+                                                 constant: -submitButtonBottomInset),
             submitButton.heightAnchor.constraint(equalToConstant: submitButtonHeight)
         ])
     }
@@ -175,25 +207,26 @@ private extension ExchangeViewController {
     
     func createCurrencyBalanceSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(.screenWidth / 3),
+            widthDimension: .estimated(1),
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(60)
+            heightDimension: .absolute(currencyBalanceSectionGroupHeight)
         )
         
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item]
         )
+        group.interItemSpacing = .fixed(40)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets.leading = 16
-        section.contentInsets.trailing = 16
+        section.contentInsets.leading = defaultInset
+        section.contentInsets.trailing = defaultInset
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
         
@@ -203,32 +236,31 @@ private extension ExchangeViewController {
     func createCurrencyExchangeSectionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(80)
+            heightDimension: .absolute(currencyExchangeSectionItemHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
+        
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0)
         )
-
+        
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
             subitems: [item]
         )
-
+        
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets.leading = 16
-        section.contentInsets.trailing = 16
+        section.contentInsets.leading = defaultInset
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
-
+        
         return section
     }
     
     func composeSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .absolute(40))
+                                                heightDimension: .absolute(collectionHeaderSectionHight))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
@@ -256,7 +288,20 @@ private extension ExchangeViewController {
     
     func setupDataSource() {
         dataSource = ExchangeDataSource(collectionView: converterCollectionView,
-                                        dataSource: presenter.dataSource)
+                                        dataSource: presenter.dataSource,
+                                        didSelectCurrency: { [weak self] currency, dealType in
+            if dealType == .sell {
+                self?.presenter.getCurrencyExchange(fromAmount: nil,
+                                                    fromCurrency: currency.title,
+                                                    toCurrency: nil)
+            } else {
+                self?.presenter.getCurrencyExchange(fromAmount: nil,
+                                                    fromCurrency: nil,
+                                                    toCurrency: currency.title)
+            }
+        }, didEnterAmount: { [weak self] amount in
+            self?.presenter.didEnterAmount(amount)
+        })
         
         dataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in
             
@@ -272,4 +317,7 @@ private extension ExchangeViewController {
         }
     }
     
+    @objc func submitButtonTapped() {
+        presenter.convertCurrencyBalanceIfPossible()
+    }
 }

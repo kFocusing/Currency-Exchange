@@ -2,18 +2,21 @@
 //  ExchangeDataSource.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 12.10.2022.
+//  Created on 12.10.2022.
 //
 
 import UIKit
 
 final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySections, AnyHashable> {
     
+    // MARK:
     let dataSource: [CurrencySections]
     
     init(
         collectionView: UICollectionView,
-        dataSource: [CurrencySections]
+        dataSource: [CurrencySections],
+        didSelectCurrency: @escaping ((CurrencyEnum, DealTypeEnum) -> Void),
+        didEnterAmount: @escaping ((Double) -> Void)
     ) {
         self.dataSource = dataSource
         
@@ -28,11 +31,16 @@ final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySecti
                 let cell = CurrencyExchangeCollectionViewCell.dequeueCellWithType(in: collectionView,
                                                                                   indexPath: indexPath)
                 cell.configure(with: item)
+                cell.didSelectCurrency = { currency, dealType in
+                    didSelectCurrency(currency, dealType)
+                }
+                cell.didEnterAmount = { amount in
+                    didEnterAmount(amount)
+                }
                 return cell
             } else {
                 fatalError("Unknown cell type")
             }
-            
         }
     }
     

@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 11.10.2022.
+//  Created on 11.10.2022.
 //
 
 import UIKit
@@ -62,6 +62,7 @@ extension SceneDelegate {
         window?.overrideUserInterfaceStyle = .dark
         
         let navigationController = UINavigationController()
+        navigationController.navigationBar.isHidden = true
         let assemblyBuilder = AssamblyModelBuilder()
         let router = Router(navigationController: navigationController,
                             assamblyBuilder: assemblyBuilder)

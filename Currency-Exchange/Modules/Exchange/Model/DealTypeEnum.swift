@@ -2,7 +2,7 @@
 //  DealTypeEnum.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 11.10.2022.
+//  Created on 11.10.2022.
 //
 
 import UIKit
@@ -35,9 +35,9 @@ enum DealTypeEnum: BaseEnumProtocol {
     var color: UIColor {
         switch self {
         case .sell:
-            return Colors.exchangeGeen.color
-        case .receive:
             return Colors.exchangeRed.color
+        case .receive:
+            return Colors.exchangeGeen.color
         }
     }
 }

@@ -2,16 +2,16 @@
 //  CurrencyEnum.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 11.10.2022.
+//  Created on 11.10.2022.
 //
 
 import Foundation
 
 private typealias Localized = Localization.ExchangeScreen.Currency
 
-enum CurrencyEnum: TitleEnumProtocol, CaseIterable {
+enum CurrencyEnum: Int, TitleEnumProtocol, CaseIterable {
    
-    case euro
+    case euro = 0
     case americanDollar
     case japaneseYen
     

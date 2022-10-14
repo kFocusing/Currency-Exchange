@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 11.10.2022.
+//  Created on 11.10.2022.
 //
 
 import UIKit
@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        startNetworkMonitoring()
+        
         return true
     }
 
@@ -32,5 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+private extension AppDelegate {
+    func startNetworkMonitoring() {
+        NetworkMonitor.shared.startMonitoring()
+    }
 }
 
