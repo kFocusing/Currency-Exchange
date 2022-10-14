@@ -19,6 +19,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
                              fromCurrency: String?,
                              toCurrency: String?)
     func convertCurrencyBalanceIfPossible()
+    func didEnterAmount(_ amount: Double) 
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
@@ -40,6 +41,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     private let commissionFeeMultiplier = 0.0070
     private var exemptionPayingCommission = 5
     private let defaultAmountForConvert: Double = 100
+    private var workItem: DispatchWorkItem?
     private var shouldUpdateLayout = true
     
     // MARK: Life Cycle
@@ -128,6 +130,18 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                                            alertMessage: Localized.ErrorAlert.message(error))
             }
         }
+    }
+    
+    func didEnterAmount(_ amount: Double) {
+        workItem?.cancel()
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            self?.getCurrencyExchange(fromAmount: amount,
+                                      fromCurrency: nil,
+                                      toCurrency: nil)
+        }
+        workItem = newWorkItem
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.5,
+                                          execute: newWorkItem)
     }
 }
 

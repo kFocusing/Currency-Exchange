@@ -15,12 +15,12 @@ final class CurrencyAmountCollectionViewCell: BaseCollectionViewCell {
     // MARK: Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
     
     // MARK: Internal
-    func configure(with category: AmountCurrency) {
-        currencyAmountLabel.text =  "\(category.amount) " + category.currency
+    func configure(with amountCurrency: AmountCurrency) {
+        currencyAmountLabel.text = String(format: "%0.2f",
+                                          arguments: [amountCurrency.amount]) + " " + amountCurrency.currency
     }
 }
 

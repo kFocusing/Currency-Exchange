@@ -12,7 +12,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     // MARK: IBOutlets
     @IBOutlet private weak var currencyDealTypeImageView: UIImageView!
     @IBOutlet private weak var dealTypeLabel: UILabel!
-    @IBOutlet private weak var exchangeTextField: UITextField!
+    @IBOutlet private weak var amountTextField: UITextField!
     @IBOutlet private weak var currencyTextField: UITextField!
     @IBOutlet private weak var exchangeStatus: UILabel!
     @IBOutlet private weak var pickCurrencyChevron: UIImageView!
@@ -40,9 +40,9 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        exchangeTextField.textColor = .black
+        amountTextField.textColor = .black
         exchangeStatus.isHidden = true
-        exchangeTextField.isUserInteractionEnabled = true
+        amountTextField.isUserInteractionEnabled = true
     }
     
     // MARK: Internal
@@ -51,14 +51,14 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         dealTypeLabel.text = exchangeModel.dealType.title
         currencyDealTypeImageView.image = exchangeModel.dealType.icon
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
-        exchangeTextField.text = String(exchangeModel.amountCurrency.amount)
+        amountTextField.text = String(exchangeModel.amountCurrency.amount)
         currencyTextField.text = exchangeModel.amountCurrency.currency
         
         
         if exchangeModel.dealType == .receive {
-            exchangeTextField.textColor = Colors.exchangeGeen.color
+            amountTextField.textColor = Colors.exchangeGeen.color
             exchangeStatus.isHidden = false
-            exchangeTextField.isUserInteractionEnabled = false
+            amountTextField.isUserInteractionEnabled = false
         }
     }
 }
@@ -104,19 +104,20 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        
+
         guard string.count != 0 else { return true }
-        
+
         let userEnteredString = textField.text ?? ""
         var newString = (userEnteredString as NSString).replacingCharacters(in: range, with: string) as NSString
         newString = newString.replacingOccurrences(of: ".", with: "") as NSString
-        
+
         let centAmount : NSInteger = newString.integerValue
         let amount = (Double(centAmount) / 100.0)
-        
+
         if newString.length < 8 {
             let str = String(format: "%0.2f", arguments: [amount])
             textField.text = str
+            didChangeAmountTextField(with: str)
         }
         return false
     }
@@ -132,15 +133,11 @@ private extension CurrencyExchangeCollectionViewCell {
     }
     
     func setupCurrencyExchangeTextField() {
-        exchangeTextField.delegate = self
-        exchangeTextField.addTarget(self,
-                                    action: #selector(textFieldDidChange),
-                                    for: .editingChanged)
+        amountTextField.delegate = self
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        if let text = textField.text,
-           let amount = Double(text) {
+    func didChangeAmountTextField(with text: String) {
+        if let amount = Double(text) {
             didEnterAmount?(amount)
         }
     }

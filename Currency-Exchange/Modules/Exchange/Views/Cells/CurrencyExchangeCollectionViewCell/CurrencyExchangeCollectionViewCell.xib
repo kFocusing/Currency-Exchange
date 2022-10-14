@@ -93,11 +93,11 @@
                 <constraint firstItem="c73-Ky-aWi" firstAttribute="leading" secondItem="OhT-dg-RZk" secondAttribute="leading" id="yEJ-Nu-xch"/>
             </constraints>
             <connections>
+                <outlet property="amountTextField" destination="iKG-mQ-Fsr" id="Eid-Yg-Pzt"/>
                 <outlet property="currencyDealTypeImageView" destination="c73-Ky-aWi" id="b8K-dE-xfL"/>
                 <outlet property="currencyTextField" destination="H06-uX-ywE" id="vUN-8I-evz"/>
                 <outlet property="dealTypeLabel" destination="Swo-DB-ajP" id="aqz-bQ-xym"/>
                 <outlet property="exchangeStatus" destination="39W-Ye-dgF" id="Dho-lt-CxW"/>
-                <outlet property="exchangeTextField" destination="iKG-mQ-Fsr" id="Eid-Yg-Pzt"/>
                 <outlet property="pickCurrencyChevron" destination="Tzz-0e-sjg" id="4Ts-It-9a8"/>
             </connections>
             <point key="canvasLocation" x="777.69230769230762" y="310.66350710900474"/>

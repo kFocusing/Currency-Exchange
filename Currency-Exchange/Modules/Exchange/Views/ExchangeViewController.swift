@@ -300,9 +300,7 @@ private extension ExchangeViewController {
                                                     toCurrency: currency.title)
             }
         }, didEnterAmount: { [weak self] amount in
-            self?.presenter.getCurrencyExchange(fromAmount: amount,
-                                                fromCurrency: nil,
-                                                toCurrency: nil)
+            self?.presenter.didEnterAmount(amount)
         })
         
         dataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in
