@@ -125,7 +125,6 @@ extension ExchangeViewController: ExchangeViewProtocol {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool) {
         dataSource.apply(snapshot, animatingDifferences: animated)
-        
     }
     
     func updateLayout(sections: [CurrencySections]) {

@@ -9,10 +9,10 @@ import UIKit
 
 private typealias Localized = Localization.ExchangeScreen.CurrencyExchange
 
-enum DealTypeEnum: BaseEnumProtocol {
+enum DealTypeEnum: Int, BaseEnumProtocol {
     
-    case sell
-    case receive
+    case sell = 0
+    case receive = 1
     
     var title: String {
         switch self {

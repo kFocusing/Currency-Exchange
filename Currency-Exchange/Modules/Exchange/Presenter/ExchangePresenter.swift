@@ -19,7 +19,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
                              fromCurrency: String?,
                              toCurrency: String?)
     func convertCurrencyBalanceIfPossible()
-    func didEnterAmount(_ amount: Double) 
+    func didEnterAmount(_ amount: Double)
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
@@ -112,6 +112,9 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
             currencyExchange[0].amountCurrency.currency = currencyFromCurrencyExchange
         }
         
+        /// Variable to update only needed cell
+        let isSellExchange = fromAmount == nil
+        
         let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount ?? amountFromCurrencyExchange,
                                                 fromCurrency: fromCurrency ?? currencyFromCurrencyExchange,
                                                 toCurrency: toCurrencyExchange)
@@ -120,7 +123,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
             switch result {
             case .success(let result):
                 if let result = result {
-                    self?.composeCurrencyExchange(from: result)
+                    self?.composeCurrencyExchange(from: result, isSellExchange: isSellExchange)
                 }
             case .failure(let error):
                 self?.view?.configureAlert(with: [(Localized.AlertActions.done,
@@ -196,14 +199,24 @@ private extension ExchangePresenter {
         }
     }
     
-    func composeCurrencyExchange(from amountCurrency: AmountCurrency) {
+    func composeCurrencyExchange(from amountCurrency: AmountCurrency,
+                                 isSellExchange: Bool) {
         let amountCurrencyFrom = AmountCurrency(amount: currencyExchange.first?.amountCurrency.amount ?? defaultAmountForConvert,
                                                 currency: currencyExchange.first?.amountCurrency.currency ?? CurrencyEnum.euro.title)
         let sellModel = ExchangeModel(from: amountCurrencyFrom,
                                       and: DealTypeEnum.sell)
         let receiveModel = ExchangeModel(from: amountCurrency,
                                          and: DealTypeEnum.receive)
-        currencyExchange = [sellModel, receiveModel]
+        
+        
+        if currencyExchange.isEmpty {
+            currencyExchange = [sellModel, receiveModel]
+        } else if isSellExchange {
+            currencyExchange[DealTypeEnum.sell.rawValue] = sellModel
+        } else {
+            currencyExchange[DealTypeEnum.receive.rawValue] = receiveModel
+        }
+        
         updateDataSource(animated: true)
     }
     
@@ -266,8 +279,8 @@ private extension ExchangePresenter {
     
     func configureNotEnoughMoneyAlert() {
         view?.configureAlert(with: [(Localized.AlertActions.done,
-                                           UIAlertAction.Style.default,
-                                           { return })],
+                                     UIAlertAction.Style.default,
+                                     { return })],
                              alertTitle: Localized.NotEnoughMoneyAlert.title,
                              alertMessage: Localized.NotEnoughMoneyAlert.message)
     }
