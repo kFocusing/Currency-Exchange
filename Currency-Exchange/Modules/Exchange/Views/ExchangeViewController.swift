@@ -298,8 +298,8 @@ private extension ExchangeViewController {
                                                     fromCurrency: nil,
                                                     toCurrency: currency.title)
             }
-        }, didEnterAmount: { [weak self] amount, withDelay in
-            self?.presenter.didEnterAmount(amount, withDelay: withDelay)
+        }, didEnterAmount: { [weak self] amount in
+            self?.presenter.didEnterAmount(amount)
         })
         
         dataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in

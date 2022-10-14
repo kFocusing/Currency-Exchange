@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AnyFormatKit
 
 final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
@@ -22,7 +23,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: Properties
     var didSelectCurrency: ((CurrencyEnum, DealTypeEnum) -> Void)?
-    var didEnterAmount: ((Double, Bool) -> Void)?
+    var didEnterAmount: ((Double) -> Void)?
     
     private var cellDealType: DealTypeEnum = .sell
     private var currentCurrency: CurrencyEnum = .euro
@@ -102,26 +103,17 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDataSource {
 
 // MARK: UITextFieldDelegate
 extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
-//    func textField(_ textField: UITextField,
-//                   shouldChangeCharactersIn range: NSRange,
-//                   replacementString string: String) -> Bool {
-//
-//        guard string.count != 0 else { return true }
-//
-//        let userEnteredString = textField.text ?? ""
-//        var newString = (userEnteredString as NSString).replacingCharacters(in: range, with: string) as NSString
-//        newString = newString.replacingOccurrences(of: ".", with: "") as NSString
-//
-//        let centAmount : NSInteger = newString.integerValue
-//        let amount = (Double(centAmount) / 100.0)
-//
-//        if newString.length < 8 {
-//            let str = String(format: "%0.2f", arguments: [amount])
-//            textField.text = str
-//            didChangeAmountTextField(with: str)
-//        }
-//        return false
-//    }
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        let moneyFormatter = SumTextInputFormatter(textPattern: "# ###.##")
+        let result = moneyFormatter.formatInput(currentText: textField.text ?? "",
+                                                range: range,
+                                                replacementString: string)
+        textField.text = result.formattedText
+        textField.setCursorLocation(result.caretBeginOffset)
+        return false
+    }
 }
 
 // MARK: Private
@@ -136,15 +128,6 @@ private extension CurrencyExchangeCollectionViewCell {
     func setupCurrencyExchangeTextField() {
         amountTextField.delegate = self
         addDoneButtonOnKeyboard()
-    }
-    
-    func didChangeAmountTextField(with text: String,
-                                  withDelay: Bool = true) {
-        amountTextField.text = String(format: "%0.2f",
-                                      arguments: [text])
-        if let amount = Double(text) {
-            didEnterAmount?(amount, withDelay)
-        }
     }
     
     func addDoneButtonOnKeyboard() {
@@ -170,9 +153,10 @@ private extension CurrencyExchangeCollectionViewCell {
     }
     
     @objc func doneButtonAction() {
-        if let text = amountTextField.text,
+        let moneyFormatter = SumTextInputFormatter(textPattern: "# ###.##")
+        if let text = moneyFormatter.unformat(amountTextField.text),
            let amount = Double(text) {
-            didEnterAmount?(amount, false)
+            didEnterAmount?(amount)
         }
         self.resignFirstResponder()
     }

@@ -19,7 +19,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
                              fromCurrency: String?,
                              toCurrency: String?)
     func convertCurrencyBalanceIfPossible()
-    func didEnterAmount(_ amount: Double, withDelay: Bool)
+    func didEnterAmount(_ amount: Double)
 }
 
 final class ExchangePresenter: ExchangeViewPresenterProtocol {
@@ -132,18 +132,10 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         }
     }
     
-    func didEnterAmount(_ amount: Double,
-                        withDelay: Bool) {
-        workItem?.cancel()
-        let delay = withDelay ? 0 : 0.5
-        let newWorkItem = DispatchWorkItem { [weak self] in
-            self?.getCurrencyExchange(fromAmount: amount,
-                                      fromCurrency: nil,
-                                      toCurrency: nil)
-        }
-        workItem = newWorkItem
-        DispatchQueue.global().asyncAfter(deadline: .now() + delay,
-                                          execute: newWorkItem)
+    func didEnterAmount(_ amount: Double) {
+        getCurrencyExchange(fromAmount: amount,
+                            fromCurrency: nil,
+                            toCurrency: nil)
     }
 }
 
