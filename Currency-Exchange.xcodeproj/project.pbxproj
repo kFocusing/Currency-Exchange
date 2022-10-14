@@ -10,6 +10,7 @@
 		74877524DD463334C093F33C /* Pods_Currency_Exchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AFD001C84841F92BFF2C805 /* Pods_Currency_Exchange.framework */; };
 		C7130BD428F7619D00FBE5AC /* CAGradientLayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7130BD328F7619D00FBE5AC /* CAGradientLayerExtension.swift */; };
 		C7130BD628F8648100FBE5AC /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7130BD528F8648100FBE5AC /* UIViewControllerExtension.swift */; };
+		C7130BDC28F8D91F00FBE5AC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7130BDB28F8D91F00FBE5AC /* NetworkMonitor.swift */; };
 		C73F919928F5FD910000485B /* ImageEnumProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F919828F5FD910000485B /* ImageEnumProtocol.swift */; };
 		C73F919B28F5FF900000485B /* CurrencyEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F919A28F5FF900000485B /* CurrencyEnum.swift */; };
 		C73F919D28F6A04E0000485B /* CurrencySections.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F919C28F6A04E0000485B /* CurrencySections.swift */; };
@@ -54,6 +55,7 @@
 		BAD36AEC98CA379C0937785F /* Pods-Currency-Exchange.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Currency-Exchange.release.xcconfig"; path = "Target Support Files/Pods-Currency-Exchange/Pods-Currency-Exchange.release.xcconfig"; sourceTree = "<group>"; };
 		C7130BD328F7619D00FBE5AC /* CAGradientLayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAGradientLayerExtension.swift; sourceTree = "<group>"; };
 		C7130BD528F8648100FBE5AC /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		C7130BDB28F8D91F00FBE5AC /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		C73F919828F5FD910000485B /* ImageEnumProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEnumProtocol.swift; sourceTree = "<group>"; };
 		C73F919A28F5FF900000485B /* CurrencyEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEnum.swift; sourceTree = "<group>"; };
 		C73F919C28F6A04E0000485B /* CurrencySections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySections.swift; sourceTree = "<group>"; };
@@ -136,8 +138,8 @@
 		C73F91A328F6B24C0000485B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C76D070028F5F2510051D2C1 /* CurrencyExchangeCollectionViewCell */,
 				C76D06F128F5ECAE0051D2C1 /* CurrencyAmountCollectionViewCell */,
+				C76D070028F5F2510051D2C1 /* CurrencyExchangeCollectionViewCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -154,11 +156,11 @@
 		C76D06D828F598060051D2C1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C76D06DE28F599290051D2C1 /* CGFloatExtension.swift */,
-				C76D06E028F5995F0051D2C1 /* UIViewExtension.swift */,
-				C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */,
 				C7130BD328F7619D00FBE5AC /* CAGradientLayerExtension.swift */,
+				C76D06F228F5ECEB0051D2C1 /* CellReusableExtension.swift */,
+				C76D06DE28F599290051D2C1 /* CGFloatExtension.swift */,
 				C7130BD528F8648100FBE5AC /* UIViewControllerExtension.swift */,
+				C76D06E028F5995F0051D2C1 /* UIViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -202,8 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				C76D070828F5F9200051D2C1 /* BaseEnumProtocol.swift */,
-				C76D070A28F5F93D0051D2C1 /* TitleEnumProtocol.swift */,
 				C73F919828F5FD910000485B /* ImageEnumProtocol.swift */,
+				C76D070A28F5F93D0051D2C1 /* TitleEnumProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -213,6 +215,7 @@
 			children = (
 				C780F38628F6D20000E8DEF3 /* NetworkService.swift */,
 				C780F38828F6D23000E8DEF3 /* EndPoint.swift */,
+				C7130BDB28F8D91F00FBE5AC /* NetworkMonitor.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -312,10 +315,10 @@
 		C7FFAFEC28F58ED6002464CD /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C76D070528F5F7FF0051D2C1 /* DealTypeEnum.swift */,
+				C73F919E28F6A6FD0000485B /* AmountCurrency.swift */,
 				C73F919A28F5FF900000485B /* CurrencyEnum.swift */,
 				C73F919C28F6A04E0000485B /* CurrencySections.swift */,
-				C73F919E28F6A6FD0000485B /* AmountCurrency.swift */,
+				C76D070528F5F7FF0051D2C1 /* DealTypeEnum.swift */,
 				C73F91A928F6BACA0000485B /* ExchangeModel.swift */,
 			);
 			path = Model;
@@ -502,6 +505,7 @@
 				C76D06E128F5995F0051D2C1 /* UIViewExtension.swift in Sources */,
 				C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */,
 				C7130BD628F8648100FBE5AC /* UIViewControllerExtension.swift in Sources */,
+				C7130BDC28F8D91F00FBE5AC /* NetworkMonitor.swift in Sources */,
 				C76D06DF28F599290051D2C1 /* CGFloatExtension.swift in Sources */,
 				C73F91A628F6B2C90000485B /* SectionHeaderView.swift in Sources */,
 				C73F919F28F6A6FD0000485B /* AmountCurrency.swift in Sources */,

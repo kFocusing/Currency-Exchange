@@ -53,8 +53,14 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     
     // MARK: Internal
     func viewDidLoad() {
-        getCurrencyExchange()
-        updateDataSource()
+        if NetworkMonitor.shared.isConnected {
+            getCurrencyExchange()
+            updateDataSource()
+        } else {
+            view?.internetConnectionLost {
+                exit(-1)
+            }
+        }
     }
     
     func convertCurrencyBalanceIfPossible() {
@@ -65,11 +71,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         guard let currencyForSell = currencyBalance.first(where: {
             $0.currency == fromCurrencyExchange.currency}),
               currencyForSell.amount >= fromCurrencyExchange.amount else {
-            view?.configureAlert(with: [(Localized.AlertActions.done,
-                                         UIAlertAction.Style.default,
-                                         { return })],
-                                 alertTitle: Localized.NotEnoughMoneyAlert.title,
-                                 alertMessage: Localized.NotEnoughMoneyAlert.message)
+            configureNotEnoughMoneyAlert()
             return
         }
         
@@ -84,16 +86,16 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         
         guard let currencyForReceiveIndex = currencyBalance.firstIndex(where: {
             $0.currency == toCurrencyExchange.currency}),
-           let currencyForSellIndex = currencyBalance.firstIndex(where: {
-               $0.currency == fromCurrencyExchange.currency}) else { return }
-            
-            showInfoAlert(fromCurrencyExchange: fromCurrencyExchange,
-                          toCurrencyExchange: toCurrencyExchange)
-            
-            convertCurrencyBalance(fromCurrencyExchangeAmount: fromCurrencyExchange.amount,
-                                   toCurrencyExchangeAmount: toCurrencyExchange.amount,
-                                   fromCurrencyBalance: currencyForSellIndex,
-                                   toCurrencyBalance: currencyForReceiveIndex)
+              let currencyForSellIndex = currencyBalance.firstIndex(where: {
+                  $0.currency == fromCurrencyExchange.currency}) else { return }
+        
+        showInfoAlert(fromCurrencyExchange: fromCurrencyExchange,
+                      toCurrencyExchange: toCurrencyExchange)
+        
+        convertCurrencyBalance(fromCurrencyExchangeAmount: fromCurrencyExchange.amount,
+                               toCurrencyExchangeAmount: toCurrencyExchange.amount,
+                               fromCurrencyBalance: currencyForSellIndex,
+                               toCurrencyBalance: currencyForReceiveIndex)
     }
     
     func getCurrencyExchange(fromAmount: Double? = 100,
@@ -201,10 +203,14 @@ private extension ExchangePresenter {
             commissionFee = calculateСommissionFee(amount: fromCurrencyExchangeAmount)
         }
         
-        currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount + commissionFee
-        currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
-        
-        updateDataSource(animated: true)
+        if currencyBalance[fromCurrencyBalance].amount - (fromCurrencyExchangeAmount + commissionFee) < 0 {
+            configureNotEnoughMoneyAlert()
+        } else {
+            currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount + commissionFee
+            currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
+            
+            updateDataSource(animated: true)
+        }
     }
     
     func showInfoAlert(fromCurrencyExchange: AmountCurrency,
@@ -242,5 +248,13 @@ private extension ExchangePresenter {
     
     func calculateСommissionFee(amount: Double) -> Double {
         return round(amount * commissionFeeMultiplier * 100) / 100.0
+    }
+    
+    func configureNotEnoughMoneyAlert() {
+        view?.configureAlert(with: [(Localized.AlertActions.done,
+                                           UIAlertAction.Style.default,
+                                           { return })],
+                             alertTitle: Localized.NotEnoughMoneyAlert.title,
+                             alertMessage: Localized.NotEnoughMoneyAlert.message)
     }
 }

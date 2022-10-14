@@ -32,6 +32,9 @@
 "exchangeScreen.sameСurrencies.title" = "You have chosen the same currencies";
 "exchangeScreen.sameСurrencies.message" = "Please make sure you have selected the correct currency.";
 
+"exchangeScreen.internetError.title" = "You are offline";
+"exchangeScreen.internetError.message" = "Please, enable your Wi-Fi or connect using cellular data.";
+
 "exchangeScreen.errorAlert.title" = "Failed";
 "exchangeScreen.errorAlert.message" = "Failed to exchange currancy: %@";
 "exchangeScreen.alertActions.done" = "Done";

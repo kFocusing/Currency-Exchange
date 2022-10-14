@@ -14,8 +14,9 @@ protocol ExchangeViewProtocol: AnyObject {
                        animated: Bool)
     func updateLayout(sections: [CurrencySections])
     func configureAlert(with actions: [AlertButtonAction],
-                   alertTitle: String?,
-                   alertMessage: String?)
+                        alertTitle: String?,
+                        alertMessage: String?)
+    func internetConnectionLost(completion: @escaping EmptyBlock)
 }
 
 final class ExchangeViewController: UIViewController {
@@ -114,8 +115,8 @@ final class ExchangeViewController: UIViewController {
 // MARK: ExchangeViewProtocol
 extension ExchangeViewController: ExchangeViewProtocol {
     func configureAlert(with actions: [AlertButtonAction],
-                   alertTitle: String?,
-                   alertMessage: String?) {
+                        alertTitle: String?,
+                        alertMessage: String?) {
         showAlert(with: actions,
                   alertTitle: alertTitle,
                   alertMessage: alertMessage)
@@ -130,6 +131,16 @@ extension ExchangeViewController: ExchangeViewProtocol {
     func updateLayout(sections: [CurrencySections]) {
         converterCollectionView.setCollectionViewLayout(createLayout(for: sections),
                                                         animated: false)
+    }
+    
+    func internetConnectionLost(completion: @escaping EmptyBlock){
+        converterCollectionView.isHidden = true
+        submitButton.isHidden = true
+        configureAlert(with: [(Localized.AlertActions.done,
+                               UIAlertAction.Style.default,
+                               completion)],
+                       alertTitle: Localized.InternetError.title,
+                       alertMessage: Localized.InternetError.message)
     }
 }
 

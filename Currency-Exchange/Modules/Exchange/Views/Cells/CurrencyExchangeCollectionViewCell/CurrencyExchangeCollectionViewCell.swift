@@ -53,7 +53,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
         exchangeTextField.text = String(exchangeModel.amountCurrency.amount)
         currencyTextField.text = exchangeModel.amountCurrency.currency
-
+        
         
         if exchangeModel.dealType == .receive {
             exchangeTextField.textColor = Colors.exchangeGeen.color
@@ -72,7 +72,6 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDelegate {
         currencyPicker.selectRow(row,
                                  inComponent: 0,
                                  animated: true)
-        
         currentCurrency = pickerViewDataSource[row]
         currencyTextField.text = currentCurrency.title
         didSelectCurrency?(currentCurrency, cellDealType)
@@ -105,25 +104,21 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        let decimalSeparator = NSLocale.current.decimalSeparator ?? "."
-        let limitBeforeSeparator = 4
-        let limitAfterSeparator = 2
         
-        let text = (textField.text ?? "") as NSString
-        let newText = text.replacingCharacters(in: range, with: string)
+        guard string.count != 0 else { return true }
         
-        var validatorUserInput = false
+        let userEnteredString = textField.text ?? ""
+        var newString = (userEnteredString as NSString).replacingCharacters(in: range, with: string) as NSString
+        newString = newString.replacingOccurrences(of: ".", with: "") as NSString
         
-        let pattern = "(?!0[0-9])\\d*(?!\\\(decimalSeparator))^[0-9]{0,\(limitBeforeSeparator)}((\\\(decimalSeparator))[0-9]{0,\(limitAfterSeparator)})?$"
-        if let regex = try? NSRegularExpression(pattern: pattern,
-                                                options: .caseInsensitive) {
-            validatorUserInput = regex.numberOfMatches(in: newText,
-                                                       options: .reportProgress,
-                                                       range: NSRange(location: 0,
-                                                                      length: (newText as NSString).length)) > 0
-            
+        let centAmount : NSInteger = newString.integerValue
+        let amount = (Double(centAmount) / 100.0)
+        
+        if newString.length < 8 {
+            let str = String(format: "%0.2f", arguments: [amount])
+            textField.text = str
         }
-        return validatorUserInput
+        return false
     }
 }
 
