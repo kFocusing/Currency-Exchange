@@ -229,27 +229,29 @@ private extension ExchangePresenter {
     
     func showInfoAlert(fromCurrencyExchange: AmountCurrency,
                        toCurrencyExchange: AmountCurrency) {
+        let alertTitle: String
+        let alertMessage: String
         
         if exemptionPayingCommissionIsActive() {
-            view?.configureAlert(with: [(Localized.AlertActions.done,
-                                         UIAlertAction.Style.default,
-                                         { return})],
-                                 alertTitle: Localized.CurrencyConvertedAlert.title,
-                                 alertMessage: Localized.CurrencyConvertedAlert.messageWithOutFee(
-                                    "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
-                                    "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
-                                    "\(exemptionPayingCommission)"))
+            alertTitle = Localized.CurrencyConvertedAlert.title
+            alertMessage = Localized.CurrencyConvertedAlert.messageWithOutFee(
+                "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
+                "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
+                "\(exemptionPayingCommission)")
         } else {
-            view?.configureAlert(with: [(Localized.AlertActions.done,
-                                         UIAlertAction.Style.default,
-                                         { return})],
-                                 alertTitle: Localized.CurrencyConvertedAlert.title,
-                                 alertMessage: Localized.CurrencyConvertedAlert.messageWithFee(
-                                    "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
-                                    "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
-                                    "\(calculateСommissionFee(amount: fromCurrencyExchange.amount))",
-                                    "\(fromCurrencyExchange.currency)"))
+            alertTitle = Localized.CurrencyConvertedAlert.title
+            alertMessage = Localized.CurrencyConvertedAlert.messageWithFee(
+                "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
+                "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
+                "\(calculateСommissionFee(amount: fromCurrencyExchange.amount))",
+                "\(fromCurrencyExchange.currency)")
         }
+        
+        view?.configureAlert(with: [(Localized.AlertActions.done,
+                                     UIAlertAction.Style.default,
+                                     { return})],
+                             alertTitle: alertTitle,
+                             alertMessage: alertMessage)
     }
     
     func exemptionPayingCommissionIsActive() -> Bool {
