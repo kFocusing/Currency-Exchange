@@ -122,36 +122,6 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
         }
         return false
     }
-//
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        if textField.text == "" || textField.text == "0" {
-//            textField.text = String(format: "%0.2f", arguments: ["0.00"])
-//        }
-//    }
-    
-//    func textField(_ textField: UITextField,
-//                   shouldChangeCharactersIn range: NSRange,
-//                   replacementString string: String) -> Bool {
-//
-//        let formatter = NumberFormatter()
-//            formatter.numberStyle = .decimal
-//            formatter.groupingSeparator = " "
-//            formatter.maximumFractionDigits = 2
-//
-//            let textString = textField.text ?? ""
-//            guard let range = Range(range, in: string) else { return false }
-//            let updatedString = textString.replacingCharacters(in: range, with: string)
-//            let correctDecimalString = updatedString.replacingOccurrences(of: ",", with: ".")
-//            let completeString = correctDecimalString.replacingOccurrences(of: formatter.groupingSeparator, with: "")
-//
-//            guard completeString.count <= 12 else { return false }
-//            guard !completeString.isEmpty else { return true }
-//            textField.text = completeString
-//
-//            return string == formatter.decimalSeparator
-//    }
-    
-    
 }
 
 // MARK: Private

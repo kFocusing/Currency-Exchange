@@ -108,12 +108,9 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
               let toCurrencyExchange =  toCurrency ?? currencyExchange.last?.amountCurrency.currency else { return }
         
         if !currencyExchange.isEmpty {
-            currencyExchange[0].amountCurrency.amount = amountFromCurrencyExchange
-            currencyExchange[0].amountCurrency.currency = currencyFromCurrencyExchange
+            currencyExchange[DealTypeEnum.sell.rawValue].amountCurrency.amount = amountFromCurrencyExchange
+            currencyExchange[DealTypeEnum.sell.rawValue].amountCurrency.currency = currencyFromCurrencyExchange
         }
-        
-        /// Variable to update only needed cell
-        let isSellExchange = fromAmount == nil
         
         let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount ?? amountFromCurrencyExchange,
                                                 fromCurrency: fromCurrency ?? currencyFromCurrencyExchange,
@@ -123,7 +120,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
             switch result {
             case .success(let result):
                 if let result = result {
-                    self?.composeCurrencyExchange(from: result, isSellExchange: isSellExchange)
+                    self?.composeCurrencyExchange(from: result)
                 }
             case .failure(let error):
                 self?.view?.configureAlert(with: [(Localized.AlertActions.done,
@@ -199,24 +196,14 @@ private extension ExchangePresenter {
         }
     }
     
-    func composeCurrencyExchange(from amountCurrency: AmountCurrency,
-                                 isSellExchange: Bool) {
+    func composeCurrencyExchange(from amountCurrency: AmountCurrency) {
         let amountCurrencyFrom = AmountCurrency(amount: currencyExchange.first?.amountCurrency.amount ?? defaultAmountForConvert,
                                                 currency: currencyExchange.first?.amountCurrency.currency ?? CurrencyEnum.euro.title)
         let sellModel = ExchangeModel(from: amountCurrencyFrom,
                                       and: DealTypeEnum.sell)
         let receiveModel = ExchangeModel(from: amountCurrency,
                                          and: DealTypeEnum.receive)
-        
-        
-        if currencyExchange.isEmpty {
-            currencyExchange = [sellModel, receiveModel]
-        } else if isSellExchange {
-            currencyExchange[DealTypeEnum.sell.rawValue] = sellModel
-        } else {
-            currencyExchange[DealTypeEnum.receive.rawValue] = receiveModel
-        }
-        
+        currencyExchange = [sellModel, receiveModel]
         updateDataSource(animated: true)
     }
     
