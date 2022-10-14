@@ -57,7 +57,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         
         
         if exchangeModel.dealType == .receive {
-            amountTextField.textColor = Colors.exchangeGeen.color
+            amountTextField.textColor = Colors.exchangeGreen.color
             exchangeStatus.isHidden = false
             amountTextField.isUserInteractionEnabled = false
         }

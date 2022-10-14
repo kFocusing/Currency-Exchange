@@ -37,7 +37,7 @@ enum DealTypeEnum: Int, BaseEnumProtocol {
         case .sell:
             return Colors.exchangeRed.color
         case .receive:
-            return Colors.exchangeGeen.color
+            return Colors.exchangeGreen.color
         }
     }
 }
