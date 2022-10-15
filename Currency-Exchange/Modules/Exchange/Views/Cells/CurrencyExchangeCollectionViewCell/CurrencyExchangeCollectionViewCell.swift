@@ -111,9 +111,10 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                 range: range,
                                                 replacementString: string)
         
+        let maxTextLength = 9
         let formattedText = result.formattedText
         
-        guard formattedText.count <= 9 else { return false }
+        guard formattedText.count <= maxTextLength else { return false }
         
         if let text = moneyFormatter.unformat(formattedText),
            let amount = Double(text) {
