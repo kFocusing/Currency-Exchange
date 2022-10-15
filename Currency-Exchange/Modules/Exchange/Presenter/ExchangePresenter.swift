@@ -133,7 +133,6 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     }
     
     func didEnterAmount(_ amount: Double) {
-        
         workItem?.cancel()
         let newWorkItem = DispatchWorkItem { [weak self] in
             self?.getCurrencyExchange(fromAmount: amount,
@@ -141,14 +140,8 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                                       toCurrency: nil)
         }
         workItem = newWorkItem
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1,
+        DispatchQueue.global().asyncAfter(deadline: .now() + 3,
                                           execute: newWorkItem)
-        
-        
-        
-//        getCurrencyExchange(fromAmount: amount,
-//                            fromCurrency: nil,
-//                            toCurrency: nil)
     }
 }
 

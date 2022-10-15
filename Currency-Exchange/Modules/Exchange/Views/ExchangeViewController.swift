@@ -220,7 +220,7 @@ private extension ExchangeViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
-        group.interItemSpacing = .fixed(40)
+        group.interItemSpacing = .fixed(25)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous

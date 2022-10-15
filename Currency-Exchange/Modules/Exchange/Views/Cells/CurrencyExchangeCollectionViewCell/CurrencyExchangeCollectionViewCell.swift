@@ -110,17 +110,13 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
         let result = moneyFormatter.formatInput(currentText: textField.text ?? "",
                                                 range: range,
                                                 replacementString: string)
-        
-        let maxTextLength = 9
         let formattedText = result.formattedText
-        
-        guard formattedText.count <= maxTextLength else { return false }
-        
+
         if let text = moneyFormatter.unformat(formattedText),
            let amount = Double(text) {
             didEnterAmount?(amount)
         }
-        
+
         textField.text = formattedText
         textField.setCursorLocation(result.caretBeginOffset)
         return false
