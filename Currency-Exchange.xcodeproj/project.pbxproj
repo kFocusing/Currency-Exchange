@@ -40,6 +40,7 @@
 		C780F38F28F7599C00E8DEF3 /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C780F38D28F7599C00E8DEF3 /* Strings+Generated.swift */; };
 		C780F39028F7599C00E8DEF3 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C780F38E28F7599C00E8DEF3 /* XCAssets+Generated.swift */; };
 		C7CD026C28F9BF5D008D1573 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CD026B28F9BF5D008D1573 /* UITextFieldExtension.swift */; };
+		C7CD026E28FC2750008D1573 /* Currency-Exchange in Resources */ = {isa = PBXBuildFile; fileRef = C7CD026D28FC274F008D1573 /* Currency-Exchange */; };
 		C7FFAFD428F58901002464CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD328F58901002464CD /* AppDelegate.swift */; };
 		C7FFAFD628F58901002464CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD528F58901002464CD /* SceneDelegate.swift */; };
 		C7FFAFD828F58901002464CD /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FFAFD728F58901002464CD /* ExchangeViewController.swift */; };
@@ -86,6 +87,7 @@
 		C780F38D28F7599C00E8DEF3 /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
 		C780F38E28F7599C00E8DEF3 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		C7CD026B28F9BF5D008D1573 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
+		C7CD026D28FC274F008D1573 /* Currency-Exchange */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Currency-Exchange"; sourceTree = "<group>"; };
 		C7FFAFD028F58901002464CD /* Currency-Exchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency-Exchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7FFAFD328F58901002464CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7FFAFD528F58901002464CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			children = (
 				C76D06E228F5A59C0051D2C1 /* swiftgen.yml */,
 				C7FFAFD228F58901002464CD /* Currency-Exchange */,
+				C7CD026D28FC274F008D1573 /* Currency-Exchange */,
 				C7FFAFD128F58901002464CD /* Products */,
 				8E1654BB88968A4C9103BDA6 /* Pods */,
 				AEDCFDCD235965BB14CDD475 /* Frameworks */,
@@ -433,6 +436,7 @@
 				C73F91A828F6B3200000485B /* SectionHeaderView.xib in Resources */,
 				C7FFAFDD28F58902002464CD /* Assets.xcassets in Resources */,
 				C7FFAFDB28F58901002464CD /* Main.storyboard in Resources */,
+				C7CD026E28FC2750008D1573 /* Currency-Exchange in Resources */,
 				C76D06F728F5ED970051D2C1 /* CurrencyAmountCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
