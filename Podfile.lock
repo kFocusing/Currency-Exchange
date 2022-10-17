@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (5.6.2)
+  - AnyFormatKit (2.5.2)
+  - SwiftGen (6.6.2)
+
+DEPENDENCIES:
+  - Alamofire
+  - AnyFormatKit
+  - SwiftGen
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - AnyFormatKit
+    - SwiftGen
+
+SPEC CHECKSUMS:
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  AnyFormatKit: b0dbb2a5f2fe7a0fc97f401f8a219a47ee63a335
+  SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
+
+PODFILE CHECKSUM: 9b9ca3581b19ac92e63c5352df1766062dbe54cb
+
+COCOAPODS: 1.11.3
