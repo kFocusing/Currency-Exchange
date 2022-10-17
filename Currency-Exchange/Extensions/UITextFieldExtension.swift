@@ -2,7 +2,7 @@
 //  UITextFieldExtension.swift
 //  Currency-Exchange
 //
-//  Created by Danylo Klymov on 14.10.2022.
+//  Created on 14.10.2022.
 //
 
 import UIKit
