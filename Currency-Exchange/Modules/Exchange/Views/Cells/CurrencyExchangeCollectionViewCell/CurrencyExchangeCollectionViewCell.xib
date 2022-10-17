@@ -28,11 +28,6 @@
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" keyboardAppearance="light"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="maxLength">
-                            <integer key="value" value="-2"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A5N-Tn-Rfs">
                     <rect key="frame" x="62" y="79" width="395" height="1"/>
