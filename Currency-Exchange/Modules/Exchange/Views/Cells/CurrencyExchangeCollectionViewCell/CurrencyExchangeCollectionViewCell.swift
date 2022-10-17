@@ -32,6 +32,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     private let pickerViewDataSource: [Currency] = [.euro,
                                                     .americanDollar,
                                                     .japaneseYen]
+    private let moneyFormatter = SumTextInputFormatter(textPattern: "# ###.##")
     
     // MARK: Life Cycle
     override func awakeFromNib() {
@@ -54,11 +55,11 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         dealTypeLabel.text = exchangeModel.dealType.title
         currencyDealTypeImageView.image = exchangeModel.dealType.icon
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
-        amountTextField.text = String(format: "%0.2f",
-                                      arguments: [exchangeModel.amountCurrency.amount])
         currencyTextField.text = exchangeModel.amountCurrency.currency
         
-        
+        let decimalAmount = String(format: "%0.2f",
+                                   arguments: [exchangeModel.amountCurrency.amount])
+        amountTextField.text = moneyFormatter.format(decimalAmount)
         if exchangeModel.dealType == .receive {
             amountTextField.textColor = Colors.exchangeGreen.color
             exchangeStatus.isHidden = false
@@ -108,65 +109,24 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        //        let moneyFormatter = SumTextInputFormatter(textPattern: "# ###.##")
-        //        moneyFormatter.numberFormatter.locale = Locale(identifier: "en_US")
-        //        let result = moneyFormatter.formatInput(currentText: textField.text ?? "",
-        //                                                range: range,
-        //                                                replacementString: string)
-        //
-        //        let formattedText = result.formattedText
-        //
-        //        guard formattedText.count <= 9 else { return false }
-        //
-        //        if let text = moneyFormatter.unformat(formattedText),
-        //           let amount = Double(text) {
-        //            didEnterAmount?(amount)
-        //        }
-        //
-        //        textField.text = formattedText
-        //        textField.setCursorPosition(result.caretBeginOffset)
-        //        return false
-        //
-        //
-        
-        let decimalSeparator = string == "." ? "." : ","
-        let moneyFormatter = SumTextInputFormatter(textPattern: "# ###.##")
-        let result = moneyFormatter.formatInput(currentText: textField.text ?? "",
-                                                        range: range,
-                                                        replacementString: string)
         textField.text = textField.text?.replacingOccurrences(of: ",",
                                                               with: ".",
                                                               options: .literal,
                                                               range: nil)
-        
-        guard let text = textField.text else { return true }
+        let result = moneyFormatter.formatInput(currentText: textField.text ?? "",
+                                                range: range,
+                                                replacementString: string == "," ? "." : string )
         
         let formattedText = result.formattedText
+        
         if let text = moneyFormatter.unformat(formattedText),
            let amount = Double(text) {
             didEnterAmount?(amount)
         }
-      
-        var splitText = text.components(separatedBy: decimalSeparator)
-        let totalDecimalSeparators = splitText.count - 1
-        let isEditingEnd = (text.count - 3) < range.lowerBound
         
-        splitText.removeFirst()
-        
-        if splitText.last?.count ?? 0 > 1 && string.count != 0 && isEditingEnd {
-            return false
-        }
-        
-        if totalDecimalSeparators > 0 && string == decimalSeparator {
-            return false
-        }
-        
-        switch(string) {
-        case "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", decimalSeparator:
-            return true
-        default:
-            return false
-        }
+        textField.text = formattedText
+        textField.setCursorPosition(result.caretBeginOffset)
+        return false
     }
 }
 
@@ -208,7 +168,6 @@ private extension CurrencyExchangeCollectionViewCell {
     }
     
     @objc func doneButtonAction() {
-        let moneyFormatter = SumTextInputFormatter(textPattern: "# ###.##")
         if let text = moneyFormatter.unformat(amountTextField.text),
            let amount = Double(text) {
             didEnterAmount?(amount)
