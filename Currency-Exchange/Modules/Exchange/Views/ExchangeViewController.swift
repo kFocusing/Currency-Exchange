@@ -76,7 +76,6 @@ final class ExchangeViewController: UIViewController {
         collectionView.contentInset.top = 16
         collectionView.isScrollEnabled = false
         collectionView.alwaysBounceVertical = false
-        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil),
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: SectionHeaderView.reuseIdentifier)

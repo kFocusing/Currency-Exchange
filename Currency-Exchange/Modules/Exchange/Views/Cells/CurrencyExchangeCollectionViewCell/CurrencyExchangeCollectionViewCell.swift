@@ -8,6 +8,8 @@
 import UIKit
 import AnyFormatKit
 
+private typealias Localized = Localization.ExchangeScreen.AlertActions
+
 final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: IBOutlets
@@ -36,7 +38,7 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         super.awakeFromNib()
         currencyDealTypeImageView.makeCornersRounded()
         setupCurrencyPicker()
-        setupCurrencyExchangeTextField()
+        setupAmountTextField()
     }
     
     override func prepareForReuse() {
@@ -111,6 +113,9 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                 range: range,
                                                 replacementString: string)
         
+        
+        
+        
         let formattedText = result.formattedText
 
         guard formattedText.count <= 9 else { return false }
@@ -135,7 +140,8 @@ private extension CurrencyExchangeCollectionViewCell {
         currencyTextField.inputView = currencyPicker
     }
     
-    func setupCurrencyExchangeTextField() {
+    func setupAmountTextField() {
+        amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
         addDoneButtonOnKeyboard()
     }
@@ -150,7 +156,7 @@ private extension CurrencyExchangeCollectionViewCell {
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
                                         target: nil,
                                         action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done",
+        let done: UIBarButtonItem = UIBarButtonItem(title: Localized.done,
                                                     style: .done,
                                                     target: self,
                                                     action: #selector(doneButtonAction))
@@ -171,3 +177,4 @@ private extension CurrencyExchangeCollectionViewCell {
         self.resignFirstResponder()
     }
 }
+

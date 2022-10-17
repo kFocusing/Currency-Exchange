@@ -135,7 +135,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                                       toCurrency: nil)
         }
         workItem = newWorkItem
-        DispatchQueue.global().asyncAfter(deadline: .now() + 10,
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1,
                                           execute: newWorkItem)
     }
 }
@@ -246,15 +246,21 @@ private extension ExchangePresenter {
         
         view?.showCurrencyConvertedMessage(with: alertTitle,
                                            and: alertMessage,
-                                           completion: completion)
+                                           completion: {
+            self.decrimentExemptionPayingCommission()
+            completion()
+        })
     }
     
     func exemptionPayingCommissionIsActive() -> Bool {
-        exemptionPayingCommission -= 1
         if exemptionPayingCommission >= 0 {
             return true
         }
         return false
+    }
+    
+    func decrimentExemptionPayingCommission() {
+        exemptionPayingCommission -= 1
     }
     
     func calculateСommissionFee(amount: Double) -> Double {
