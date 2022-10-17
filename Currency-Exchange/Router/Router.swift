@@ -9,7 +9,7 @@ import UIKit
 
 protocol RouterMain {
     var navigationController: UINavigationController { get set }
-    var assamblyBuilder: AssamblyBuilderProtocol? { get set }
+    var assemblyBuilder: AssemblyBuilderProtocol? { get set }
 }
 
 protocol RouterProtocol: RouterMain {
@@ -19,17 +19,17 @@ protocol RouterProtocol: RouterMain {
 
 final class Router: RouterProtocol {
     
-    var assamblyBuilder: AssamblyBuilderProtocol?
+    var assemblyBuilder: AssemblyBuilderProtocol?
     var navigationController: UINavigationController
     
     init(navigationController: UINavigationController,
-         assamblyBuilder: AssamblyBuilderProtocol) {
+         assemblyBuilder: AssemblyBuilderProtocol) {
         self.navigationController = navigationController
-        self.assamblyBuilder = assamblyBuilder
+        self.assemblyBuilder = assemblyBuilder
     }
     
     func initialViewContoller() {
-        guard let mainViewController = assamblyBuilder?.createExchangeModule(router: self) else { return }
+        guard let mainViewController = assemblyBuilder?.createExchangeModule(router: self) else { return }
         navigationController.viewControllers = [mainViewController]
     }
     

@@ -62,9 +62,9 @@ extension SceneDelegate {
         window?.overrideUserInterfaceStyle = .dark
         
         let navigationController = UINavigationController()
-        let assemblyBuilder = AssamblyModelBuilder()
+        let assemblyBuilder = AssemblyModelBuilder()
         let router = Router(navigationController: navigationController,
-                            assamblyBuilder: assemblyBuilder)
+                            assemblyBuilder: assemblyBuilder)
         router.initialViewContoller()
         
         window?.rootViewController = navigationController

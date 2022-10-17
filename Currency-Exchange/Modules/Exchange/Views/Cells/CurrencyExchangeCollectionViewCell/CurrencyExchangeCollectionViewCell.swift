@@ -119,11 +119,11 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
         
         let formattedText = result.formattedText
         
-//        if let text = moneyFormatter.unformat(formattedText),
-//           let amount = Double(text) {
-//            didEnterAmount?(amount)
-//        }
-        
+        if let text = moneyFormatter.unformat(formattedText),
+           let amount = Double(text) {
+            didEnterAmount?(amount)
+        }
+         
         textField.text = formattedText
         textField.setCursorPosition(result.caretBeginOffset)
         return false
@@ -142,37 +142,6 @@ private extension CurrencyExchangeCollectionViewCell {
     func setupAmountTextField() {
         amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
-//        addDoneButtonOnKeyboard()
-    }
-    
-    func addDoneButtonOnKeyboard() {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0,
-                                                                  y: 0,
-                                                                  width: UIScreen.main.bounds.width,
-                                                                  height: 50))
-        doneToolbar.barStyle = .default
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                        target: nil,
-                                        action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: Localized.done,
-                                                    style: .done,
-                                                    target: self,
-                                                    action: #selector(doneButtonAction))
-        
-        let items = [flexSpace, done]
-        doneToolbar.items = items
-        doneToolbar.sizeToFit()
-        
-        amountTextField.inputAccessoryView = doneToolbar
-    }
-    
-    @objc func doneButtonAction() {
-        if let text = moneyFormatter.unformat(amountTextField.text),
-           let amount = Double(text) {
-            didEnterAmount?(amount)
-        }
-        self.resignFirstResponder()
     }
 }
 

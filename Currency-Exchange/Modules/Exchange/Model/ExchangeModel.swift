@@ -7,7 +7,10 @@
 
 import UIKit
 
-struct ExchangeModel: Hashable {
+final class ExchangeModel: Hashable {
+    
+    let uuid = UUID()
+
     var dealType: DealType
     var amountCurrency: AmountCurrency
     
@@ -15,5 +18,20 @@ struct ExchangeModel: Hashable {
          and dealType: DealType) {
         self.dealType = dealType
         self.amountCurrency = amountCurrency
+    }
+    
+    func update(from exchangeModel: ExchangeModel) {
+        self.dealType = exchangeModel.dealType
+        self.amountCurrency = exchangeModel.amountCurrency
+    }
+}
+
+extension ExchangeModel {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uuid)
+    }
+    
+    static func == (lhs: ExchangeModel, rhs: ExchangeModel) -> Bool {
+        lhs.uuid == rhs.uuid
     }
 }

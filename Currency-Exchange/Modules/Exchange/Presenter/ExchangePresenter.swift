@@ -128,22 +128,20 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     }
     
     func didEnterAmount(_ amount: Double) {
-//        workItem?.cancel()
-//        let newWorkItem = DispatchWorkItem { [weak self] in
-//        self?.
-            getCurrencyExchange(fromAmount: amount,
+        workItem?.cancel()
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            self?.getCurrencyExchange(fromAmount: amount,
                                       fromCurrency: nil,
                                       toCurrency: nil)
-//        }
-//        workItem = newWorkItem
-//        DispatchQueue.global().asyncAfter(deadline: .now() + 1,
-//                                          execute: newWorkItem)
+        }
+        workItem = newWorkItem
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.0001,
+                                          execute: newWorkItem)
     }
 }
 
 
 private extension ExchangePresenter {
-    
     func composeDataSourceSections() -> [CurrencySections] {
         var dataSourceSections = [CurrencySections]()
         
@@ -195,12 +193,22 @@ private extension ExchangePresenter {
     func composeCurrencyExchange(from amountCurrency: AmountCurrency) {
         let amountCurrencyFrom = AmountCurrency(amount: currencyExchangeList.first?.amountCurrency.amount ?? defaultAmountForConvert,
                                                 currency: currencyExchangeList.first?.amountCurrency.currency ?? Currency.euro.title)
-        let sellModel = ExchangeModel(from: amountCurrencyFrom,
-                                      and: .sell)
+        
         let receiveModel = ExchangeModel(from: amountCurrency,
                                          and: .receive)
-        currencyExchangeList = [sellModel, receiveModel]
-        updateDataSource(animated: true)
+        
+        if currencyExchangeList.isEmpty {
+            let sellModel = ExchangeModel(from: amountCurrencyFrom,
+                                          and: .sell)
+            
+            currencyExchangeList = [sellModel, receiveModel]
+            updateDataSource(animated: true)
+        } else if let receiveModelIndex = currencyExchangeList.firstIndex(where: {
+            $0.dealType == .receive
+        }) {
+            currencyExchangeList[receiveModelIndex].update(from: receiveModel)
+            view?.reloadItems([currencyExchangeList[receiveModelIndex]])
+        }
     }
     
     func convertCurrencyBalance(fromCurrencyExchangeAmount: Double,

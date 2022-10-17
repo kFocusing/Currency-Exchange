@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol AssamblyBuilderProtocol {
+protocol AssemblyBuilderProtocol {
     func createExchangeModule(router: RouterProtocol) -> UIViewController
 }
 
-final class AssamblyModelBuilder: AssamblyBuilderProtocol {
+final class AssemblyModelBuilder: AssemblyBuilderProtocol {
     
     func createExchangeModule(router: RouterProtocol) -> UIViewController {
         let view = ExchangeViewController()

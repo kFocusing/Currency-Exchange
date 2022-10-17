@@ -12,6 +12,7 @@ private typealias Localized = Localization.ExchangeScreen
 protocol ExchangeViewProtocol: AnyObject {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool)
+    func reloadItems(_ items: [AnyHashable])
     func updateLayout(sections: [CurrencySections])
     func showError(with alertTitle: String?,
                    and alertMessage: String?)
@@ -39,7 +40,8 @@ final class ExchangeViewController: UIViewController {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.text = Localized.headerTitle
         headerLabel.textColor = .white
-        headerLabel.font = .systemFont(ofSize: 17, weight: .medium)
+        headerLabel.font = .systemFont(ofSize: 17,
+                                       weight: .medium)
         headerLabel.numberOfLines = 1
         headerPlaceholder.addSubview(headerLabel)
         return headerLabel
@@ -53,7 +55,8 @@ final class ExchangeViewController: UIViewController {
                               for: .normal)
         submitButton.setTitleColor(.white,
                                    for: .normal)
-        submitButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        submitButton.titleLabel?.font = .systemFont(ofSize: 17,
+                                                    weight: .medium)
         submitButton.addDropShadow(offset: CGSize(width: 3,
                                                   height: 3))
         submitButton.addTarget(self,
@@ -74,7 +77,7 @@ final class ExchangeViewController: UIViewController {
         collectionView.contentSize = view.bounds.size
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.contentInset.top = 16
+        collectionView.contentInset.top = defaultInset
         collectionView.isScrollEnabled = false
         collectionView.alwaysBounceVertical = false
         collectionView.keyboardDismissMode = .onDrag
@@ -95,10 +98,15 @@ final class ExchangeViewController: UIViewController {
     private let submitButtonSideInset: CGFloat = 35
     private let submitButtonBottomInset: CGFloat = 20
     private let collectionHeaderSectionHight: CGFloat = 40
+    private let currencyBalanceInterItemSpacing: CGFloat = 42
     private let currencyBalanceSectionGroupHeight: CGFloat = 60
     private let currencyExchangeSectionItemHeight: CGFloat = 70
     private let headerPlaceholderHeight: CGFloat = .screenHeight / 9
     private let currencyBalanceSectionItemWidth: CGFloat = .screenWidth / 3
+    private let currencyBalanceSectionInsets = NSDirectionalEdgeInsets(top: 8,
+                                                                       leading: 16,
+                                                                       bottom: 16,
+                                                                       trailing: 16)
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -144,6 +152,15 @@ extension ExchangeViewController: ExchangeViewProtocol {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool) {
         dataSource.apply(snapshot, animatingDifferences: animated)
+    }
+    
+    /// Reloads any hashable items - used for updating store after getting new exchange data.
+    /// - Parameter items: items to reload.
+    func reloadItems(_ items: [AnyHashable]) {
+        var newSnapshot = dataSource.snapshot()
+        newSnapshot.reloadItems(items)
+        
+        dataSource.apply(newSnapshot, animatingDifferences: false)
     }
     
     func updateLayout(sections: [CurrencySections]) {
@@ -236,14 +253,12 @@ private extension ExchangeViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
-        group.interItemSpacing = .fixed(42)
+        group.interItemSpacing = .fixed(currencyBalanceInterItemSpacing)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets.top = 8
-        section.contentInsets.bottom = 16
-        section.contentInsets.leading = defaultInset
-        section.contentInsets.trailing = defaultInset
+        section.contentInsets = currencyBalanceSectionInsets
+        
         let header = self.composeSectionHeader()
         section.boundarySupplementaryItems += [header]
         
