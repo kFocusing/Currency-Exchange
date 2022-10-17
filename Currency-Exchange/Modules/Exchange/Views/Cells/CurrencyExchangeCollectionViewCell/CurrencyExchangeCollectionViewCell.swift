@@ -37,6 +37,10 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     // MARK: Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
         currencyDealTypeImageView.makeCornersRounded()
         setupCurrencyPicker()
         setupAmountTextField()
@@ -118,6 +122,7 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                 replacementString: string == "," ? "." : string )
         
         let formattedText = result.formattedText
+    
         
         if let text = moneyFormatter.unformat(formattedText),
            let amount = Double(text) {
@@ -142,6 +147,13 @@ private extension CurrencyExchangeCollectionViewCell {
     func setupAmountTextField() {
         amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+//        guard let text = amountTextField.text else { return }
+//        let decimalAmount = String(format: "%0.2f",
+//                                   arguments: [text])
+//        amountTextField.text = moneyFormatter.format(decimalAmount)
     }
 }
 

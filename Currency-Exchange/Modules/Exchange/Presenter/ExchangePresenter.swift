@@ -241,14 +241,14 @@ private extension ExchangePresenter {
         if exemptionPayingCommissionIsActive() {
             alertTitle = Localized.CurrencyConvertedAlert.title
             alertMessage = Localized.CurrencyConvertedAlert.messageWithOutFee(
-                "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
-                "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
+                "\(fromCurrencyExchange.amount.inMoneyFormat) \(fromCurrencyExchange.currency)",
+                "\(toCurrencyExchange.amount.inMoneyFormat) \(toCurrencyExchange.currency)",
                 "\(exemptionPayingCommission)")
         } else {
             alertTitle = Localized.CurrencyConvertedAlert.title
             alertMessage = Localized.CurrencyConvertedAlert.messageWithFee(
-                "\(fromCurrencyExchange.amount) \(fromCurrencyExchange.currency)",
-                "\(toCurrencyExchange.amount) \(toCurrencyExchange.currency)",
+                "\(fromCurrencyExchange.amount.inMoneyFormat) \(fromCurrencyExchange.currency)",
+                "\(toCurrencyExchange.amount.inMoneyFormat) \(toCurrencyExchange.currency)",
                 "\(calculateСommissionFee(amount: fromCurrencyExchange.amount))",
                 "\(fromCurrencyExchange.currency)")
         }

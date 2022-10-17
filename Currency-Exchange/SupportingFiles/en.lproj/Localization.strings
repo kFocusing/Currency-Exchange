@@ -22,9 +22,9 @@
 "exchangeScreen.currency.jpy" = "JPY";
 
 // MARK: Alerts
-"exchangeScreen.currencyConvertedAlert.title" = "Currency converted";
-"exchangeScreen.currencyConvertedAlert.messageWithOutFee" = "You have converted %@ to %@. You spent 1 fee exemption.\n You have %@ exemptions left commissions.";
-"exchangeScreen.currencyConvertedAlert.messageWithFee" = "You have converted %@ to %@. Commission Fee %@ %@";
+"exchangeScreen.currencyConvertedAlert.title" = "Exchange Confirmation";
+"exchangeScreen.currencyConvertedAlert.messageWithOutFee" = "Are you sure you want to convert %@ to %@? You will spend 1 fee exemption.\n You have %@ exemptions left commissions.";
+"exchangeScreen.currencyConvertedAlert.messageWithFee" = "Are you sure you want to convert %@ to %@? Commission Fee %@ %@";
 
 "exchangeScreen.notEnoughMoneyAlert.title" = "There is not enough money";
 "exchangeScreen.notEnoughMoneyAlert.message" = " There is not enough money on the balance sheet.\n Top up your account or change the convertible currency.";

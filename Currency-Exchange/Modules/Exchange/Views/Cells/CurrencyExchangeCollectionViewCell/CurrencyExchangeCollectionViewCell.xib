@@ -25,6 +25,9 @@
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100.00" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iKG-mQ-Fsr">
                     <rect key="frame" x="296" y="34.666666666666664" width="63" height="24"/>
                     <color key="tintColor" systemColor="tintColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="Lv2-sf-kYV"/>
+                    </constraints>
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" keyboardAppearance="light"/>

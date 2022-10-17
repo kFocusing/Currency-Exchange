@@ -29,7 +29,7 @@ final class NetworkService: NetworkServiceProtocol {
         AF.request(url,
                    method: endPoint.method,
                    parameters: endPoint.parameters,
-                   encoding: endPoint.encoding).responseJSON { [weak self] response in
+                   encoding: endPoint.encoding).responseJSON { response in
             guard let data = response.data else {
                 if let error = response.error {
                     completion(.failure(error))
@@ -39,26 +39,17 @@ final class NetworkService: NetworkServiceProtocol {
                 return
             }
             
-            let result = self?.parseJson(data, expecting: expecting)
-            completion(.success(result))
+            do {
+                let decodateData = try JSONDecoder().decode(T.self, from: data)
+                completion(.success(decodateData))
+            } catch {
+                completion(.failure(RequestError.invalidData))
+            }
         }
     }
-    
-    //MARK: - Private -
-    private func parseJson<T: Codable>(_ data: Data,
-                                       expecting: T.Type) -> T? {
-        let decoder = JSONDecoder()
-        do {
-            let decodateData = try decoder.decode(expecting, from: data)
-            return decodateData
-        } catch let error as NSError {
-            return error.localizedDescription as? T 
-        }
-    }
-    
-    private enum RequestError: Error {
-        case invalidURL
-        case invalidData
+    private enum RequestError: String, Error {
+        case invalidURL = "Invalid URL"
+        case invalidData = "Invalid Data"
     }
 }
 

@@ -72,7 +72,6 @@ final class ExchangeViewController: UIViewController {
                                               collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
         collectionView.scrollsToTop = false
         collectionView.contentSize = view.bounds.size
         collectionView.backgroundColor = .clear
@@ -80,7 +79,6 @@ final class ExchangeViewController: UIViewController {
         collectionView.contentInset.top = defaultInset
         collectionView.isScrollEnabled = false
         collectionView.alwaysBounceVertical = false
-        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil),
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: SectionHeaderView.reuseIdentifier)
@@ -93,6 +91,7 @@ final class ExchangeViewController: UIViewController {
     // MARK: Properties
     var presenter: ExchangeViewPresenterProtocol!
     private var dataSource: ExchangeDataSource!
+    
     private let defaultInset: CGFloat = 16
     private let submitButtonHeight: CGFloat = 50
     private let submitButtonSideInset: CGFloat = 35
@@ -112,6 +111,7 @@ final class ExchangeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
+        hideKeyboardWhenTappedAround()
         setupDataSource()
         layoutUIElements()
         setupBackgroundView()
@@ -349,7 +349,20 @@ private extension ExchangeViewController {
         }
     }
     
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        converterCollectionView.addGestureRecognizer(tap)
+        headerPlaceholder.addGestureRecognizer(tap)
+    }
+    
     @objc func submitButtonTapped() {
+        dismissKeyboard()
         presenter.convertCurrencyBalance()
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

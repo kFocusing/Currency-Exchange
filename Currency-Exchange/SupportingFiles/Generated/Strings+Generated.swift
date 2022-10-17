@@ -37,17 +37,17 @@ internal enum L10n {
       internal static let usd = L10n.tr("Localization", "exchangeScreen.currency.usd", fallback: "USD")
     }
     internal enum CurrencyConvertedAlert {
-      /// You have converted %@ to %@. Commission Fee %@ %@
+      /// Are you sure you want to convert %@ to %@? Commission Fee %@ %@
       internal static func messageWithFee(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any) -> String {
-        return L10n.tr("Localization", "exchangeScreen.currencyConvertedAlert.messageWithFee", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), fallback: "You have converted %@ to %@. Commission Fee %@ %@")
+        return L10n.tr("Localization", "exchangeScreen.currencyConvertedAlert.messageWithFee", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), fallback: "Are you sure you want to convert %@ to %@? Commission Fee %@ %@")
       }
-      /// You have converted %@ to %@. You spent 1 fee exemption.
+      /// Are you sure you want to convert %@ to %@? You will spend 1 fee exemption.
       ///  You have %@ exemptions left commissions.
       internal static func messageWithOutFee(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
-        return L10n.tr("Localization", "exchangeScreen.currencyConvertedAlert.messageWithOutFee", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "You have converted %@ to %@. You spent 1 fee exemption.\n You have %@ exemptions left commissions.")
+        return L10n.tr("Localization", "exchangeScreen.currencyConvertedAlert.messageWithOutFee", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "Are you sure you want to convert %@ to %@? You will spend 1 fee exemption.\n You have %@ exemptions left commissions.")
       }
-      /// Currency converted
-      internal static let title = L10n.tr("Localization", "exchangeScreen.currencyConvertedAlert.title", fallback: "Currency converted")
+      /// Exchange Confirmation
+      internal static let title = L10n.tr("Localization", "exchangeScreen.currencyConvertedAlert.title", fallback: "Exchange Confirmation")
     }
     internal enum CurrencyExchange {
       /// Receive
