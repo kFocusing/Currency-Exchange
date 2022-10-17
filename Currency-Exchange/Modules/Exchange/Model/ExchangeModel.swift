@@ -8,11 +8,11 @@
 import UIKit
 
 struct ExchangeModel: Hashable {
-    var dealType: DealTypeEnum
+    var dealType: DealType
     var amountCurrency: AmountCurrency
     
     init(from amountCurrency: AmountCurrency,
-         and dealType: DealTypeEnum) {
+         and dealType: DealType) {
         self.dealType = dealType
         self.amountCurrency = amountCurrency
     }

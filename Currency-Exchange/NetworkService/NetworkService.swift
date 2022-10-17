@@ -51,8 +51,8 @@ final class NetworkService: NetworkServiceProtocol {
         do {
             let decodateData = try decoder.decode(expecting, from: data)
             return decodateData
-        } catch {
-            return nil
+        } catch let error as NSError {
+            return error.localizedDescription as? T 
         }
     }
     

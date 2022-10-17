@@ -17,11 +17,11 @@ extension UIViewController {
                                       preferredStyle: .alert)
         alert.overrideUserInterfaceStyle = interfaceStyle
         for value in actions {
-            let action = UIAlertAction(title: value.0,
-                                       style: value.1,
+            let action = UIAlertAction(title: value.buttonTitle,
+                                       style: value.alertStyle,
                                        handler: {
                 (alert: UIAlertAction!) -> Void in
-                value.2()
+                value.completion()
             })
             alert.addAction(action)
         }

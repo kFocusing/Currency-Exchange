@@ -1,5 +1,5 @@
 //
-//  TitleEnumProtocol.swift
+//  Title.swift
 //  Currency-Exchange
 //
 //  Created on 11.10.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TitleEnumProtocol {
+protocol Title {
     var title: String { get }
 }
 

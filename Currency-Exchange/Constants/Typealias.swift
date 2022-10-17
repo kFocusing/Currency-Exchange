@@ -10,7 +10,9 @@ import UIKit
 typealias EmptyBlock = () -> ()?
 typealias BoolBlock = (Bool) -> Void
 typealias ReusableCellIdentifier = String
-typealias AlertButtonAction = (String, UIAlertAction.Style, EmptyBlock)
+typealias AlertButtonAction = (buttonTitle: String,
+                               alertStyle: UIAlertAction.Style,
+                               completion: EmptyBlock)
 
 // MARK: - SwiftGen -
 typealias Localization = L10n

@@ -1,5 +1,5 @@
 //
-//  ImageEnumProtocol.swift
+//  Image.swift
 //  Currency-Exchange
 //
 //  Created on 11.10.2022.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol ImageEnumProtocol: CaseIterable {
+protocol Image: CaseIterable {
     static var allImages: [UIImage?] { get }
     var icon: UIImage? { get }
 }
 
-extension ImageEnumProtocol {
+extension Image {
     static var allImages: [UIImage?] {
         allCases.map { return $0.icon ?? nil }
     }

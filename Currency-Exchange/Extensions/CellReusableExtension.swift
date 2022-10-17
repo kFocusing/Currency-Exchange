@@ -7,33 +7,32 @@
 
 import UIKit
 
-protocol Reusable { }
+protocol ReuseIdentifier { }
 
-extension Reusable {
+protocol CollectionCellRegistable: UICollectionViewCell, ReuseIdentifier { }
+
+protocol CollectionCellDequeueReusable: UICollectionViewCell, ReuseIdentifier { }
+
+extension ReuseIdentifier {
     static var reuseIdentifier: String {
         String(describing: Self.self)
     }
 }
 
-protocol CollectionCellRegistable: UICollectionViewCell, Reusable { }
-
-protocol CollectionCellDequeueReusable: UICollectionViewCell, Reusable { }
-
 extension CollectionCellRegistable {
     static func register(in collectionView: UICollectionView) {
         collectionView.register(Self.self,
-                                forCellWithReuseIdentifier: String(describing: self))
+                                forCellWithReuseIdentifier: self.reuseIdentifier)
     }
     
     static func registerXIB(in collectionView: UICollectionView) {
-        collectionView.register(UINib(nibName: String(describing: self), bundle: nil),
-                                forCellWithReuseIdentifier: String(describing: self))
+        collectionView.register(UINib(nibName: self.reuseIdentifier, bundle: nil),
+                                forCellWithReuseIdentifier: self.reuseIdentifier)
     }
 }
 
 extension CollectionCellDequeueReusable {
     static func dequeueCellWithType(in collectionView: UICollectionView, indexPath: IndexPath) -> Self {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: Self.self),
-                                                  for: indexPath) as! Self
+        return collectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIdentifier, for: indexPath) as! Self
     }
 }

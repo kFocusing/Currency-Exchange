@@ -1,0 +1,22 @@
+# 1
+input_dir:  Currency-Exchange/SupportingFiles/
+# 2
+output_dir:  Currency-Exchange/SupportingFiles/Generated/
+
+## Constants for Assets Catalogs
+xcassets:
+  inputs:
+    - Assets.xcassets
+    - Colors.xcassets
+  outputs:
+    templateName: swift5
+    output: XCAssets+Generated.swift
+
+## Constants for Localized Strings.
+strings:
+  inputs:
+    - en.lproj
+  outputs:
+    - templateName: structured-swift5
+      output: Strings+Generated.swift
+

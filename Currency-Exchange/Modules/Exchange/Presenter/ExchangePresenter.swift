@@ -18,7 +18,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
     func getCurrencyExchange(fromAmount: Double?,
                              fromCurrency: String?,
                              toCurrency: String?)
-    func convertCurrencyBalanceIfPossible()
+    func convertCurrencyBalance()
     func didEnterAmount(_ amount: Double)
 }
 
@@ -32,12 +32,12 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     private var router: RouterProtocol?
     private weak var view: ExchangeViewProtocol?
     private let networkService: NetworkServiceProtocol!
-    private var currencyBalance: [AmountCurrency] = CurrencyEnum.allCases.compactMap {
+    private var currencyBalance: [AmountCurrency] = Currency.allCases.compactMap {
         // TODO: Replace to get current balance from api
-        AmountCurrency(amount: $0 == CurrencyEnum.euro ? 1000.00 : 0.00,
+        AmountCurrency(amount: $0 == Currency.euro ? 1000.00 : 0.00,
                        currency: $0.title)
     }
-    private var currencyExchange: [ExchangeModel] = []
+    private var currencyExchangeList: [ExchangeModel] = []
     private let commissionFeeMultiplier = 0.0070
     private var exemptionPayingCommission = 5
     private let defaultAmountForConvert: Double = 100
@@ -65,24 +65,22 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         }
     }
     
-    func convertCurrencyBalanceIfPossible() {
-        guard let fromCurrencyExchange = currencyExchange.first?.amountCurrency,
-              let toCurrencyExchange = currencyExchange.last?.amountCurrency else { return }
+    func convertCurrencyBalance() {
+        guard let fromCurrencyExchange = currencyExchangeList.first?.amountCurrency,
+              let toCurrencyExchange = currencyExchangeList.last?.amountCurrency else { return }
         
         
         guard let currencyForSell = currencyBalance.first(where: {
             $0.currency == fromCurrencyExchange.currency}),
               currencyForSell.amount >= fromCurrencyExchange.amount else {
-            configureNotEnoughMoneyAlert()
+            view?.showError(with: Localized.NotEnoughMoneyAlert.title,
+                            and: Localized.NotEnoughMoneyAlert.message)
             return
         }
         
         guard fromCurrencyExchange.currency != toCurrencyExchange.currency else {
-            view?.configureAlert(with: [(Localized.AlertActions.done,
-                                         UIAlertAction.Style.default,
-                                         { return })],
-                                 alertTitle: Localized.SameСurrencies.title,
-                                 alertMessage: Localized.SameСurrencies.message)
+            view?.showError(with: Localized.SameСurrencies.title,
+                            and: Localized.SameСurrencies.message)
             return
         }
         
@@ -91,25 +89,25 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
               let currencyForSellIndex = currencyBalance.firstIndex(where: {
                   $0.currency == fromCurrencyExchange.currency}) else { return }
         
-        showInfoAlert(fromCurrencyExchange: fromCurrencyExchange,
-                      toCurrencyExchange: toCurrencyExchange)
-        
-        convertCurrencyBalance(fromCurrencyExchangeAmount: fromCurrencyExchange.amount,
-                               toCurrencyExchangeAmount: toCurrencyExchange.amount,
-                               fromCurrencyBalance: currencyForSellIndex,
-                               toCurrencyBalance: currencyForReceiveIndex)
+        configureConvertCurrencyInfo(fromCurrencyExchange: fromCurrencyExchange,
+                                     toCurrencyExchange: toCurrencyExchange) {
+            self.convertCurrencyBalance(fromCurrencyExchangeAmount: fromCurrencyExchange.amount,
+                                        toCurrencyExchangeAmount: toCurrencyExchange.amount,
+                                        fromCurrencyBalance: currencyForSellIndex,
+                                        toCurrencyBalance: currencyForReceiveIndex)
+        }
     }
     
     func getCurrencyExchange(fromAmount: Double? = 100,
-                             fromCurrency: String? = CurrencyEnum.euro.title,
-                             toCurrency: String? = CurrencyEnum.americanDollar.title) {
-        guard let amountFromCurrencyExchange = fromAmount ?? currencyExchange.first?.amountCurrency.amount,
-              let currencyFromCurrencyExchange = fromCurrency ?? currencyExchange.first?.amountCurrency.currency ,
-              let toCurrencyExchange =  toCurrency ?? currencyExchange.last?.amountCurrency.currency else { return }
+                             fromCurrency: String? = Currency.euro.title,
+                             toCurrency: String? = Currency.americanDollar.title) {
+        guard let amountFromCurrencyExchange = fromAmount ?? currencyExchangeList.first?.amountCurrency.amount,
+              let currencyFromCurrencyExchange = fromCurrency ?? currencyExchangeList.first?.amountCurrency.currency ,
+              let toCurrencyExchange =  toCurrency ?? currencyExchangeList.last?.amountCurrency.currency else { return }
         
-        if !currencyExchange.isEmpty {
-            currencyExchange[DealTypeEnum.sell.rawValue].amountCurrency.amount = amountFromCurrencyExchange
-            currencyExchange[DealTypeEnum.sell.rawValue].amountCurrency.currency = currencyFromCurrencyExchange
+        if !currencyExchangeList.isEmpty {
+            currencyExchangeList[DealType.sell.rawValue].amountCurrency.amount = amountFromCurrencyExchange
+            currencyExchangeList[DealType.sell.rawValue].amountCurrency.currency = currencyFromCurrencyExchange
         }
         
         let endpoint = EndPoint.convertCurrency(fromAmount: fromAmount ?? amountFromCurrencyExchange,
@@ -123,17 +121,13 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                     self?.composeCurrencyExchange(from: result)
                 }
             case .failure(let error):
-                self?.view?.configureAlert(with: [(Localized.AlertActions.done,
-                                                   UIAlertAction.Style.default,
-                                                   { return })],
-                                           alertTitle: Localized.ErrorAlert.title,
-                                           alertMessage: Localized.ErrorAlert.message(error))
+                self?.view?.showError(with: Localized.ErrorAlert.title,
+                                      and: Localized.ErrorAlert.message(error))
             }
         }
     }
     
     func didEnterAmount(_ amount: Double) {
-        
         workItem?.cancel()
         let newWorkItem = DispatchWorkItem { [weak self] in
             self?.getCurrencyExchange(fromAmount: amount,
@@ -141,14 +135,8 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
                                       toCurrency: nil)
         }
         workItem = newWorkItem
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1,
+        DispatchQueue.global().asyncAfter(deadline: .now() + 10,
                                           execute: newWorkItem)
-        
-        
-        
-//        getCurrencyExchange(fromAmount: amount,
-//                            fromCurrency: nil,
-//                            toCurrency: nil)
     }
 }
 
@@ -163,8 +151,8 @@ private extension ExchangePresenter {
             dataSourceSections.append(currencyBalanceSection)
         }
         
-        if !currencyExchange.isEmpty {
-            let currencyExchangeSection = CurrencySections.currencyExchange(currencyExchange)
+        if !currencyExchangeList.isEmpty {
+            let currencyExchangeSection = CurrencySections.currencyExchange(currencyExchangeList)
             dataSourceSections.append(currencyExchangeSection)
         }
         
@@ -204,13 +192,13 @@ private extension ExchangePresenter {
     }
     
     func composeCurrencyExchange(from amountCurrency: AmountCurrency) {
-        let amountCurrencyFrom = AmountCurrency(amount: currencyExchange.first?.amountCurrency.amount ?? defaultAmountForConvert,
-                                                currency: currencyExchange.first?.amountCurrency.currency ?? CurrencyEnum.euro.title)
+        let amountCurrencyFrom = AmountCurrency(amount: currencyExchangeList.first?.amountCurrency.amount ?? defaultAmountForConvert,
+                                                currency: currencyExchangeList.first?.amountCurrency.currency ?? Currency.euro.title)
         let sellModel = ExchangeModel(from: amountCurrencyFrom,
-                                      and: DealTypeEnum.sell)
+                                      and: .sell)
         let receiveModel = ExchangeModel(from: amountCurrency,
-                                         and: DealTypeEnum.receive)
-        currencyExchange = [sellModel, receiveModel]
+                                         and: .receive)
+        currencyExchangeList = [sellModel, receiveModel]
         updateDataSource(animated: true)
     }
     
@@ -225,7 +213,8 @@ private extension ExchangePresenter {
         }
         
         if currencyBalance[fromCurrencyBalance].amount - (fromCurrencyExchangeAmount + commissionFee) < 0 {
-            configureNotEnoughMoneyAlert()
+            view?.showError(with: Localized.NotEnoughMoneyAlert.title,
+                            and: Localized.NotEnoughMoneyAlert.message)
         } else {
             currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount + commissionFee
             currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
@@ -234,8 +223,9 @@ private extension ExchangePresenter {
         }
     }
     
-    func showInfoAlert(fromCurrencyExchange: AmountCurrency,
-                       toCurrencyExchange: AmountCurrency) {
+    func configureConvertCurrencyInfo(fromCurrencyExchange: AmountCurrency,
+                                      toCurrencyExchange: AmountCurrency,
+                                      completion: @escaping EmptyBlock) {
         let alertTitle: String
         let alertMessage: String
         
@@ -254,11 +244,9 @@ private extension ExchangePresenter {
                 "\(fromCurrencyExchange.currency)")
         }
         
-        view?.configureAlert(with: [(Localized.AlertActions.done,
-                                     UIAlertAction.Style.default,
-                                     { return})],
-                             alertTitle: alertTitle,
-                             alertMessage: alertMessage)
+        view?.showCurrencyConvertedMessage(with: alertTitle,
+                                           and: alertMessage,
+                                           completion: completion)
     }
     
     func exemptionPayingCommissionIsActive() -> Bool {
@@ -271,13 +259,5 @@ private extension ExchangePresenter {
     
     func calculateСommissionFee(amount: Double) -> Double {
         return round(amount * commissionFeeMultiplier * 100) / 100.0
-    }
-    
-    func configureNotEnoughMoneyAlert() {
-        view?.configureAlert(with: [(Localized.AlertActions.done,
-                                     UIAlertAction.Style.default,
-                                     { return })],
-                             alertTitle: Localized.NotEnoughMoneyAlert.title,
-                             alertMessage: Localized.NotEnoughMoneyAlert.message)
     }
 }

@@ -9,6 +9,8 @@ import UIKit
 
 extension CGFloat {
     
+    static let placeholderCornerRadius: CGFloat = .screenWidth / 15
+    
     static var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
     }

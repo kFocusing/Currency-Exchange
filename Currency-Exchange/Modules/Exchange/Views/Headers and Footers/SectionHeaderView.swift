@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class SectionHeaderView: UICollectionReusableView, Reusable {
+final class SectionHeaderView: UICollectionReusableView, ReuseIdentifier {
 
     // MARK: IBOutlets
     @IBOutlet private weak var titleLabel: UILabel!
     
     // MARK: Static
     static func loadViewFromNib() -> UIView {
-        return UINib(nibName: String(describing: self),
+        return UINib(nibName: self.reuseIdentifier,
                      bundle: nil).instantiate(withOwner: nil,
                                               options: nil)[0] as! UIView
     }

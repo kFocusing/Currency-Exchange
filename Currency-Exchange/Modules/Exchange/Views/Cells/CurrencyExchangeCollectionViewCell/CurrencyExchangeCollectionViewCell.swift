@@ -22,12 +22,12 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     private let currencyPicker = UIPickerView()
     
     // MARK: Properties
-    var didSelectCurrency: ((CurrencyEnum, DealTypeEnum) -> Void)?
+    var didSelectCurrency: ((Currency, DealType) -> Void)?
     var didEnterAmount: ((Double) -> Void)?
     
-    private var cellDealType: DealTypeEnum = .sell
-    private var currentCurrency: CurrencyEnum = .euro
-    private let pickerViewDataSource: [CurrencyEnum] = [.euro,
+    private var cellDealType: DealType = .sell
+    private var currentCurrency: Currency = .euro
+    private let pickerViewDataSource: [Currency] = [.euro,
                                                         .americanDollar,
                                                         .japaneseYen]
     
@@ -112,16 +112,16 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                 replacementString: string)
         
         let formattedText = result.formattedText
-        
+
         guard formattedText.count <= 9 else { return false }
-        
+
         if let text = moneyFormatter.unformat(formattedText),
            let amount = Double(text) {
             didEnterAmount?(amount)
         }
-        
+
         textField.text = formattedText
-        textField.setCursorLocation(result.caretBeginOffset)
+        textField.setCursorPosition(result.caretBeginOffset)
         return false
     }
 }

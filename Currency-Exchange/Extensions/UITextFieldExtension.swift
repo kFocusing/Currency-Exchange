@@ -8,7 +8,7 @@
 import UIKit
 
 extension UITextField {
-    func setCursorLocation(_ location: Int) {
+    func setCursorPosition(_ location: Int) {
         guard let cursorLocation = position(from: beginningOfDocument,
                                             offset: location) else { return }
         DispatchQueue.main.async { [weak self] in

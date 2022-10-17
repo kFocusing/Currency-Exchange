@@ -1,5 +1,5 @@
 //
-//  DealTypeEnum.swift
+//  DealType.swift
 //  Currency-Exchange
 //
 //  Created on 11.10.2022.
@@ -9,7 +9,7 @@ import UIKit
 
 private typealias Localized = Localization.ExchangeScreen.CurrencyExchange
 
-enum DealTypeEnum: Int, BaseEnumProtocol {
+enum DealType: Int, TitleAndImage {
     
     case sell = 0
     case receive = 1

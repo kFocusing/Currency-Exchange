@@ -9,7 +9,7 @@ import Foundation
 
 private typealias Localized = Localization.ExchangeScreen
 
-enum CurrencySections: TitleEnumProtocol, Hashable {
+enum CurrencySections: Title, Hashable {
     
     static func == (lhs: CurrencySections, rhs: CurrencySections) -> Bool {
         switch (lhs, rhs) {

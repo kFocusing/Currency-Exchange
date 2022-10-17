@@ -15,7 +15,7 @@ final class ExchangeDataSource: UICollectionViewDiffableDataSource<CurrencySecti
     init(
         collectionView: UICollectionView,
         dataSource: [CurrencySections],
-        didSelectCurrency: @escaping ((CurrencyEnum, DealTypeEnum) -> Void),
+        didSelectCurrency: @escaping ((Currency, DealType) -> Void),
         didEnterAmount: @escaping ((Double) -> Void)
     ) {
         self.dataSource = dataSource

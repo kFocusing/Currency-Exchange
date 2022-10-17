@@ -38,3 +38,4 @@
 "exchangeScreen.errorAlert.title" = "Failed";
 "exchangeScreen.errorAlert.message" = "Failed to exchange currancy: %@";
 "exchangeScreen.alertActions.done" = "Done";
+"exchangeScreen.alertActions.cancel" = "Cancel";

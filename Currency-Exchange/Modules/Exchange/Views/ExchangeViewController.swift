@@ -13,9 +13,11 @@ protocol ExchangeViewProtocol: AnyObject {
     func setDataSource(snapshot: NSDiffableDataSourceSnapshot<CurrencySections, AnyHashable>,
                        animated: Bool)
     func updateLayout(sections: [CurrencySections])
-    func configureAlert(with actions: [AlertButtonAction],
-                        alertTitle: String?,
-                        alertMessage: String?)
+    func showError(with alertTitle: String?,
+                   and alertMessage: String?)
+    func showCurrencyConvertedMessage(with alertTitle: String?,
+                                      and alertMessage: String?,
+                                      completion: EmptyBlock?)
     func internetConnectionLost(completion: @escaping EmptyBlock)
 }
 
@@ -74,6 +76,7 @@ final class ExchangeViewController: UIViewController {
         collectionView.contentInset.top = 16
         collectionView.isScrollEnabled = false
         collectionView.alwaysBounceVertical = false
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil),
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: SectionHeaderView.reuseIdentifier)
@@ -99,6 +102,7 @@ final class ExchangeViewController: UIViewController {
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.isHidden = true
         setupDataSource()
         layoutUIElements()
         setupBackgroundView()
@@ -114,10 +118,24 @@ final class ExchangeViewController: UIViewController {
 // MARK: - Extensions -
 // MARK: ExchangeViewProtocol
 extension ExchangeViewController: ExchangeViewProtocol {
-    func configureAlert(with actions: [AlertButtonAction],
-                        alertTitle: String?,
-                        alertMessage: String?) {
-        showAlert(with: actions,
+    func showError(with alertTitle: String?,
+                   and alertMessage: String?) {
+        showAlert(with: [(Localized.AlertActions.done,
+                          UIAlertAction.Style.default,
+                          { return})],
+                  alertTitle: alertTitle,
+                  alertMessage: alertMessage)
+    }
+    
+    func showCurrencyConvertedMessage(with alertTitle: String?,
+                                      and alertMessage: String?,
+                                      completion: EmptyBlock? = nil) {
+        showAlert(with: [(Localized.AlertActions.cancel,
+                          UIAlertAction.Style.cancel,
+                          { return }),
+                         (Localized.AlertActions.done,
+                          UIAlertAction.Style.default,
+                          { (completion ?? { return })() })],
                   alertTitle: alertTitle,
                   alertMessage: alertMessage)
     }
@@ -135,11 +153,8 @@ extension ExchangeViewController: ExchangeViewProtocol {
     func internetConnectionLost(completion: @escaping EmptyBlock){
         converterCollectionView.isHidden = true
         submitButton.isHidden = true
-        configureAlert(with: [(Localized.AlertActions.done,
-                               UIAlertAction.Style.default,
-                               completion)],
-                       alertTitle: Localized.InternetError.title,
-                       alertMessage: Localized.InternetError.message)
+        showError(with: Localized.InternetError.title,
+                  and: Localized.InternetError.message)
     }
 }
 
@@ -220,7 +235,7 @@ private extension ExchangeViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
-        group.interItemSpacing = .fixed(40)
+        group.interItemSpacing = .fixed(25)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
@@ -317,6 +332,6 @@ private extension ExchangeViewController {
     }
     
     @objc func submitButtonTapped() {
-        presenter.convertCurrencyBalanceIfPossible()
+        presenter.convertCurrencyBalance()
     }
 }
