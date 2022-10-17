@@ -39,6 +39,7 @@ final class ExchangeViewController: UIViewController {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.text = Localized.headerTitle
         headerLabel.textColor = .white
+        headerLabel.font = .systemFont(ofSize: 17, weight: .medium)
         headerLabel.numberOfLines = 1
         headerPlaceholder.addSubview(headerLabel)
         return headerLabel
@@ -76,6 +77,7 @@ final class ExchangeViewController: UIViewController {
         collectionView.contentInset.top = 16
         collectionView.isScrollEnabled = false
         collectionView.alwaysBounceVertical = false
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(UINib(nibName: SectionHeaderView.reuseIdentifier, bundle: nil),
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: SectionHeaderView.reuseIdentifier)
@@ -95,7 +97,7 @@ final class ExchangeViewController: UIViewController {
     private let collectionHeaderSectionHight: CGFloat = 40
     private let currencyBalanceSectionGroupHeight: CGFloat = 60
     private let currencyExchangeSectionItemHeight: CGFloat = 70
-    private let headerPlaceholderHeight: CGFloat = .screenHeight / 8
+    private let headerPlaceholderHeight: CGFloat = .screenHeight / 9
     private let currencyBalanceSectionItemWidth: CGFloat = .screenWidth / 3
     
     // MARK: Life Cycle
@@ -234,10 +236,12 @@ private extension ExchangeViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
-        group.interItemSpacing = .fixed(25)
+        group.interItemSpacing = .fixed(42)
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets.top = 8
+        section.contentInsets.bottom = 16
         section.contentInsets.leading = defaultInset
         section.contentInsets.trailing = defaultInset
         let header = self.composeSectionHeader()

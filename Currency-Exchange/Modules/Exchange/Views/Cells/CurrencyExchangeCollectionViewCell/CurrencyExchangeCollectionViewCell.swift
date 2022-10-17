@@ -119,10 +119,10 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
         
         let formattedText = result.formattedText
         
-        if let text = moneyFormatter.unformat(formattedText),
-           let amount = Double(text) {
-            didEnterAmount?(amount)
-        }
+//        if let text = moneyFormatter.unformat(formattedText),
+//           let amount = Double(text) {
+//            didEnterAmount?(amount)
+//        }
         
         textField.text = formattedText
         textField.setCursorPosition(result.caretBeginOffset)
@@ -142,7 +142,7 @@ private extension CurrencyExchangeCollectionViewCell {
     func setupAmountTextField() {
         amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
-        addDoneButtonOnKeyboard()
+//        addDoneButtonOnKeyboard()
     }
     
     func addDoneButtonOnKeyboard() {

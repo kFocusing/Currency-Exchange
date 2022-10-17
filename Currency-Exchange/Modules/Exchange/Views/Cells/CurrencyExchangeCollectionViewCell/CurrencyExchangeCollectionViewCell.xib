@@ -23,10 +23,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100.00" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iKG-mQ-Fsr">
-                    <rect key="frame" x="307" y="35.666666666666664" width="54" height="22"/>
+                    <rect key="frame" x="296" y="34.666666666666664" width="63" height="24"/>
                     <color key="tintColor" systemColor="tintColor"/>
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" keyboardAppearance="light"/>
                 </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A5N-Tn-Rfs">
@@ -52,7 +52,7 @@
                     </userDefinedRuntimeAttributes>
                 </textField>
                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="39W-Ye-dgF">
-                    <rect key="frame" x="288" y="36" width="11" height="21"/>
+                    <rect key="frame" x="277" y="36" width="11" height="21"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                     <color key="textColor" name="ExchangeGeen"/>
                     <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
             <viewLayoutGuide key="safeArea" id="DWi-Vv-aRq"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="A5N-Tn-Rfs" secondAttribute="bottom" id="4WL-EF-ZNz"/>
-                <constraint firstItem="H06-uX-ywE" firstAttribute="leading" secondItem="iKG-mQ-Fsr" secondAttribute="trailing" constant="20" id="8kx-f4-y35"/>
+                <constraint firstItem="H06-uX-ywE" firstAttribute="leading" secondItem="iKG-mQ-Fsr" secondAttribute="trailing" constant="22" id="8kx-f4-y35"/>
                 <constraint firstItem="39W-Ye-dgF" firstAttribute="centerY" secondItem="iKG-mQ-Fsr" secondAttribute="centerY" id="E6z-72-quF"/>
                 <constraint firstItem="Swo-DB-ajP" firstAttribute="centerY" secondItem="c73-Ky-aWi" secondAttribute="centerY" id="EI2-ns-Z9f"/>
                 <constraint firstItem="Swo-DB-ajP" firstAttribute="leading" secondItem="c73-Ky-aWi" secondAttribute="trailing" constant="16" id="JPf-57-uTu"/>

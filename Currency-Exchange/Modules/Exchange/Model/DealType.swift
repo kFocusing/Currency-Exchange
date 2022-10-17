@@ -26,9 +26,9 @@ enum DealType: Int, TitleAndImage {
     var icon: UIImage? {
         switch self {
         case .sell:
-            return UIImage(systemName: "arrow.up")
+            return ImageAssets.arrowUp.image
         case .receive:
-            return UIImage(systemName: "arrow.down")
+            return ImageAssets.arrowDown.image
         }
     }
     
