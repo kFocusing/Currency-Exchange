@@ -276,8 +276,8 @@ private extension ExchangePresenter {
     func resetExchangeAmount() {
         guard let fromCurrencyIndex = currencyExchangeList.firstIndex(where: { $0.dealType == .sell }),
               let toCurrencyIndex = currencyExchangeList.firstIndex(where: { $0.dealType == .receive }) else { return  }
-        let fromCurrency = currencyExchangeList[toCurrencyIndex].amountCurrency.currency
-        let toCurrency = currencyExchangeList[fromCurrencyIndex].amountCurrency.currency
+        let fromCurrency = currencyExchangeList[fromCurrencyIndex].amountCurrency.currency
+        let toCurrency = currencyExchangeList[toCurrencyIndex].amountCurrency.currency
         
         let zeroExchangeAmount: Double = 0
         
@@ -286,10 +286,11 @@ private extension ExchangePresenter {
         let toAmountCurrency = AmountCurrency(amount: zeroExchangeAmount,
                                               currency: toCurrency)
         
-        let receiveModel = ExchangeModel(from: fromAmountCurrency,
-                                         and: .receive)
-        let sellModel = ExchangeModel(from: toAmountCurrency,
+    
+        let sellModel = ExchangeModel(from: fromAmountCurrency,
                                       and: .sell)
+        let receiveModel = ExchangeModel(from: toAmountCurrency,
+                                         and: .receive)
         
         currencyExchangeList = [sellModel, receiveModel]
         updateDataSource(animated: true)

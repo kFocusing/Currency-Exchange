@@ -37,12 +37,10 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     // MARK: Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        currencyPicker.backgroundColor = .white
         addDoneButtonOnCurrencyPicker()
         currencyDealTypeImageView.makeCornersRounded()
         setupCurrencyPicker()
         setupAmountTextField()
-        
         currencyTextField.delegate = self
     }
     
@@ -55,19 +53,14 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: Internal
     func configure(with exchangeModel: ExchangeModel) {
-        cellDealType = exchangeModel.dealType
-        dealTypeLabel.text = exchangeModel.dealType.title
-        currencyDealTypeImageView.image = exchangeModel.dealType.icon
-        currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
+        setupDealTypeLabelAndDealTypeImage(by: exchangeModel.dealType)
         currencyTextField.text = exchangeModel.amountCurrency.currency
-        currentCurrency = Currency.allCases.first(where: { $0.title == exchangeModel.amountCurrency.currency }) ?? .euro
-        currencyPicker.selectRow(currentCurrency.rawValue,
-                                 inComponent: 0,
-                                 animated: true)
+        configureCurrencyPicker(by: exchangeModel.amountCurrency.currency)
         
         let decimalAmount = String(format: "%0.2f",
                                    arguments: [exchangeModel.amountCurrency.amount])
         amountTextField.text = moneyFormatter.format(decimalAmount)
+        
         if exchangeModel.dealType == .receive {
             amountTextField.textColor = Colors.exchangeGreen.color
             exchangeStatus.isHidden = false
@@ -149,6 +142,7 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
 // MARK: Private
 private extension CurrencyExchangeCollectionViewCell {
     func setupCurrencyPicker() {
+        currencyPicker.backgroundColor = .white
         currencyPicker.overrideUserInterfaceStyle = .light
         currencyPicker.dataSource = self
         currencyPicker.delegate = self
@@ -158,6 +152,20 @@ private extension CurrencyExchangeCollectionViewCell {
     func setupAmountTextField() {
         amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
+    }
+    
+    func setupDealTypeLabelAndDealTypeImage(by dealType: DealType) {
+        cellDealType = dealType
+        dealTypeLabel.text = dealType.title
+        currencyDealTypeImageView.image = dealType.icon
+        currencyDealTypeImageView.backgroundColor = dealType.color
+    }
+    
+    func configureCurrencyPicker(by currency: String) {
+        currentCurrency = Currency.allCases.first(where: { $0.title == currency }) ?? .euro
+        currencyPicker.selectRow(currentCurrency.rawValue,
+                                 inComponent: 0,
+                                 animated: true)
     }
     
     func addDoneButtonOnCurrencyPicker() {
