@@ -53,19 +53,10 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: Internal
     func configure(with exchangeModel: ExchangeModel) {
-        setupDealTypeLabelAndDealTypeImage(by: exchangeModel.dealType)
+        setupElements(by: exchangeModel.dealType)
         currencyTextField.text = exchangeModel.amountCurrency.currency
         configureCurrencyPicker(by: exchangeModel.amountCurrency.currency)
-        
-        let decimalAmount = String(format: "%0.2f",
-                                   arguments: [exchangeModel.amountCurrency.amount])
-        amountTextField.text = moneyFormatter.format(decimalAmount)
-        
-        if exchangeModel.dealType == .receive {
-            amountTextField.textColor = Colors.exchangeGreen.color
-            exchangeStatus.isHidden = false
-            amountTextField.isUserInteractionEnabled = false
-        }
+        setupAmountTextField(by: exchangeModel.amountCurrency.amount)
     }
 }
 
@@ -154,11 +145,31 @@ private extension CurrencyExchangeCollectionViewCell {
         amountTextField.delegate = self
     }
     
-    func setupDealTypeLabelAndDealTypeImage(by dealType: DealType) {
+    func setupElements(by dealType: DealType) {
         cellDealType = dealType
         dealTypeLabel.text = dealType.title
         currencyDealTypeImageView.image = dealType.icon
         currencyDealTypeImageView.backgroundColor = dealType.color
+        
+        if dealType == .receive {
+            amountTextField.textColor = Colors.exchangeGreen.color
+            exchangeStatus.isHidden = false
+            amountTextField.isUserInteractionEnabled = false
+        }
+    }
+    
+    func setupAmountTextField(by amount: Double) {
+        var decimalAmount: String
+        
+        if amount == 0 {
+            decimalAmount = String(Int())
+        } else {
+            decimalAmount = String(format: "%0.2f",
+                                       arguments: [amount])
+            decimalAmount = moneyFormatter.format(decimalAmount) ?? "0"
+        }
+        
+        amountTextField.text = decimalAmount
     }
     
     func configureCurrencyPicker(by currency: String) {

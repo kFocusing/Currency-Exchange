@@ -161,7 +161,6 @@ extension ExchangeViewController: ExchangeViewProtocol {
     func reloadItems(_ items: [AnyHashable]) {
         var newSnapshot = dataSource.snapshot()
         newSnapshot.reloadItems(items)
-        
         dataSource.apply(newSnapshot, animatingDifferences: false)
     }
     
