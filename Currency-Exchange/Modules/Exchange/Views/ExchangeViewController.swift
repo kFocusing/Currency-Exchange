@@ -362,7 +362,7 @@ private extension ExchangeViewController {
     
     @objc func submitButtonTapped() {
         dismissKeyboard()
-        presenter.convertCurrencyBalance()
+        presenter.convertCurrencyBalanceIfPossible()
     }
     
     @objc func dismissKeyboard() {

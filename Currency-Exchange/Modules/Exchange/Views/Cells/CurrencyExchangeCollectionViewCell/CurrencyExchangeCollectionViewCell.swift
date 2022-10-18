@@ -117,12 +117,18 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
                                                               with: ".",
                                                               options: .literal,
                                                               range: nil)
+        
         let result = moneyFormatter.formatInput(currentText: textField.text ?? "",
                                                 range: range,
                                                 replacementString: string == "," ? "." : string )
         
         let formattedText = result.formattedText
         
+        if formattedText == "" {
+            textField.text = "0"
+            didEnterAmount?(0)
+            return false
+        }
         
         if let text = moneyFormatter.unformat(formattedText),
            let amount = Double(text) {

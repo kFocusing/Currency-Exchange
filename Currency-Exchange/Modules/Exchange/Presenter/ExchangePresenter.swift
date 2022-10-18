@@ -18,7 +18,7 @@ protocol ExchangeViewPresenterProtocol: AnyObject {
     func getCurrencyExchange(fromAmount: Double?,
                              fromCurrency: String?,
                              toCurrency: String?)
-    func convertCurrencyBalance()
+    func convertCurrencyBalanceIfPossible()
     func didEnterAmount(_ amount: Double)
 }
 
@@ -66,7 +66,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         }
     }
     
-    func convertCurrencyBalance() {
+    func convertCurrencyBalanceIfPossible() {
         guard let fromCurrencyExchange = currencyExchangeList.first?.amountCurrency,
               let toCurrencyExchange = currencyExchangeList.last?.amountCurrency else { return }
         
@@ -89,6 +89,13 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
             $0.currency == toCurrencyExchange.currency}),
               let currencyForSellIndex = currencyBalance.firstIndex(where: {
                   $0.currency == fromCurrencyExchange.currency}) else { return }
+        
+        
+        guard fromCurrencyExchange.amount != 0 else {
+            view?.showError(with: Localized.NotEnoughMoneyAlert.title,
+                            and: Localized.NotEnoughMoneyAlert.message)
+            return
+        }
         
         configureConvertCurrencyInfo(fromCurrencyExchange: fromCurrencyExchange,
                                      toCurrencyExchange: toCurrencyExchange) {
@@ -220,7 +227,6 @@ private extension ExchangePresenter {
                                 toCurrencyExchangeAmount: Double,
                                 fromCurrencyBalance: Int,
                                 toCurrencyBalance: Int) {
-        
         var commissionFee: Double = 0
         if exemptionPayingCommission < 0 {
             commissionFee = calculateСommissionFee(amount: fromCurrencyExchangeAmount)
@@ -233,6 +239,7 @@ private extension ExchangePresenter {
             currencyBalance[fromCurrencyBalance].amount -= fromCurrencyExchangeAmount + commissionFee
             currencyBalance[toCurrencyBalance].amount += toCurrencyExchangeAmount
             
+            resetExchangeAmount()
             updateDataSource(animated: true)
         }
     }
@@ -266,8 +273,30 @@ private extension ExchangePresenter {
         })
     }
     
+    func resetExchangeAmount() {
+        guard let fromCurrencyIndex = currencyExchangeList.firstIndex(where: { $0.dealType == .sell }),
+              let toCurrencyIndex = currencyExchangeList.firstIndex(where: { $0.dealType == .receive }) else { return  }
+        let fromCurrency = currencyExchangeList[toCurrencyIndex].amountCurrency.currency
+        let toCurrency = currencyExchangeList[fromCurrencyIndex].amountCurrency.currency
+        
+        let zeroExchangeAmount: Double = 0
+        
+        let fromAmountCurrency = AmountCurrency(amount: zeroExchangeAmount,
+                                                currency: toCurrency)
+        let toAmountCurrency = AmountCurrency(amount: zeroExchangeAmount,
+                                              currency: fromCurrency)
+        
+        let receiveModel = ExchangeModel(from: fromAmountCurrency,
+                                         and: .receive)
+        let sellModel = ExchangeModel(from: toAmountCurrency,
+                                      and: .sell)
+        
+        currencyExchangeList = [sellModel, receiveModel]
+        updateDataSource(animated: true)
+    }
+    
     func exemptionPayingCommissionIsActive() -> Bool {
-        if exemptionPayingCommission >= 0 {
+        if exemptionPayingCommission > 0 {
             return true
         }
         return false

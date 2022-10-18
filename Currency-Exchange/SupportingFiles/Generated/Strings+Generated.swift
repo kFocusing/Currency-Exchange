@@ -84,6 +84,12 @@ internal enum L10n {
       /// You have chosen the same currencies
       internal static let title = L10n.tr("Localization", "exchangeScreen.sameСurrencies.title", fallback: "You have chosen the same currencies")
     }
+    internal enum SuccessAlert {
+      /// Your transaction is successful!
+      internal static let message = L10n.tr("Localization", "exchangeScreen.successAlert.message", fallback: "Your transaction is successful!")
+      /// Success
+      internal static let title = L10n.tr("Localization", "exchangeScreen.successAlert.title", fallback: "Success")
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
