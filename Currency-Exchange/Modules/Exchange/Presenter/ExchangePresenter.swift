@@ -43,6 +43,7 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     private let defaultAmountForConvert: Double = 100
     private var workItem: DispatchWorkItem?
     private var shouldUpdateLayout = true
+    private var shouldDisplayLoadingIndicator = true
     
     // MARK: Life Cycle
     required init(view: ExchangeViewProtocol,
@@ -101,6 +102,8 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
     func getCurrencyExchange(fromAmount: Double? = 100,
                              fromCurrency: String? = Currency.euro.title,
                              toCurrency: String? = Currency.americanDollar.title) {
+        showActivityIndicatorIfNeeded()
+        
         guard let amountFromCurrencyExchange = fromAmount ?? currencyExchangeList.first?.amountCurrency.amount,
               let currencyFromCurrencyExchange = fromCurrency ?? currencyExchangeList.first?.amountCurrency.currency ,
               let toCurrencyExchange =  toCurrency ?? currencyExchangeList.last?.amountCurrency.currency else { return }
@@ -119,10 +122,12 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
             case .success(let result):
                 if let result = result {
                     self?.composeCurrencyExchange(from: result)
+                    self?.hideActivityIndicatorIfNeeded()
                 }
             case .failure(let error):
                 self?.view?.showError(with: Localized.ErrorAlert.title,
                                       and: Localized.ErrorAlert.message(error))
+                self?.hideActivityIndicatorIfNeeded()
             }
         }
     }
@@ -274,5 +279,18 @@ private extension ExchangePresenter {
     
     func calculateСommissionFee(amount: Double) -> Double {
         return round(amount * commissionFeeMultiplier * 100) / 100.0
+    }
+    
+    func hideActivityIndicatorIfNeeded() {
+        if shouldDisplayLoadingIndicator {
+            view?.hideActivityIndicator()
+            shouldDisplayLoadingIndicator = false
+        }
+    }
+    
+    func showActivityIndicatorIfNeeded() {
+        if shouldDisplayLoadingIndicator {
+            view?.showActivityIndicator()
+        }
     }
 }

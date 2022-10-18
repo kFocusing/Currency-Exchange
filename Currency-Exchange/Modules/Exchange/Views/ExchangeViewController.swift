@@ -20,9 +20,11 @@ protocol ExchangeViewProtocol: AnyObject {
                                       and alertMessage: String?,
                                       completion: EmptyBlock?)
     func internetConnectionLost(completion: @escaping EmptyBlock)
+    func showActivityIndicator()
+    func hideActivityIndicator()
 }
 
-final class ExchangeViewController: UIViewController {
+final class ExchangeViewController: BaseViewController {
     
     // MARK: UIElements
     private lazy var headerPlaceholder: UIView = {
@@ -97,7 +99,7 @@ final class ExchangeViewController: UIViewController {
     private let submitButtonSideInset: CGFloat = 35
     private let submitButtonBottomInset: CGFloat = 20
     private let collectionHeaderSectionHight: CGFloat = 40
-    private let currencyBalanceInterItemSpacing: CGFloat = 42
+    private let currencyBalanceInterItemSpacing: CGFloat = 40
     private let currencyBalanceSectionGroupHeight: CGFloat = 60
     private let currencyExchangeSectionItemHeight: CGFloat = 70
     private let headerPlaceholderHeight: CGFloat = .screenHeight / 9
@@ -111,7 +113,7 @@ final class ExchangeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        hideKeyboardWhenTappedAround()
+        setupHideKeyboardGesture()
         setupDataSource()
         layoutUIElements()
         setupBackgroundView()
@@ -184,6 +186,7 @@ private extension ExchangeViewController {
         layoutHeaderLabel()
         layoutConverterCollectionView()
         layoutSubmitButton()
+        layoutActivityIndicator(to: view)
     }
     
     func setupBackgroundView() {
@@ -245,7 +248,7 @@ private extension ExchangeViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .estimated(.screenWidth),
             heightDimension: .absolute(currencyBalanceSectionGroupHeight)
         )
         
@@ -348,8 +351,8 @@ private extension ExchangeViewController {
             }
         }
     }
-    
-    func hideKeyboardWhenTappedAround() {
+
+    func setupHideKeyboardGesture() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false

@@ -37,6 +37,9 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     // MARK: Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
+        currencyPicker.backgroundColor = .white
+        addDoneButtonOnKeyboard()
+        
         currencyDealTypeImageView.makeCornersRounded()
         setupCurrencyPicker()
         setupAmountTextField()
@@ -56,6 +59,10 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
         currencyDealTypeImageView.image = exchangeModel.dealType.icon
         currencyDealTypeImageView.backgroundColor = exchangeModel.dealType.color
         currencyTextField.text = exchangeModel.amountCurrency.currency
+        currentCurrency = Currency.allCases.first(where: { $0.title == exchangeModel.amountCurrency.currency }) ?? .euro
+        currencyPicker.selectRow(currentCurrency.rawValue,
+                                 inComponent: 0,
+                                 animated: true)
         
         let decimalAmount = String(format: "%0.2f",
                                    arguments: [exchangeModel.amountCurrency.amount])
@@ -75,13 +82,13 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDelegate {
                     didSelectRow row: Int,
                     inComponent component: Int) {
         currencyPicker.selectRow(row,
-                                 inComponent: 0,
+                                 inComponent: component,
                                  animated: true)
         currentCurrency = pickerViewDataSource[row]
         currencyTextField.text = currentCurrency.title
-        didSelectCurrency?(currentCurrency, cellDealType)
+//        didSelectCurrency?(currentCurrency, cellDealType)
         pickCurrencyChevron.image = UIImage(systemName: "chevron.down")
-        self.endEditing(true)
+        //        self.endEditing(true)
     }
 }
 
@@ -143,6 +150,35 @@ private extension CurrencyExchangeCollectionViewCell {
     func setupAmountTextField() {
         amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
+    }
+    
+    
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0,
+                                                                  y: 0,
+                                                                  width: UIScreen.main.bounds.width,
+                                                                  height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                        target: nil,
+                                        action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: Localized.done,
+                                                    style: .done,
+                                                    target: self,
+                                                    action: #selector(doneButtonAction))
+        
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        currencyTextField.inputAccessoryView = doneToolbar
+    }
+    
+    @objc func doneButtonAction() {
+        didSelectCurrency?(currentCurrency, cellDealType)
+        self.endEditing(true)
+        self.resignFirstResponder()
     }
 }
 
