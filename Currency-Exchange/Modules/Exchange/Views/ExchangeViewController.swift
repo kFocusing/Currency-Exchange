@@ -142,7 +142,7 @@ extension ExchangeViewController: ExchangeViewProtocol {
         showAlert(with: [(Localized.AlertActions.cancel,
                           UIAlertAction.Style.cancel,
                           { return }),
-                         (Localized.AlertActions.done,
+                         (Localized.AlertActions.yes,
                           UIAlertAction.Style.default,
                           { (completion ?? { return })() })],
                   alertTitle: alertTitle,

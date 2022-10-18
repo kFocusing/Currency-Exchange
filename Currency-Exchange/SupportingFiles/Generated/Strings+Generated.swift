@@ -27,6 +27,8 @@ internal enum L10n {
       internal static let cancel = L10n.tr("Localization", "exchangeScreen.alertActions.cancel", fallback: "Cancel")
       /// Done
       internal static let done = L10n.tr("Localization", "exchangeScreen.alertActions.done", fallback: "Done")
+      /// Yes
+      internal static let yes = L10n.tr("Localization", "exchangeScreen.alertActions.yes", fallback: "Yes")
     }
     internal enum Currency {
       /// EUR
