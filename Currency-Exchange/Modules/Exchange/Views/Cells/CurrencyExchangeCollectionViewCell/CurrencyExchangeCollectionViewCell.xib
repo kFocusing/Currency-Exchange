@@ -22,16 +22,6 @@
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100.00" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iKG-mQ-Fsr">
-                    <rect key="frame" x="296" y="34.666666666666664" width="63" height="24"/>
-                    <color key="tintColor" systemColor="tintColor"/>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="Lv2-sf-kYV"/>
-                    </constraints>
-                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" keyboardAppearance="light"/>
-                </textField>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A5N-Tn-Rfs">
                     <rect key="frame" x="62" y="79" width="395" height="1"/>
                     <color key="backgroundColor" name="ExchangeSeparatorGray"/>
@@ -54,12 +44,6 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </textField>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="39W-Ye-dgF">
-                    <rect key="frame" x="277" y="36" width="11" height="21"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                    <color key="textColor" name="ExchangeGeen"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c73-Ky-aWi">
                     <rect key="frame" x="0.0" y="23.666666666666671" width="46" height="46"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -76,20 +60,46 @@
                         <constraint firstAttribute="width" constant="24" id="mQa-ne-C2b"/>
                     </constraints>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ktn-Qs-KEh">
+                    <rect key="frame" x="285" y="35.666666666666664" width="74" height="22"/>
+                    <subviews>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="39W-Ye-dgF">
+                            <rect key="frame" x="0.0" y="0.3333333333333357" width="11" height="21"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" name="ExchangeGeen"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100.00" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iKG-mQ-Fsr">
+                            <rect key="frame" x="11" y="-1" width="63" height="24"/>
+                            <color key="tintColor" systemColor="tintColor"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" keyboardType="decimalPad" keyboardAppearance="light"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="39W-Ye-dgF" firstAttribute="leading" secondItem="Ktn-Qs-KEh" secondAttribute="leading" id="6e2-kG-Tuc"/>
+                        <constraint firstAttribute="trailing" secondItem="iKG-mQ-Fsr" secondAttribute="trailing" id="7pb-Si-ZBF"/>
+                        <constraint firstItem="iKG-mQ-Fsr" firstAttribute="leading" secondItem="39W-Ye-dgF" secondAttribute="trailing" id="POq-Fh-KDB"/>
+                        <constraint firstAttribute="height" constant="22" id="dZ0-uZ-IYR"/>
+                        <constraint firstItem="iKG-mQ-Fsr" firstAttribute="centerY" secondItem="Ktn-Qs-KEh" secondAttribute="centerY" id="fcD-XH-Cw8"/>
+                        <constraint firstItem="39W-Ye-dgF" firstAttribute="centerY" secondItem="Ktn-Qs-KEh" secondAttribute="centerY" id="x5U-rG-b5X"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="DWi-Vv-aRq"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="A5N-Tn-Rfs" secondAttribute="bottom" id="4WL-EF-ZNz"/>
-                <constraint firstItem="H06-uX-ywE" firstAttribute="leading" secondItem="iKG-mQ-Fsr" secondAttribute="trailing" constant="22" id="8kx-f4-y35"/>
-                <constraint firstItem="39W-Ye-dgF" firstAttribute="centerY" secondItem="iKG-mQ-Fsr" secondAttribute="centerY" id="E6z-72-quF"/>
+                <constraint firstItem="Ktn-Qs-KEh" firstAttribute="centerY" secondItem="DWi-Vv-aRq" secondAttribute="centerY" id="CzU-oe-0xD"/>
                 <constraint firstItem="Swo-DB-ajP" firstAttribute="centerY" secondItem="c73-Ky-aWi" secondAttribute="centerY" id="EI2-ns-Z9f"/>
                 <constraint firstItem="Swo-DB-ajP" firstAttribute="leading" secondItem="c73-Ky-aWi" secondAttribute="trailing" constant="16" id="JPf-57-uTu"/>
                 <constraint firstItem="A5N-Tn-Rfs" firstAttribute="leading" secondItem="Swo-DB-ajP" secondAttribute="leading" id="K8f-KS-OLx"/>
                 <constraint firstItem="H06-uX-ywE" firstAttribute="centerY" secondItem="Tzz-0e-sjg" secondAttribute="centerY" id="Kpr-K2-Fen"/>
                 <constraint firstAttribute="trailing" secondItem="A5N-Tn-Rfs" secondAttribute="trailing" id="SIo-nV-38E"/>
-                <constraint firstItem="iKG-mQ-Fsr" firstAttribute="leading" secondItem="39W-Ye-dgF" secondAttribute="trailing" constant="8" symbolic="YES" id="cXv-Ny-bBE"/>
-                <constraint firstItem="iKG-mQ-Fsr" firstAttribute="centerY" secondItem="H06-uX-ywE" secondAttribute="centerY" id="kC3-sb-KDF"/>
+                <constraint firstItem="Ktn-Qs-KEh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Swo-DB-ajP" secondAttribute="trailing" constant="10" id="ZXL-Tg-9Kv"/>
                 <constraint firstItem="Tzz-0e-sjg" firstAttribute="centerY" secondItem="DWi-Vv-aRq" secondAttribute="centerY" id="nQv-66-eyl"/>
+                <constraint firstItem="H06-uX-ywE" firstAttribute="leading" secondItem="Ktn-Qs-KEh" secondAttribute="trailing" constant="22" id="onS-Wl-2fz"/>
                 <constraint firstItem="c73-Ky-aWi" firstAttribute="centerY" secondItem="DWi-Vv-aRq" secondAttribute="centerY" id="u9F-XG-w2b"/>
                 <constraint firstItem="H06-uX-ywE" firstAttribute="trailing" secondItem="Tzz-0e-sjg" secondAttribute="trailing" id="v6v-UK-TEO"/>
                 <constraint firstItem="DWi-Vv-aRq" firstAttribute="trailing" secondItem="Tzz-0e-sjg" secondAttribute="trailing" constant="16" id="vmP-VI-faq"/>
