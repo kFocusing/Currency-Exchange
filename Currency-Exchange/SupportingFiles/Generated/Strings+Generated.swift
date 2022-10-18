@@ -85,10 +85,10 @@ internal enum L10n {
       internal static let title = L10n.tr("Localization", "exchangeScreen.sameСurrencies.title", fallback: "You have chosen the same currencies")
     }
     internal enum SuccessAlert {
-      /// Your transaction is successful!
-      internal static let message = L10n.tr("Localization", "exchangeScreen.successAlert.message", fallback: "Your transaction is successful!")
-      /// Success
-      internal static let title = L10n.tr("Localization", "exchangeScreen.successAlert.title", fallback: "Success")
+      /// Please check the entered number for conversion!
+      internal static let message = L10n.tr("Localization", "exchangeScreen.successAlert.message", fallback: "Please check the entered number for conversion!")
+      /// Attention
+      internal static let title = L10n.tr("Localization", "exchangeScreen.successAlert.title", fallback: "Attention")
     }
   }
 }

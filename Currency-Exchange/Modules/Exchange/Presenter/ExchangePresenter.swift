@@ -92,8 +92,8 @@ final class ExchangePresenter: ExchangeViewPresenterProtocol {
         
         
         guard fromCurrencyExchange.amount != 0 else {
-            view?.showError(with: Localized.NotEnoughMoneyAlert.title,
-                            and: Localized.NotEnoughMoneyAlert.message)
+            view?.showError(with: Localized.SuccessAlert.title,
+                            and: Localized.SuccessAlert.message)
             return
         }
         
@@ -282,9 +282,9 @@ private extension ExchangePresenter {
         let zeroExchangeAmount: Double = 0
         
         let fromAmountCurrency = AmountCurrency(amount: zeroExchangeAmount,
-                                                currency: toCurrency)
+                                                currency: fromCurrency)
         let toAmountCurrency = AmountCurrency(amount: zeroExchangeAmount,
-                                              currency: fromCurrency)
+                                              currency: toCurrency)
         
         let receiveModel = ExchangeModel(from: fromAmountCurrency,
                                          and: .receive)

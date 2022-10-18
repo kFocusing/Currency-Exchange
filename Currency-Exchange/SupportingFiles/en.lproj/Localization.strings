@@ -35,8 +35,8 @@
 "exchangeScreen.internetError.title" = "You are offline";
 "exchangeScreen.internetError.message" = "Please, enable your Wi-Fi or connect using cellular data.";
 
-"exchangeScreen.successAlert.title" = "Success";
-"exchangeScreen.successAlert.message" = "Your transaction is successful!";
+"exchangeScreen.successAlert.title" = "Attention";
+"exchangeScreen.successAlert.message" = "Please check the entered number for conversion!";
 
 "exchangeScreen.errorAlert.title" = "Failed";
 "exchangeScreen.errorAlert.message" = "Failed to exchange currancy: %@";
