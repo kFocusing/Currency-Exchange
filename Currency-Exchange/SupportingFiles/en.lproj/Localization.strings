@@ -1,0 +1,42 @@
+/* 
+  Localization.strings
+  Currency-Exchange
+
+  Created on 11.10.2022.
+  
+*/
+
+// MARK: Exchange Screen
+"exchangeScreen.headerTitle" = "Currency converter";
+"exchangeScreen.buttonTitle" = "SUBMIT";
+"exchangeScreen.balanceSectionTitle" = "MY BALANCES";
+"exchangeScreen.currencyExchangeSectionTitle" = "CURRENCY EXCHANGE";
+
+// MARK: Currency Exchange Section
+"exchangeScreen.currencyExchange.sell" = "Sell";
+"exchangeScreen.currencyExchange.receive" = "Receive";
+
+// MARK: Currency
+"exchangeScreen.currency.usd" = "USD";
+"exchangeScreen.currency.eur" = "EUR";
+"exchangeScreen.currency.jpy" = "JPY";
+
+// MARK: Alerts
+"exchangeScreen.currencyConvertedAlert.title" = "Exchange Confirmation";
+"exchangeScreen.currencyConvertedAlert.messageWithOutFee" = "Are you sure you want to convert %@ to %@? You will spend 1 fee exemption.\n You have %@ exemptions left commissions.";
+"exchangeScreen.currencyConvertedAlert.messageWithFee" = "Are you sure you want to convert %@ to %@? Commission Fee %@ %@";
+
+"exchangeScreen.notEnoughMoneyAlert.title" = "There is not enough money";
+"exchangeScreen.notEnoughMoneyAlert.message" = " There is not enough money on the balance sheet.\n Top up your account or change the convertible currency.";
+
+"exchangeScreen.sameСurrencies.title" = "You have chosen the same currencies";
+"exchangeScreen.sameСurrencies.message" = "Please make sure you have selected the correct currency.";
+
+"exchangeScreen.internetError.title" = "You are offline";
+"exchangeScreen.internetError.message" = "Please, enable your Wi-Fi or connect using cellular data.";
+
+"exchangeScreen.errorAlert.title" = "Failed";
+"exchangeScreen.errorAlert.message" = "Failed to exchange currancy: %@";
+"exchangeScreen.alertActions.done" = "Done";
+"exchangeScreen.alertActions.yes" = "Yes";
+"exchangeScreen.alertActions.cancel" = "Cancel";
