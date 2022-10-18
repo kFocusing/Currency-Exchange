@@ -125,10 +125,6 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
             didEnterAmount?(amount)
         }
         
-        guard let text = textField.text else { return true }
-        let newLength = text.count + string.count - range.length
-        return newLength <= 10
-        
         textField.text = formattedText
         textField.setCursorPosition(result.caretBeginOffset)
         return false
