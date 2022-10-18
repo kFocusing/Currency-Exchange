@@ -38,11 +38,12 @@ final class CurrencyExchangeCollectionViewCell: BaseCollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         currencyPicker.backgroundColor = .white
-        addDoneButtonOnKeyboard()
-        
+        addDoneButtonOnCurrencyPicker()
         currencyDealTypeImageView.makeCornersRounded()
         setupCurrencyPicker()
         setupAmountTextField()
+        
+        currencyTextField.delegate = self
     }
     
     override func prepareForReuse() {
@@ -86,9 +87,6 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDelegate {
                                  animated: true)
         currentCurrency = pickerViewDataSource[row]
         currencyTextField.text = currentCurrency.title
-//        didSelectCurrency?(currentCurrency, cellDealType)
-        pickCurrencyChevron.image = UIImage(systemName: "chevron.down")
-        //        self.endEditing(true)
     }
 }
 
@@ -106,7 +104,6 @@ extension CurrencyExchangeCollectionViewCell: UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
-        pickCurrencyChevron.image = UIImage(systemName: "chevron.up")
         return pickerViewDataSource[row].title
     }
 }
@@ -136,6 +133,11 @@ extension CurrencyExchangeCollectionViewCell: UITextFieldDelegate {
         textField.setCursorPosition(result.caretBeginOffset)
         return false
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard textField == currencyTextField else { return }
+        pickCurrencyChevron.image = UIImage(systemName: "chevron.up")
+    }
 }
 
 // MARK: Private
@@ -152,8 +154,7 @@ private extension CurrencyExchangeCollectionViewCell {
         amountTextField.delegate = self
     }
     
-    
-    func addDoneButtonOnKeyboard() {
+    func addDoneButtonOnCurrencyPicker() {
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0,
                                                                   y: 0,
                                                                   width: UIScreen.main.bounds.width,
@@ -177,6 +178,7 @@ private extension CurrencyExchangeCollectionViewCell {
     
     @objc func doneButtonAction() {
         didSelectCurrency?(currentCurrency, cellDealType)
+        pickCurrencyChevron.image = UIImage(systemName: "chevron.down")
         self.endEditing(true)
         self.resignFirstResponder()
     }
